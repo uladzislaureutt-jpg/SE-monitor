@@ -1,0 +1,56 @@
+{
+  "valid": true,
+  "errors": [],
+  "rows_total": 511,
+  "event_groups_total": 403,
+  "duplicate_event_groups": 51,
+  "mixed_label_event_groups": 3,
+  "max_event_group_size": 13,
+  "split_counts": [
+    {
+      "split": "excluded_borderline",
+      "final_label": "BORDERLINE",
+      "rows": 2
+    },
+    {
+      "split": "test",
+      "final_label": "KEEP",
+      "rows": 35
+    },
+    {
+      "split": "test",
+      "final_label": "REJECT",
+      "rows": 37
+    },
+    {
+      "split": "train",
+      "final_label": "KEEP",
+      "rows": 192
+    },
+    {
+      "split": "train",
+      "final_label": "REJECT",
+      "rows": 183
+    },
+    {
+      "split": "validation",
+      "final_label": "KEEP",
+      "rows": 32
+    },
+    {
+      "split": "validation",
+      "final_label": "REJECT",
+      "rows": 30
+    }
+  ],
+  "event_groups_by_split": {
+    "excluded_borderline": 2,
+    "test": 54,
+    "train": 297,
+    "validation": 50
+  },
+  "chosen_validation_fold": 1,
+  "event_group_leakage_count": 0,
+  "id_duplicate_count": 0,
+  "url_duplicate_count": 0
+}

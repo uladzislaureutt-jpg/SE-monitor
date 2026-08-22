@@ -1,0 +1,54 @@
+{
+  "package": "S-monitor-setfit-pilot-1.0",
+  "stage": "compact SetFit training pilot",
+  "created_on": "2026-08-22",
+  "production_integration": false,
+  "manual_only": true,
+  "scheduled": false,
+  "model_id": "cointegrated/rubert-tiny2",
+  "immutable_components": [
+    "social_monitor.py",
+    "main.py",
+    "config/",
+    "data/state.json",
+    "data/discovery_cache.json",
+    "production workflow",
+    "secrets",
+    "email delivery"
+  ],
+  "dataset": {
+    "train": {
+      "rows": 375,
+      "events": 297,
+      "tier": "SILVER",
+      "sha256": "bf3528d5e797d95eea937edbbe5436acfa8ad6bfa310b01b07fd707f496e036f"
+    },
+    "validation": {
+      "rows": 62,
+      "events": 50,
+      "tier": "SILVER",
+      "sha256": "04595b2fbc2cc31b01890adb8d8580c39af3802ad9e3e4500c1032d204afeebb"
+    },
+    "test": {
+      "rows": 72,
+      "events": 54,
+      "tier": "GOLD",
+      "sha256": "27ae6e155a5d6ccce78aaeb8bec3bd986a916f612965578f0c33aa4649d5c644"
+    },
+    "event_leakage": 0
+  },
+  "new_paths": [
+    ".github/workflows/social-setfit-pilot.yml",
+    "ml/setfit_pilot/README.md",
+    "ml/setfit_pilot/MANIFEST.json",
+    "ml/setfit_pilot/requirements.txt",
+    "ml/setfit_pilot/train_setfit.py",
+    "ml/setfit_pilot/validate_splits.py",
+    "data/ml/event_safe_v1/train.csv",
+    "data/ml/event_safe_v1/validation.csv",
+    "data/ml/event_safe_v1/test.csv",
+    "data/ml/event_safe_v1/event_safe_audit.json",
+    "control_baseline/baseline_metrics.json",
+    "control_baseline/gold_test_predictions.csv"
+  ]
+}
