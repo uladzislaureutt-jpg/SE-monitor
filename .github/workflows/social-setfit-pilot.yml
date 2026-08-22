@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
-      HF_HOME: ${{ runner.temp }}/huggingface
-      TRANSFORMERS_CACHE: ${{ runner.temp }}/huggingface/transformers
+      HF_HOME: /tmp/huggingface
+      TRANSFORMERS_CACHE: /tmp/huggingface/transformers
       TOKENIZERS_PARALLELISM: "false"
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
       PIP_NO_CACHE_DIR: "1"
