@@ -1,0 +1,140 @@
+name: Daily social monitor
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Safe dry-run: no email/Telegram and no state/cache changes"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-social-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    # Playwright's official image already contains Chromium and all Linux
+    # libraries.  This removes the unbounded apt phase which exhausted the
+    # whole job on 19 August 2026 while Ubuntu/Azure mirrors were unavailable.
+    container:
+      image: mcr.microsoft.com/playwright/python:v1.62.0-noble
+      options: --user 1001
+      env:
+        PIP_DISABLE_PIP_VERSION_CHECK: "1"
+        PIP_NO_INPUT: "1"
+        PYTHONUSERBASE: /tmp/social-monitor-python
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Initialize workflow diagnostics
+        run: |
+          mkdir -p reports
+          {
+            echo "workflow_started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "github_run_id=${GITHUB_RUN_ID}"
+            echo "github_run_number=${GITHUB_RUN_NUMBER}"
+            echo "github_sha=${GITHUB_SHA}"
+            echo "runner_os=${RUNNER_OS}"
+            echo "container_image=mcr.microsoft.com/playwright/python:v1.62.0-noble"
+            echo "user=$(id -u):$(id -g)"
+            echo "python=$(command -v python)"
+            python --version
+            python -m pip --version
+            python -m site --user-site
+          } > reports/workflow_environment.txt
+
+      - name: Install dependencies
+        timeout-minutes: 10
+        run: |
+          set -o pipefail
+          python -m pip install \
+            --user \
+            --retries 3 \
+            --timeout 30 \
+            --no-warn-script-location \
+            -r requirements.txt \
+            "playwright==1.62.0" \
+            2>&1 | tee -a reports/workflow_environment.txt
+
+      - name: Verify bundled Playwright Chromium
+        timeout-minutes: 2
+        continue-on-error: true
+        run: |
+          python - <<'PY' 2>&1 | tee -a reports/workflow_environment.txt
+          from playwright.sync_api import sync_playwright
+
+          with sync_playwright() as playwright:
+              browser = playwright.chromium.launch(headless=True)
+              print(f"playwright_chromium={browser.version}")
+              browser.close()
+          PY
+
+      - name: Run tests
+        timeout-minutes: 6
+        run: python -m pytest -q
+
+      - name: Run social monitor (dry-run)
+        if: ${{ inputs.dry_run == true }}
+        timeout-minutes: 30
+        run: python main.py --dry-run
+
+      - name: Verify state and cache were not changed
+        if: ${{ inputs.dry_run == true }}
+        run: git diff --exit-code -- data/state.json data/discovery_cache.json
+
+      - name: Run social monitor
+        if: ${{ inputs.dry_run != true }}
+        timeout-minutes: 30
+        env:
+          SMTP_HOST: smtp.gmail.com
+          SMTP_PORT: "465"
+          SMTP_SECURITY: ssl
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          REPORT_TO: ${{ secrets.REPORT_TO }}
+        run: python main.py
+
+      - name: Upload report files
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: social-report-${{ github.run_number }}
+          path: reports/
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Save monitoring state
+        if: ${{ success() && inputs.dry_run != true }}
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/state.json data/discovery_cache.json
+          if git diff --cached --quiet; then
+            echo "State has not changed."
+            exit 0
+          fi
+          git commit -m "Update social-monitor state [skip ci]"
+          for attempt in 1 2 3; do
+            echo "Push attempt $attempt of 3"
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              echo "Monitoring state saved successfully."
+              exit 0
+            fi
+            sleep $((attempt * 5))
+          done
+          echo "::error::Failed to save monitoring state after 3 attempts."
+          exit 1
