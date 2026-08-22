@@ -1,12 +1,237 @@
 {
   "initialized": true,
   "last_candidate_limit": 4000,
-  "last_candidates_collected_count": 1265,
-  "last_candidates_count": 1265,
+  "last_candidates_collected_count": 1295,
+  "last_candidates_count": 1295,
   "last_results_count": 0,
-  "last_run": "2026-08-22T08:41:09.446418+00:00",
+  "last_run": "2026-08-22T08:58:51.787276+00:00",
   "recovery": {
-    "degraded_queue": {},
+    "degraded_queue": {
+      "https://ab.onliner.by/mercedes-benz/glb-klasse-amg/5068234": {
+        "attempts": 1,
+        "discovered_via": "homepage",
+        "event_echo": false,
+        "event_echo_anchor": "",
+        "event_echo_priority": false,
+        "event_echo_sources": [],
+        "event_locality": "",
+        "event_object": "",
+        "event_problem": "",
+        "event_published_at": "",
+        "event_region": "",
+        "event_signature": "",
+        "extraction_strategy": "empty",
+        "first_queued": "2026-08-22T08:58:51.787276+00:00",
+        "inline_text": "",
+        "last_attempt": "2026-08-22T08:58:51.787276+00:00",
+        "next_retry_at": "2026-08-22T14:58:51.787276+00:00",
+        "published_at": "",
+        "reason": "extraction_failed",
+        "source": "Onlíner",
+        "status": "active",
+        "summary": "",
+        "title": "Mercedes-Benz GLB-Класс AMG (X247) GLB 35 (AMG 4MATIC) 2023, 32 400 км",
+        "title_generated": false,
+        "transport": "requests",
+        "url": "https://ab.onliner.by/mercedes-benz/glb-klasse-amg/5068234"
+      },
+      "https://mlyn.by/17082026/belarus-nakroyut-silnye-dozhdi-i-grozy-18-avgusta-na-yugo-vostoke-vozmozhny-shkvaly": {
+        "attempts": 1,
+        "discovered_via": "homepage",
+        "event_echo": false,
+        "event_echo_anchor": "",
+        "event_echo_priority": false,
+        "event_echo_sources": [],
+        "event_locality": "",
+        "event_object": "",
+        "event_problem": "загрязнение",
+        "event_published_at": "",
+        "event_region": "",
+        "event_signature": "",
+        "extraction_strategy": "empty",
+        "first_queued": "2026-08-22T08:58:51.787276+00:00",
+        "inline_text": "",
+        "last_attempt": "2026-08-22T08:58:51.787276+00:00",
+        "next_retry_at": "2026-08-22T14:58:51.787276+00:00",
+        "published_at": "",
+        "reason": "transport_failed",
+        "source": "Минская правда",
+        "status": "active",
+        "summary": "",
+        "title": "Беларусь накроют сильные дожди и грозы 18 августа – на юго-востоке возможны шквалы",
+        "title_generated": false,
+        "transport": "requests",
+        "url": "https://mlyn.by/17082026/belarus-nakroyut-silnye-dozhdi-i-grozy-18-avgusta-na-yugo-vostoke-vozmozhny-shkvaly"
+      },
+      "https://mlyn.by/17082026/kak-beloruska-sozdala-shou-v-kotorom-zhenshhiny-rasskazyvayut-pravdu-o-materinstve": {
+        "attempts": 1,
+        "discovered_via": "homepage",
+        "event_echo": false,
+        "event_echo_anchor": "",
+        "event_echo_priority": false,
+        "event_echo_sources": [],
+        "event_locality": "",
+        "event_object": "",
+        "event_problem": "",
+        "event_published_at": "",
+        "event_region": "",
+        "event_signature": "",
+        "extraction_strategy": "empty",
+        "first_queued": "2026-08-22T08:58:51.787276+00:00",
+        "inline_text": "",
+        "last_attempt": "2026-08-22T08:58:51.787276+00:00",
+        "next_retry_at": "2026-08-22T14:58:51.787276+00:00",
+        "published_at": "",
+        "reason": "transport_failed",
+        "source": "Минская правда",
+        "status": "active",
+        "summary": "",
+        "title": "Как белоруска создала шоу, в котором женщины рассказывают правду о материнстве",
+        "title_generated": false,
+        "transport": "requests",
+        "url": "https://mlyn.by/17082026/kak-beloruska-sozdala-shou-v-kotorom-zhenshhiny-rasskazyvayut-pravdu-o-materinstve"
+      },
+      "https://mlyn.by/18082026/bazovuyu-stavku-dlya-byudzhetnikov-v-belarusi-povysyat-s-1-sentyabrya": {
+        "attempts": 1,
+        "discovered_via": "homepage",
+        "event_echo": false,
+        "event_echo_anchor": "",
+        "event_echo_priority": false,
+        "event_echo_sources": [],
+        "event_locality": "",
+        "event_object": "",
+        "event_problem": "",
+        "event_published_at": "",
+        "event_region": "",
+        "event_signature": "",
+        "extraction_strategy": "empty",
+        "first_queued": "2026-08-22T08:58:51.787276+00:00",
+        "inline_text": "",
+        "last_attempt": "2026-08-22T08:58:51.787276+00:00",
+        "next_retry_at": "2026-08-22T14:58:51.787276+00:00",
+        "published_at": "",
+        "reason": "transport_failed",
+        "source": "Минская правда",
+        "status": "active",
+        "summary": "",
+        "title": "Базовую ставку для бюджетников в Беларуси повысят с 1 сентября",
+        "title_generated": false,
+        "transport": "requests",
+        "url": "https://mlyn.by/18082026/bazovuyu-stavku-dlya-byudzhetnikov-v-belarusi-povysyat-s-1-sentyabrya"
+      },
+      "https://mlyn.by/19082026/posle-kapremonta-i-s-mebelyu-nashli-v-minske-tri-gotovye-dvushki-u-metro-ot-84-tysyach-dollarov": {
+        "attempts": 1,
+        "discovered_via": "homepage",
+        "event_echo": false,
+        "event_echo_anchor": "",
+        "event_echo_priority": false,
+        "event_echo_sources": [],
+        "event_locality": "Минск",
+        "event_object": "",
+        "event_problem": "",
+        "event_published_at": "",
+        "event_region": "Минск",
+        "event_signature": "",
+        "extraction_strategy": "empty",
+        "first_queued": "2026-08-22T08:58:51.787276+00:00",
+        "inline_text": "",
+        "last_attempt": "2026-08-22T08:58:51.787276+00:00",
+        "next_retry_at": "2026-08-22T14:58:51.787276+00:00",
+        "published_at": "",
+        "reason": "transport_failed",
+        "source": "Минская правда",
+        "status": "active",
+        "summary": "",
+        "title": "После капремонта и с мебелью. Нашли в Минске три готовые двушки у метро от 84 тысяч долларов",
+        "title_generated": false,
+        "transport": "requests",
+        "url": "https://mlyn.by/19082026/posle-kapremonta-i-s-mebelyu-nashli-v-minske-tri-gotovye-dvushki-u-metro-ot-84-tysyach-dollarov"
+      },
+      "https://mlyn.by/19082026/uznali-kak-dzerzhinskij-rajon-gotovitsya-k-oblastnym-dazhynkam-i-chto-proveryaet-gubernator": {
+        "attempts": 1,
+        "discovered_via": "homepage",
+        "event_echo": false,
+        "event_echo_anchor": "",
+        "event_echo_priority": false,
+        "event_echo_sources": [],
+        "event_locality": "Дзержинск",
+        "event_object": "",
+        "event_problem": "",
+        "event_published_at": "",
+        "event_region": "Минская область",
+        "event_signature": "",
+        "extraction_strategy": "empty",
+        "first_queued": "2026-08-22T08:58:51.787276+00:00",
+        "inline_text": "",
+        "last_attempt": "2026-08-22T08:58:51.787276+00:00",
+        "next_retry_at": "2026-08-22T14:58:51.787276+00:00",
+        "published_at": "",
+        "reason": "transport_failed",
+        "source": "Минская правда",
+        "status": "active",
+        "summary": "",
+        "title": "Узнали, как Дзержинский район готовится к областным «Дажынкам» и что проверяет губернатор",
+        "title_generated": false,
+        "transport": "requests",
+        "url": "https://mlyn.by/19082026/uznali-kak-dzerzhinskij-rajon-gotovitsya-k-oblastnym-dazhynkam-i-chto-proveryaet-gubernator"
+      },
+      "https://mlyn.by/21082026/zemlya-deshevle-4-tysyach-rublej-kakie-uchastki-mozhno-kupit-na-torgah-v-sluczkom-rajone": {
+        "attempts": 1,
+        "discovered_via": "homepage",
+        "event_echo": false,
+        "event_echo_anchor": "",
+        "event_echo_priority": false,
+        "event_echo_sources": [],
+        "event_locality": "Слуцк",
+        "event_object": "",
+        "event_problem": "",
+        "event_published_at": "",
+        "event_region": "Минская область",
+        "event_signature": "",
+        "extraction_strategy": "empty",
+        "first_queued": "2026-08-22T08:58:51.787276+00:00",
+        "inline_text": "",
+        "last_attempt": "2026-08-22T08:58:51.787276+00:00",
+        "next_retry_at": "2026-08-22T14:58:51.787276+00:00",
+        "published_at": "",
+        "reason": "transport_failed",
+        "source": "Минская правда",
+        "status": "active",
+        "summary": "",
+        "title": "Земля дешевле 4 тысяч рублей – какие участки можно купить на торгах в Слуцком районе",
+        "title_generated": false,
+        "transport": "requests",
+        "url": "https://mlyn.by/21082026/zemlya-deshevle-4-tysyach-rublej-kakie-uchastki-mozhno-kupit-na-torgah-v-sluczkom-rajone"
+      },
+      "https://mlyn.by/22082026/chem-opasna-tlya-na-percze-i-kak-zashhitit-rasteniya-ot-skrytoj-ugrozy": {
+        "attempts": 1,
+        "discovered_via": "homepage",
+        "event_echo": false,
+        "event_echo_anchor": "",
+        "event_echo_priority": false,
+        "event_echo_sources": [],
+        "event_locality": "",
+        "event_object": "",
+        "event_problem": "опасность/безопасность",
+        "event_published_at": "",
+        "event_region": "",
+        "event_signature": "",
+        "extraction_strategy": "empty",
+        "first_queued": "2026-08-22T08:58:51.787276+00:00",
+        "inline_text": "",
+        "last_attempt": "2026-08-22T08:58:51.787276+00:00",
+        "next_retry_at": "2026-08-22T14:58:51.787276+00:00",
+        "published_at": "",
+        "reason": "transport_failed",
+        "source": "Минская правда",
+        "status": "active",
+        "summary": "",
+        "title": "Чем опасна тля на перце и как защитить растения от скрытой угрозы",
+        "title_generated": false,
+        "transport": "requests",
+        "url": "https://mlyn.by/22082026/chem-opasna-tlya-na-percze-i-kak-zashhitit-rasteniya-ot-skrytoj-ugrozy"
+      }
+    },
     "endpoints": {
       "BGmedia|feed|https://bgmedia.site/feed": {
         "channel": "feed",
@@ -21,15 +246,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 3,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 3,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "BGmedia"
       },
@@ -46,15 +278,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 34,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 34,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "BGmedia"
       },
@@ -71,15 +310,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "BGmedia"
       },
@@ -96,15 +342,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 2,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 1,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 2,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Blizko.by"
       },
@@ -121,15 +374,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 10,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 10,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "CityDog"
       },
@@ -146,15 +406,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 60,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 60,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "CityDog"
       },
@@ -171,15 +438,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "CityDog"
       },
@@ -196,15 +470,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "EX-PRESS.LIVE"
       },
@@ -221,15 +502,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 2,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 2,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "EX-PRESS.LIVE"
       },
@@ -237,7 +525,7 @@
         "channel": "sitemap",
         "circuit_open": false,
         "consecutive_degraded": 0,
-        "consecutive_failures": 1,
+        "consecutive_failures": 2,
         "endpoint": "https://ex-press.by/sitemap.xml.gz",
         "history": [
           {
@@ -246,10 +534,17 @@
             "health": "failed",
             "outcome": "failed",
             "status": 0
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "failed",
+            "outcome": "failed",
+            "status": 0
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "network_error",
         "last_health": "failed",
         "last_probe_mode": "normal",
@@ -269,15 +564,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 19,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 19,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Gomel Today"
       },
@@ -294,15 +596,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Hrodna.life"
       },
@@ -319,15 +628,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 6,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 6,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Hrodna.life"
       },
@@ -344,15 +660,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 46,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 46,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Hrodna.life"
       },
@@ -369,15 +692,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 11,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 11,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Hrodna.life"
       },
@@ -394,15 +724,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 11,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 11,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Hrodna.life"
       },
@@ -419,15 +756,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 22,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 22,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Kraj.by"
       },
@@ -444,15 +788,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 1,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 1,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Kraj.by"
       },
@@ -469,15 +820,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "M-Media архив"
       },
@@ -485,7 +843,7 @@
         "channel": "feed",
         "circuit_open": false,
         "consecutive_degraded": 0,
-        "consecutive_failures": 1,
+        "consecutive_failures": 2,
         "endpoint": "https://mogilev.media/comments/feed",
         "history": [
           {
@@ -494,10 +852,17 @@
             "health": "failed",
             "outcome": "failed",
             "status": 404
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "failed",
+            "outcome": "failed",
+            "status": 404
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "permanent_http",
         "last_health": "failed",
         "last_probe_mode": "normal",
@@ -517,15 +882,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 54,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 54,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "M-Media архив"
       },
@@ -542,15 +914,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 15,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 15,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "MASHEKA"
       },
@@ -567,15 +946,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 15,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 15,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "MASHEKA"
       },
@@ -592,15 +978,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 15,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 15,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "MASHEKA"
       },
@@ -617,15 +1010,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 60,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 60,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "MASHEKA"
       },
@@ -642,15 +1042,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "MASHEKA"
       },
@@ -667,15 +1074,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 1,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 1,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "MAYDAY TEAM"
       },
@@ -692,15 +1106,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 5,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 5,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "NewGrodno"
       },
@@ -717,15 +1138,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 45,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 45,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "NewGrodno"
       },
@@ -742,15 +1170,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 76,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 77,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 76,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "NewGrodno"
       },
@@ -767,15 +1202,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 1,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 1,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "NewGrodno"
       },
@@ -792,15 +1234,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 30,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 30,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Onlíner"
       },
@@ -817,15 +1266,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 112,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 114,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 112,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Onlíner"
       },
@@ -842,15 +1298,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 7,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 7,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Orsha.eu"
       },
@@ -867,15 +1330,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 20,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 20,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Reform.news"
       },
@@ -892,15 +1362,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 20,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 20,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Smartpress.by"
       },
@@ -917,15 +1394,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 42,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 42,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Smartpress.by"
       },
@@ -942,15 +1426,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 7,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 7,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Smartpress.by"
       },
@@ -967,15 +1458,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 7,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 7,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Smartpress.by"
       },
@@ -992,15 +1490,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Smartpress.by"
       },
@@ -1017,15 +1522,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 34,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 33,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 34,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Smartpress.by"
       },
@@ -1042,15 +1554,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Smartpress.by"
       },
@@ -1067,15 +1586,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 22,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 23,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 22,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Zerkalo.io"
       },
@@ -1092,15 +1618,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 27,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 27,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Zerkalo.io"
       },
@@ -1108,7 +1641,7 @@
         "channel": "homepage",
         "circuit_open": false,
         "consecutive_degraded": 0,
-        "consecutive_failures": 1,
+        "consecutive_failures": 2,
         "endpoint": "https://news.zerkalo.io/latest",
         "history": [
           {
@@ -1117,10 +1650,17 @@
             "health": "failed",
             "outcome": "failed",
             "status": 403
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "failed",
+            "outcome": "failed",
+            "status": 403
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "permanent_http",
         "last_health": "failed",
         "last_probe_mode": "normal",
@@ -1140,15 +1680,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 19,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 19,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Zerkalo.io"
       },
@@ -1165,15 +1712,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 11,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 13,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 11,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Беларусь за МКАДом"
       },
@@ -1190,15 +1744,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белка"
       },
@@ -1215,15 +1776,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 6,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 6,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белка"
       },
@@ -1240,15 +1808,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 10,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 10,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белка"
       },
@@ -1265,15 +1840,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 12,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 12,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белка"
       },
@@ -1290,15 +1872,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 12,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 12,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белка"
       },
@@ -1315,15 +1904,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 125,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 125,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белновости"
       },
@@ -1340,15 +1936,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 26,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 26,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белновости"
       },
@@ -1365,15 +1968,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 125,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 125,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белновости"
       },
@@ -1390,15 +2000,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 125,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 125,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белновости"
       },
@@ -1415,15 +2032,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 125,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 125,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белновости"
       },
@@ -1440,15 +2064,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 28,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 28,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белсат"
       },
@@ -1465,15 +2096,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белсат"
       },
@@ -1490,15 +2128,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Белсат"
       },
@@ -1515,15 +2160,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 15,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 15,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Брест Live"
       },
@@ -1540,15 +2192,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 61,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 61,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "БрестСИТИ"
       },
@@ -1565,15 +2224,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "БрестСИТИ"
       },
@@ -1590,15 +2256,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 8,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 8,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "ВГР"
       },
@@ -1615,15 +2288,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 75,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 75,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "ВГР"
       },
@@ -1640,15 +2320,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "ВГР"
       },
@@ -1665,15 +2352,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 15,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 15,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Вечерний Бобруйск"
       },
@@ -1690,15 +2384,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Вечерний Бобруйск"
       },
@@ -1715,15 +2416,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 50,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 50,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Виртуальный Брест"
       },
@@ -1740,15 +2448,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 30,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 30,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Виртуальный Брест"
       },
@@ -1765,15 +2480,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Виртуальный Брест"
       },
@@ -1790,15 +2512,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 112,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 112,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Виртуальный Брест"
       },
@@ -1815,15 +2544,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Виртуальный Брест"
       },
@@ -1840,15 +2576,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 6,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 6,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Витебск INFO"
       },
@@ -1865,15 +2608,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 2,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 2,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Витебская Весна"
       },
@@ -1890,15 +2640,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 2,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 2,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Витебская Весна"
       },
@@ -1915,15 +2672,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 2,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 2,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Витебская Весна"
       },
@@ -1940,15 +2704,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 52,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 52,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Витебская Весна"
       },
@@ -1965,15 +2736,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 6,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 6,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Витебские вести"
       },
@@ -1990,15 +2768,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Витебский курьер"
       },
@@ -2015,15 +2800,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Витебский курьер"
       },
@@ -2040,15 +2832,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Витебский курьер"
       },
@@ -2065,15 +2864,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 29,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 28,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 29,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Газета «Сильные Новости»"
       },
@@ -2090,15 +2896,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 16,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 16,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Газета «Сильные Новости»"
       },
@@ -2115,15 +2928,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Газета «Сильные Новости»"
       },
@@ -2140,15 +2960,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 8,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 8,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Газета «Сильные Новости»"
       },
@@ -2165,15 +2992,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 46,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 47,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 46,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Газета «Сильные Новости»"
       },
@@ -2190,15 +3024,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Газета «Сильные Новости»"
       },
@@ -2215,15 +3056,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Гродненская правозащита"
       },
@@ -2240,15 +3088,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 5,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 5,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Гродненская правозащита"
       },
@@ -2265,15 +3120,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 20,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 20,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Гродненская правозащита"
       },
@@ -2290,15 +3152,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 1,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 5,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 1,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Гродненская правозащита"
       },
@@ -2315,15 +3184,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Гродненская правозащита"
       },
@@ -2340,15 +3216,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 44,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 44,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Дзяржынская праўда"
       },
@@ -2365,15 +3248,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Дзяржынская праўда"
       },
@@ -2390,15 +3280,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 19,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 19,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Медиа-Полесье"
       },
@@ -2415,15 +3312,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 42,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 42,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Медиа-Полесье"
       },
@@ -2440,15 +3344,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Медиа-Полесье"
       },
@@ -2465,15 +3376,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 69,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 69,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Минская правда"
       },
@@ -2490,15 +3408,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Минская правда"
       },
@@ -2515,15 +3440,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 13,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 13,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Могилёв Online"
       },
@@ -2540,15 +3472,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 21,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 21,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "МогилёвОнлайн"
       },
@@ -2565,15 +3504,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Наша Ніва"
       },
@@ -2590,15 +3536,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 125,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 125,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Наша Ніва"
       },
@@ -2615,15 +3568,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Наша Ніва"
       },
@@ -2640,15 +3600,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 18,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 18,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Наша Ніва"
       },
@@ -2665,15 +3632,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 20,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 20,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Позірк"
       },
@@ -2690,15 +3664,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 19,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 20,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 19,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Позірк"
       },
@@ -2715,15 +3696,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 40,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 40,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Прысталічча"
       },
@@ -2740,15 +3728,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Прысталічча"
       },
@@ -2765,15 +3760,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Слуцк-Город"
       },
@@ -2790,15 +3792,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Слуцк-Город"
       },
@@ -2815,15 +3824,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 53,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 53,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Слуцк-Город"
       },
@@ -2831,7 +3847,7 @@
         "channel": "homepage",
         "circuit_open": false,
         "consecutive_degraded": 0,
-        "consecutive_failures": 1,
+        "consecutive_failures": 0,
         "endpoint": "https://smolevichi-24.by/",
         "history": [
           {
@@ -2840,21 +3856,30 @@
             "health": "failed",
             "outcome": "failed",
             "status": 503
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 30,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
-        "last_failure_class": "transient_http",
-        "last_health": "failed",
+        "last_candidates": 30,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_health": "ok",
         "last_probe_mode": "normal",
-        "last_status": 503,
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
         "source": "Смолевичи-24"
       },
       "Смолевичи-24|sitemap|https://smolevichi-24.by/sitemap_index.xml": {
         "channel": "sitemap",
         "circuit_open": false,
         "consecutive_degraded": 0,
-        "consecutive_failures": 1,
+        "consecutive_failures": 0,
         "endpoint": "https://smolevichi-24.by/sitemap_index.xml",
         "history": [
           {
@@ -2863,14 +3888,23 @@
             "health": "failed",
             "outcome": "failed",
             "status": 503
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 0,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 0,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
-        "last_failure_class": "transient_http",
-        "last_health": "failed",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_health": "ok",
         "last_probe_mode": "normal",
-        "last_status": 503,
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
         "source": "Смолевичи-24"
       },
       "Флагшток|homepage|https://flagshtok.info/": {
@@ -2886,15 +3920,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 32,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 32,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Флагшток"
       },
@@ -2911,15 +3952,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 7,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 7,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Флагшток"
       },
@@ -2936,15 +3984,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 7,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 7,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Флагшток"
       },
@@ -2961,15 +4016,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 4,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 4,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Флагшток"
       },
@@ -2986,15 +4048,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 8,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 8,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Хартия-97"
       },
@@ -3011,15 +4080,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 37,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
-        "last_candidates": 36,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_candidates": 37,
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Хартия-97"
       },
@@ -3036,15 +4112,22 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 3,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 3,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Штодзень Гомель"
       },
@@ -3061,21 +4144,430 @@
             "health": "ok",
             "outcome": "ok",
             "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "candidates": 15,
+            "health": "ok",
+            "outcome": "ok",
+            "status": 200
           }
         ],
         "last_candidates": 15,
-        "last_checked": "2026-08-22T08:41:09.446418+00:00",
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
         "last_failure_class": "",
         "last_health": "ok",
         "last_probe_mode": "normal",
         "last_status": 200,
-        "last_success": "2026-08-22T08:41:09.446418+00:00",
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
         "next_probe_at": "",
         "source": "Электронный Солигорск"
       }
     },
     "event_seeds": [],
-    "transports": {},
+    "transports": {
+      "Kraj.by|kraj.by|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "kraj.by",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "Kraj.by",
+        "transport": "requests"
+      },
+      "MASHEKA|masheka.by|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "masheka.by",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "MASHEKA",
+        "transport": "requests"
+      },
+      "Onlíner|onliner.by|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "onliner.by",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "Onlíner",
+        "transport": "requests"
+      },
+      "Smartpress.by|smartpress.by|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "smartpress.by",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "Smartpress.by",
+        "transport": "requests"
+      },
+      "Белновости|belnovosti.by|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "belnovosti.by",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "Белновости",
+        "transport": "requests"
+      },
+      "БрестСИТИ|brestcity.com|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "brestcity.com",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "БрестСИТИ",
+        "transport": "requests"
+      },
+      "Вечерний Бобруйск|bobr.by|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "bobr.by",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "Вечерний Бобруйск",
+        "transport": "requests"
+      },
+      "Газета «Сильные Новости»|gs.by|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "gs.by",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "Газета «Сильные Новости»",
+        "transport": "requests"
+      },
+      "Минская правда|mlyn.by|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 7,
+        "domain": "mlyn.by",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "network_error",
+            "outcome": "failed",
+            "status": 0
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "network_error",
+            "outcome": "failed",
+            "status": 0
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "network_error",
+            "outcome": "failed",
+            "status": 0
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "network_error",
+            "outcome": "failed",
+            "status": 0
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "network_error",
+            "outcome": "failed",
+            "status": 0
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "network_error",
+            "outcome": "failed",
+            "status": 0
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "network_error",
+            "outcome": "failed",
+            "status": 0
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "network_error",
+        "last_probe_mode": "normal",
+        "last_status": 0,
+        "source": "Минская правда",
+        "transport": "requests"
+      },
+      "Позірк|pozirk.online|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "pozirk.online",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "Позірк",
+        "transport": "requests"
+      },
+      "Смолевичи-24|smolevichi-24.by|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "smolevichi-24.by",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          },
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "Смолевичи-24",
+        "transport": "requests"
+      },
+      "Хартия-97|charter97.org|official_mirror": {
+        "circuit_open": false,
+        "consecutive_failures": 0,
+        "domain": "charter97.org",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "",
+            "outcome": "ok",
+            "status": 200
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "",
+        "last_probe_mode": "normal",
+        "last_status": 200,
+        "last_success": "2026-08-22T08:58:51.787276+00:00",
+        "next_probe_at": "",
+        "source": "Хартия-97",
+        "transport": "official_mirror"
+      },
+      "Хартия-97|charter97.org|requests": {
+        "circuit_open": false,
+        "consecutive_failures": 1,
+        "domain": "charter97.org",
+        "history": [
+          {
+            "at": "2026-08-22T08:58:51.787276+00:00",
+            "failure_class": "permanent_http",
+            "outcome": "failed",
+            "status": 403
+          }
+        ],
+        "last_checked": "2026-08-22T08:58:51.787276+00:00",
+        "last_failure_class": "permanent_http",
+        "last_probe_mode": "normal",
+        "last_status": 403,
+        "source": "Хартия-97",
+        "transport": "requests"
+      }
+    },
     "version": 2
   },
   "seen": {
@@ -3891,6 +5383,13 @@
       "source": "Вечерний Бобруйск",
       "title": "Курсы валют НБРБ на 21 августа"
     },
+    "https://bobr.by/news/kaleidoscope/198523": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Бобруйск",
+      "region": "Могилёвская область",
+      "source": "Вечерний Бобруйск",
+      "title": "Калейдоскоп Из актрисы театра – в медсёстры: необычная судьба бобруйчанки Юлии Кисаковой"
+    },
     "https://bobr.by/news/newscompany/197007": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Бобруйск",
@@ -4086,6 +5585,13 @@
       "region": "Брестская область",
       "source": "БрестСИТИ",
       "title": "Неработающих граждан привлекают к общественно полезному труду в Барановичском регионе"
+    },
+    "https://brestcity.com/blog/netipichnyj-narushitel": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Брест",
+      "region": "Брестская область",
+      "source": "БрестСИТИ",
+      "title": "Нетипичный нарушитель - что не так с паспортом россиянина, который собрался лететь в Турцию"
     },
     "https://brestcity.com/blog/novye-obekty-remonty-shkol": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -4590,6 +6096,13 @@
       "region": "Беларусь",
       "source": "Хартия-97",
       "title": "В Беларуси подал на банкротство старейший госзастройщик"
+    },
+    "https://charter97.org/ru/news/2026/8/22/695660": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Беларусь",
+      "region": "Беларусь",
+      "source": "Хартия-97",
+      "title": "В России разрешили людям без руки или ноги водить автобусы"
     },
     "https://citydog.io/post/1-procent-mneniya": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -6390,12 +7903,26 @@
       "source": "MASHEKA",
       "title": "Абоненты МТС получат расширенную поддержку 5G на устройствах Samsung"
     },
+    "https://masheka.by/history_mogilev/15187-foto-iz-proshlogo-parohodnaja-pristan-v-mogileve.html": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Могилёв",
+      "region": "Могилёвская область",
+      "source": "MASHEKA",
+      "title": "Фото из прошлого: пароходная пристань в Могилеве.1901 год."
+    },
     "https://masheka.by/history_mogilev/21762-chto-ostalos-ot-mogileva-posle-nemecko-fashistskoj-okkupacii.html": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Могилёв",
       "region": "Могилёвская область",
       "source": "MASHEKA",
       "title": "Что осталось от Могилева после немецко-фашистской оккупации"
+    },
+    "https://masheka.by/history_mogilev/2436-istorija-mogileva-lupolovskaja-chk.html": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Могилёв",
+      "region": "Могилёвская область",
+      "source": "MASHEKA",
+      "title": "История Могилева: Луполовская ЧК"
     },
     "https://masheka.by/history_mogilev/2859-istorija-mogileva-janvar-fevral-1919-goda.html": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -6411,12 +7938,26 @@
       "source": "MASHEKA",
       "title": "Дневник подпольщицы Могилева Валентины Николаевны Губской: 1941 год. Часть II"
     },
+    "https://masheka.by/liga-jekspertov-mogileva/3248-chto-takoe-fejsbilding-i-kak-sohranit-molodost-lica-otvety-kosmetologa.html": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Могилёв",
+      "region": "Могилёвская область",
+      "source": "MASHEKA",
+      "title": "Что такое фейсбилдинг и как сохранить молодость лица. Ответы косметолога"
+    },
     "https://masheka.by/liga-jekspertov-mogileva/5680-bolezni-grjaznyh-ruk-chto-jeto-takoe-intervju-s-vrachom-infekcionistom.html": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Могилёв",
       "region": "Могилёвская область",
       "source": "MASHEKA",
       "title": "«Болезни грязных рук» – что это такое? Интервью с врачом-инфекционистом"
+    },
+    "https://masheka.by/liga-jekspertov-mogileva/6385-samye-rasprostranennye-sposoby-manipuljacii-kak-ih-raspoznat-i-ne-poddavatsja-im-sovety-psihologa.html": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Могилёв",
+      "region": "Могилёвская область",
+      "source": "MASHEKA",
+      "title": "Самые распространенные способы манипуляции: как их распознать и не поддаваться им. Советы психолога"
     },
     "https://masheka.by/liga-jekspertov-mogileva/6895-sovety-molodym-mamam-rabota-nad-oshibkami-ili-spisok-del-kotorye-podozhdut.html": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -6572,6 +8113,13 @@
       "source": "MASHEKA",
       "title": "Уже в Могилёве – смартфон Huawei Pura 90s Pro Max с мощным зумом и 100 Вт зарядкой"
     },
+    "https://masheka.by/novosti-mogileva/3132-respublikanskij-subbotnik-objazany-li-vy-prinimat-v-nem-uchastie-otvety-jurista.html": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Могилёв",
+      "region": "Могилёвская область",
+      "source": "MASHEKA",
+      "title": "Республиканский субботник: обязаны ли вы принимать в нем участие. Ответы юриста"
+    },
     "https://masheka.by/novosti-mogileva/3210-kak-pravilno-otdyhat-na-prirode-chtoby-vas-ne-oshtrafovali-otvety-jurista.html": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Могилёв",
@@ -6593,6 +8141,13 @@
       "source": "MASHEKA",
       "title": "В Могилеве раскрыли киберпреступление! Держатели банковских карт будьте бдительны"
     },
+    "https://masheka.by/novosti-mogileva/spletni-i-bredni/3984-1000-i-1-sposob-reshit-problemu-s-parkovkami-mogilevchanin-podzheg-avtomobil-soseda.html": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Могилёв",
+      "region": "Могилёвская область",
+      "source": "MASHEKA",
+      "title": "1000 и 1 способ решить проблему с парковками: могилевчанин поджег автомобиль соседа"
+    },
     "https://masheka.by/novosti-mogileva/spletni-i-bredni/3990-tajny-kostjukovichskih-lesov-gde-propadajut-ljudi-i-rastet-neobychnyj-dub-video.html": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Могилёв",
@@ -6606,6 +8161,27 @@
       "region": "Могилёвская область",
       "source": "MASHEKA",
       "title": "Загадочная реклама в Могилеве. Чье лицо скрыто за черным квадратом?"
+    },
+    "https://masheka.by/novosti-mogileva/spletni-i-bredni/4083-kovarnaja-afera-mogilevchanki-kotoraja-obokrala-zhitelja-cherikova-romanticheskaja-istorija-v-stile-nuar.html": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Могилёв",
+      "region": "Могилёвская область",
+      "source": "MASHEKA",
+      "title": "Коварная афера могилевчанки, которая обокрала жителя Черикова. Романтическая история в стиле нуар"
+    },
+    "https://masheka.by/novosti-mogileva/spletni-i-bredni/4162-zagadochnaja-chereda-prestuplenij-shkolnikov-i-uchitelej-mogileva-pochemu-takoe-proishodit.html": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Могилёв",
+      "region": "Могилёвская область",
+      "source": "MASHEKA",
+      "title": "Загадочная череда преступлений школьников и учителей Могилева. Почему такое происходит?"
+    },
+    "https://masheka.by/novosti-mogileva/spletni-i-bredni/4368-mogilevskie-mstiteli-vybiraem-samye-dikie-sluchai-mesti-v-mogileve-i-oblasti.html": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Могилёв",
+      "region": "Могилёвская область",
+      "source": "MASHEKA",
+      "title": "Могилевские мстители! Выбираем самые дикие случаи в Могилеве и области"
     },
     "https://masheka.by/novosti-mogileva/spletni-i-bredni/6077-v-mogileve-pojavilsja-zagadochnyj-trdelnik-chto-jeto-takoe-i-chto-tam-budut-prodavat.html": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -7902,6 +9478,13 @@
       "source": "Kraj.by",
       "title": "Молодечненцы поквитались за проигрыш в городе шахтеров"
     },
+    "https://news.kraj.by/20260822/uznali-kto-i-za-skolko-kupil-starinnuyu-usadbu-chechotov-bohviczev": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Молодечно и регион",
+      "region": "Минская область",
+      "source": "Kraj.by",
+      "title": "Узнали, кто и за сколько купил старинную усадьбу Чечотов-Бохвицев"
+    },
     "https://news.kraj.by/20260822/v-minske-ograbili-yuvelirnyj-salon": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Молодечно и регион",
@@ -8595,6 +10178,13 @@
       "source": "Позірк",
       "title": "Новый поверенный в делах Великобритании записал первое видеообращение, по-белорусски пока знает только два слова"
     },
+    "https://pozirk.online/ru/news/200885": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Беларусь",
+      "region": "Беларусь",
+      "source": "Позірк",
+      "title": "С хутора в Поставском районе доставлены в больницу мужчина и его несовершеннолетний сын, получившие ожоги при сжигании мусора"
+    },
     "https://pristalica.by/02042026/zhaloba-v-tiktok-na-dom-v-ozerczo-chto-otvetili-v-zhilishhnike-minshhiny": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Минский район",
@@ -9000,6 +10590,13 @@
       "region": "Беларусь",
       "source": "Reform.news",
       "title": "Минобразования установило сроки выпускных экзаменов в 2027 году"
+    },
+    "https://reform.news/nochju-rossija-atakovala-ukrainu-raketami-i-dronami-pogib-zheleznodorozhnik-povrezhdeny-jenergoobekty": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Беларусь",
+      "region": "Беларусь",
+      "source": "Reform.news",
+      "title": "Ночью Россия атаковала Украину ракетами и дронами."
     },
     "https://reform.news/polskoe-katolicheskoe-izdanie-priznano-ekstremistskim-v-belarusi": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -9582,6 +11179,13 @@
       "source": "Smartpress.by",
       "title": "В Минске мужчина в маске ограбил ювелирный магазин и скрылся (дополнено)"
     },
+    "https://smartpress.by/news/v-miorskom-rayone-nashli-redkuyu-igralnuyu-kost-xvi-veka": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Беларусь",
+      "region": "Беларусь",
+      "source": "Smartpress.by",
+      "title": "В Миорском районе нашли редкую игральную кость XVI века"
+    },
     "https://smartpress.by/news/zheltyy-oranzhevyy-krasnyy-chto-znachat-pogodnye-urovni-opasnosti-i-k-chemu-gotovitsya": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Беларусь",
@@ -9595,6 +11199,216 @@
       "region": "Беларусь",
       "source": "Smartpress.by",
       "title": "Токенизация по-белорусски: почему рынок на $300 млн до сих пор остается “для своих”"
+    },
+    "https://smolevichi-24.by/17082026/v-belarusi-menyayut-pravila-dvizheniya-dlya-tyazhelovozov": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "В Беларуси меняют правила движения для тяжеловозов"
+    },
+    "https://smolevichi-24.by/19082026/aleksandr-lukashenko-podpisal-ukaz-o-razvitii-agroekoturizma-chto-izmenitsya": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Александр Лукашенко подписал Указ «О развитии агроэкотуризма» – что изменится?"
+    },
+    "https://smolevichi-24.by/19082026/zarplaty-pensii-i-biznes-iz-chego-skladyvaetsya-obshhij-koshelek-zhitelej-minskoj-oblasti": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Рассказываем, как зарабатывают жители Минской области"
+    },
+    "https://smolevichi-24.by/20082026/belorusskih-shkolnikov-zhdut-dlinnye-zimnie-kanikuly-izvestny-daty": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Белорусских школьников ждут длинные зимние каникулы – известны даты"
+    },
+    "https://smolevichi-24.by/20082026/edinyj-den-informirovaniya-proshel-v-smolevichskom-rajone": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Единый день информирования прошел в Смолевичском районе"
+    },
+    "https://smolevichi-24.by/20082026/ekologiya-ochistnye-sooruzheniya-i-rekordnoe-zhile-nikolaj-paramonov-vstretilsya-s-kollektivom-smolevichskogo-zhkh": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Экология, очистные сооружения и рекордное жилье – Николай Парамонов встретился с коллективом Смолевичского ЖКХ"
+    },
+    "https://smolevichi-24.by/20082026/life-menyaet-tarify-s-sentyabrya-komu-dobavyat-internet-i-skolko-pridetsya-platit": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "20.08.26 19:08 Life меняет тарифы с сентября – кому добавят интернет и сколько придется платить"
+    },
+    "https://smolevichi-24.by/20082026/luna-pokrasneet-vo-vremya-zatmeniya-28-avgusta-gde-mozhno-budet-uvidet": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "20.08.26 20:09 Луна покраснеет во время затмения 28 августа – где можно будет увидеть"
+    },
+    "https://smolevichi-24.by/20082026/predsedatel-rajispolkoma-provedet-vyezdnoj-priem-grazhdan-18": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Председатель райисполкома проведет выездной прием граждан"
+    },
+    "https://smolevichi-24.by/20082026/profsoyuz-rabotnikov-obrazovaniya-pozdravil-budushhih-pervoklassnikov": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Смолевичский профсоюз работников образования поздравил будущих первоклассников"
+    },
+    "https://smolevichi-24.by/20082026/sezon-tihoj-ohoty-v-razgare-pravila-bezopasnosti-i-zaprety-v-lesu": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "20.08.26 21:05 Сезон тихой охоты в разгаре – правила безопасности и запреты в лесу"
+    },
+    "https://smolevichi-24.by/20082026/v-shpakovshhine-zagorelas-suhaya-rastitelnost-na-ploshhadi-40-kvadratnyh-metrov": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "20.08.26 17:16 В Шпаковщине загорелась сухая растительность на площади 40 квадратных метров"
+    },
+    "https://smolevichi-24.by/21082026/aleksandr-lukashenko-vo-dvorcze-nezavisimosti-provel-vstrechu-s-prezidentom-myanmy": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Александр Лукашенко во Дворце Независимости провел встречу с Президентом Мьянмы"
+    },
+    "https://smolevichi-24.by/21082026/chto-nado-uspet-sdelat-do-1-sentyabrya-s-elektrosamokatom-skorost-kotorogo-bolshe-25-kmch": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Что надо успеть сделать до 1 сентября с электросамокатом, скорость которого больше 25 км/ч"
+    },
+    "https://smolevichi-24.by/21082026/kak-menyalis-czeny-na-produkty-tovary-i-uslugi-v-etom-godu": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Вчера, 19:11 Как менялись цены на продукты, товары и услуги в этом году"
+    },
+    "https://smolevichi-24.by/21082026/minchanin-ostavil-49-tysyach-rublej-na-ostanovke-v-smolevichskom-rajone-sledovateli-rassleduyut-moshennichestvo": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Минчанин оставил 49 тысяч рублей на остановке в Смолевичском районе. Следователи расследуют мошенничество"
+    },
+    "https://smolevichi-24.by/21082026/na-smolevichi-brojler-publichno-vyslali-eshhe-odnogo-inostrannogo-rabotnika": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "На «Смолевичи Бройлер» публично выслали еще одного иностранного работника"
+    },
+    "https://smolevichi-24.by/21082026/net-cheka-ne-platite-nalogovaya-napomnila-passazhiram-taksi-ob-ih-pravah": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Вчера, 20:17 Нет чека – не платите, налоговая напомнила пассажирам такси об их правах"
+    },
+    "https://smolevichi-24.by/21082026/ostorozhno-nepogoda-mchs-predupredilo-o-shtormovom-vetre-i-livnyah-v-vyhodnye": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Вчера, 21:11 Осторожно, непогода – МЧС предупредило о штормовом ветре и ливнях в выходные"
+    },
+    "https://smolevichi-24.by/21082026/ozericzko-slobodskoj-selispolkom-otmenil-aukczion-po-prodazhe-dvuh-zemelnyh-uchastkov": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Озерицко-Слободской сельисполком отменил аукцион по продаже двух земельных участков"
+    },
+    "https://smolevichi-24.by/21082026/serebryanyj-uspeh-semya-czukanovyh-zanyala-vtoroe-mesto-v-regionalnom-konkurse-semya-goda": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Серебряный успех — семья Цукановых заняла второе место в региональном конкурсе «Семья года»"
+    },
+    "https://smolevichi-24.by/21082026/smolevichskie-volejbolisty-oderzhali-pobedu-v-zonalnyh-sorevnovaniyah-sredi-komand-uvd": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Смолевичские волейболисты одержали победу в зональных соревнованиях среди команд УВД"
+    },
+    "https://smolevichi-24.by/21082026/stan-chempionom-dyussh-obyavlyaet-nabor-v-gruppu-po-volnoj-borbe": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Стань чемпионом – ГУ «ДЮСШ Смолевичского райисполкома» объявляет набор в группу по вольной борьбе"
+    },
+    "https://smolevichi-24.by/21082026/v-belarusi-uzhestochili-trebovaniya-k-vyezdu-detej-za-graniczu-chto-izmenilos": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "В Беларуси ужесточили требования к выезду детей за границу – что изменилось?"
+    },
+    "https://smolevichi-24.by/21082026/v-pekalinskom-selsovete-na-aukczion-vystavili-zemelnyj-uchastok-pod-stroitelstvo-zhilya-2": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "В Пекалинском сельсовете на аукцион выставили земельный участок под строительство жилья"
+    },
+    "https://smolevichi-24.by/21082026/v-smolevichah-proshel-turnir-po-mini-futbolu-sredi-voennyh-komissariatov-minskoj-oblasti": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "В Смолевичах прошел турнир по мини-футболу среди военных комиссариатов области"
+    },
+    "https://smolevichi-24.by/21082026/v-smolevichi-dejriz-prokommentirovali-video-s-zernom-pod-dozhdyom-na-otkrytoj-ploshhadke": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "В «Смолевичи Дэйриз» прокомментировали видео с зерном на открытой площадке"
+    },
+    "https://smolevichi-24.by/21082026/yunye-smolevichane-poluchili-portfeli-pervoklassnika": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Сергей Крысенко вручил юным смолевичанам портфели первоклассника"
+    },
+    "https://smolevichi-24.by/22082026/gribnikov-predupredili-ob-opasnosti-gde-chashhe-vsego-pryachutsya-zmei-i-kak-zashhititsya-ot-ukusa": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Грибников предупредили об опасности – где чаще всего прячутся змеи и как защититься от укуса"
+    },
+    "https://smolevichi-24.by/22082026/novaya-ostanovka-efimovo-izmeneniya-v-dvizhenii-prigorodnyh-avtobusov-iz-minska-s-1-sentyabrya": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Смолевичи",
+      "region": "Минская область",
+      "source": "Смолевичи-24",
+      "title": "Новая остановка «Ефимово» — изменения в движении пригородных автобусов из Минска с 1 сентября"
     },
     "https://sport.onliner.by/2026/08/21/ekaterina-skurat": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -9756,6 +11570,13 @@
       "region": "Минск",
       "source": "Blizko.by",
       "title": "В Минске появились сырники с кусочками шоколада от «Бабушка Аня»"
+    },
+    "https://t.me/blizkoby/24921": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Минск",
+      "region": "Минск",
+      "source": "Blizko.by",
+      "title": "В Минске ограбили ювелирный магазин."
     },
     "https://t.me/esoligorsk/29422": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -9995,6 +11816,20 @@
       "source": "Gomel Today",
       "title": "Недавно «Сильные Новости»"
     },
+    "https://t.me/gomeltoday/161913": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Гомель",
+      "region": "Гомельская область",
+      "source": "Gomel Today",
+      "title": "43-летний вахтовик из Мозыря загадочно пропал в Хабаровске – семья бьет тревогу Роман Крупа, как пишет канал «Дерзкий Хабаровск», перестал выходить на связь после визита в…"
+    },
+    "https://t.me/gomeltoday/161914": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Гомель",
+      "region": "Гомельская область",
+      "source": "Gomel Today",
+      "title": "Сильные Новости - gomel.today"
+    },
     "https://t.me/mogilevonline/123124": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Могилёв",
@@ -10212,6 +12047,13 @@
       "source": "Наша Ніва",
       "title": "У Варшаве сёння развітваюцца з Аляксандрам Мілінкевічам"
     },
+    "https://t.me/nashaniva/120560": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Беларусь",
+      "region": "Беларусь",
+      "source": "Наша Ніва",
+      "title": "Памятаеце генерала Яўсеева, які ўласнаручна разганяў пратэсты?"
+    },
     "https://t.me/orshaeu/11829": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Орша",
@@ -10267,6 +12109,13 @@
       "region": "Беларусь",
       "source": "Позірк",
       "title": "Добрай раніцы!"
+    },
+    "https://t.me/pozirkonline/47003": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Беларусь",
+      "region": "Беларусь",
+      "source": "Позірк",
+      "title": "Развітанне з Аляксандрам Мілінкевічам адбылося ў Варшаве"
     },
     "https://t.me/shtodzien/3970": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -10464,6 +12313,13 @@
       "source": "Беларусь за МКАДом",
       "title": "Беларусок будут проверять на риски бесплодия во время диспансеризации"
     },
+    "https://t.me/zamkadomby/67315": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Регионы",
+      "region": "Беларусь",
+      "source": "Беларусь за МКАДом",
+      "title": "Фотофакт: вчера на Слуцком сыродельном комбинате прикорытники выплясывали перед террористами из афганского Талибана"
+    },
     "https://t.me/zerkalo_io/172474": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Беларусь",
@@ -10491,6 +12347,13 @@
       "region": "Беларусь",
       "source": "Zerkalo.io",
       "title": "Прадстаўнік BELPOL Уладзімір Жыгар распавёў, як пазнаёміўся з Аляксандрам Мілінкевічам:"
+    },
+    "https://t.me/zerkalo_io/172492": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Беларусь",
+      "region": "Беларусь",
+      "source": "Zerkalo.io",
+      "title": "Блогер і журналіст Аляксандр Івулін згадвае Аляксандра Мілінкевіча:"
     },
     "https://tech.onliner.by/2026/08/17/tak-li-vse-prosto-shkolnaya-zadachka-perepoloshila-socseti": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -11430,6 +13293,13 @@
       "source": "Белновости",
       "title": "Бегите без оглядки. Путешественница назвала слово, которого следует бояться туристам в Египте"
     },
+    "https://www.belnovosti.by/lyubov-i-semya/pochemu-muzh-perestal-govorit-komplimenty-i-kak-myagko-izmenit-situaciyu-bez": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Беларусь",
+      "region": "Беларусь",
+      "source": "Белновости",
+      "title": "Почему муж перестал говорить комплименты и как мягко изменить ситуацию без упрёков"
+    },
     "https://www.belnovosti.by/lyudi-i-sobytiya/diplom-ne-nuzhen-5-uvlekatelnyh-professiy-gde-ne-trebuetsya-obrazovanie": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Беларусь",
@@ -11457,6 +13327,13 @@
       "region": "Беларусь",
       "source": "Белновости",
       "title": "Как будут ходить автобусы, троллейбусы и трамваи в Минске 22-23 августа 2026 года. Изменения вызваны ремонтом"
+    },
+    "https://www.belnovosti.by/minsk/syurpriz-udalsya-minchanin-zakazal-101-rozu-i-lishilsya-200-rubley": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Беларусь",
+      "region": "Беларусь",
+      "source": "Белновости",
+      "title": ""
     },
     "https://www.belnovosti.by/obshchestvo/belorusam-obyasnili-mozhno-li-snimat-neznakomcev-i-vykladyvat-v-internet": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
@@ -11738,6 +13615,13 @@
       "source": "Газета «Сильные Новости»",
       "title": ""
     },
+    "https://www.gs.by/2026/08/20/na-solnce-zafiksirovali-silneyshuyu-vspyshku-avgusta-m18": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Гомельская область",
+      "region": "Гомельская область",
+      "source": "Газета «Сильные Новости»",
+      "title": ""
+    },
     "https://www.gs.by/2026/08/21/dollar-snova-nizhe-3-rubley-kursy-nacbanka-na-21-avgusta": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
       "locality": "Гомельская область",
@@ -11919,6 +13803,13 @@
       "region": "Гомельская область",
       "source": "Газета «Сильные Новости»",
       "title": "Здоровье 22.08.2026 Что положить на тарелку утром, чтобы не набрать лишних калорий Диетолог назвала 7 продуктов для завтрака, которые помогают контролировать вес после 50 лет Читать далее →"
+    },
+    "https://www.gs.by/2026/08/22/propal-po-doroge-domoy-s-zarabotkov-raskryty-detali-poiskov-belorusa-kotorogo-nashli-zhivym": {
+      "first_seen": "2026-08-22T08:58:51.787276+00:00",
+      "locality": "Гомельская область",
+      "region": "Гомельская область",
+      "source": "Газета «Сильные Новости»",
+      "title": "Новости 22.08.2026 Пропал по дороге домой с заработков: раскрыты детали поисков белоруса, которого нашли живым Поиск 43-летнего Ивана Сергеевича Гладкого успешно завершен. Читать далее →"
     },
     "https://www.gs.by/2026/08/22/v-belarusi-22-avgusta-obyavlen-vysshiy-uroven-opasnosti-iz-za-ekstremalnyh-temperatur-i-shkvalov": {
       "first_seen": "2026-08-22T08:41:09.446418+00:00",
