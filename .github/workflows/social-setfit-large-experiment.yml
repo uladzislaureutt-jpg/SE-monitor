@@ -13,19 +13,18 @@ concurrency:
 jobs:
   train:
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 90
     env:
       HF_HOME: /tmp/huggingface
-      TRANSFORMERS_CACHE: /tmp/huggingface/transformers
       TOKENIZERS_PARALLELISM: "false"
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
       PIP_NO_CACHE_DIR: "1"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -51,9 +50,9 @@ jobs:
           --model-revision 0e60b8d9d2166d80387f86e3b48ec9ced55f4d15
           --seed 20260823
           --batch-size 8
-          --num-iterations 5
+          --num-iterations 3
           --body-epochs 1
-          --max-length 384
+          --max-length 256
 
       - name: Record installed packages
         if: always()
@@ -61,7 +60,7 @@ jobs:
 
       - name: Upload diagnostics only
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: s-monitor-setfit-large-experiment-results
           path: |
