@@ -1,0 +1,72 @@
+{
+  "stage": "compact SetFit pilot 1.0",
+  "model_id": "cointegrated/rubert-tiny2",
+  "seed": 20260822,
+  "production_integration": false,
+  "training": {
+    "batch_size": 16,
+    "num_iterations": 5,
+    "body_epochs": 1,
+    "max_length": 384,
+    "train_rows": 300,
+    "validation_rows": 62,
+    "validation_events": 50
+  },
+  "data_sha256": {
+    "train": "bf3528d5e797d95eea937edbbe5436acfa8ad6bfa310b01b07fd707f496e036f",
+    "validation": "04595b2fbc2cc31b01890adb8d8580c39af3802ad9e3e4500c1032d204afeebb",
+    "test": "27ae6e155a5d6ccce78aaeb8bec3bd986a916f612965578f0c33aa4649d5c644"
+  },
+  "selection": {
+    "source": "SILVER validation events only",
+    "threshold": 0.41109538581988975,
+    "recall_floor_met": true,
+    "metrics": {
+      "rows": 50,
+      "accuracy": 0.76,
+      "balanced_accuracy": 0.76,
+      "keep_precision": 0.6857142857142857,
+      "keep_recall": 0.96,
+      "keep_f1": 0.8,
+      "tn": 14,
+      "fp": 11,
+      "fn": 1,
+      "tp": 24
+    }
+  },
+  "gold_test": {
+    "policy": "evaluated once after model and threshold selection",
+    "row_metrics": {
+      "rows": 72,
+      "accuracy": 0.7638888888888888,
+      "balanced_accuracy": 0.7687258687258687,
+      "keep_precision": 0.6875,
+      "keep_recall": 0.9428571428571428,
+      "keep_f1": 0.7951807228915663,
+      "tn": 22,
+      "fp": 15,
+      "fn": 2,
+      "tp": 33
+    },
+    "event_metrics": {
+      "rows": 54,
+      "accuracy": 0.7037037037037037,
+      "balanced_accuracy": 0.7678855325914149,
+      "keep_precision": 0.5161290322580645,
+      "keep_recall": 0.9411764705882353,
+      "keep_f1": 0.6666666666666666,
+      "tn": 22,
+      "fp": 15,
+      "fn": 1,
+      "tp": 16
+    }
+  },
+  "acceptance": {
+    "keep_recall_at_least_0_90": true,
+    "keep_precision_at_least_0_65": false,
+    "keep_f1_at_least_0_75": false,
+    "balanced_accuracy_at_least_0_75": true,
+    "passed_all": false
+  },
+  "decision": "REJECT_PILOT"
+}

@@ -1,0 +1,19 @@
+S-monitor SetFit large experiment 2.0 — установка и запуск
+
+1. Откройте папку S-monitor-setfit-large-experiment-2.0 из этого архива.
+2. Загрузите ЕЁ СОДЕРЖИМОЕ в корень репозитория, сохраняя структуру папок.
+   Саму внешнюю папку S-monitor-setfit-large-experiment-2.0 не загружайте.
+3. Существующие рабочие файлы social_monitor.py, main.py, config/ и
+   .github/workflows/daily-social-monitor.yml не заменяйте.
+4. Если папка .github не перетаскивается через сайт GitHub, создайте файл
+   .github/workflows/social-setfit-large-experiment.yml вручную и вставьте в
+   него содержимое одноимённого файла из пакета.
+5. Сделайте один commit.
+6. Откройте Actions -> S-monitor SetFit large experiment (manual, isolated) ->
+   Run workflow -> Run workflow.
+7. Не запускайте одновременно компактный и большой SetFit-пилоты.
+8. После завершения скачайте artifact
+   s-monitor-setfit-large-experiment-results и передайте ZIP для анализа.
+
+Секреты не нужны. Рабочий мониторинг и отправка email не изменяются.
+Максимальный лимит одного ручного job: 75 минут. Расписания у эксперимента нет.

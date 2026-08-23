@@ -1,0 +1,43 @@
+{
+  "package": "S-monitor-setfit-large-experiment-2.0",
+  "stage": "isolated larger-encoder SetFit experiment",
+  "created_on": "2026-08-23",
+  "production_integration": false,
+  "manual_only": true,
+  "scheduled": false,
+  "model": {
+    "id": "intfloat/multilingual-e5-small",
+    "revision": "0e60b8d9d2166d80387f86e3b48ec9ced55f4d15",
+    "approximate_weight_file_mb": 471,
+    "weights_stored_in_repository": false,
+    "weights_uploaded_as_artifact": false
+  },
+  "evaluation_policy": {
+    "legacy_gold_is_blind": false,
+    "legacy_gold_use": "like-for-like exploratory comparison only",
+    "production_gate": "new blind GOLD event set required",
+    "possible_decision": "AWAIT_NEW_BLIND_GOLD"
+  },
+  "immutable_components": [
+    "social_monitor.py",
+    "main.py",
+    "config/",
+    "data/state.json",
+    "data/discovery_cache.json",
+    ".github/workflows/daily-social-monitor.yml",
+    "sources and filters",
+    "secrets and email delivery"
+  ],
+  "dataset": {
+    "train_sha256": "bf3528d5e797d95eea937edbbe5436acfa8ad6bfa310b01b07fd707f496e036f",
+    "validation_sha256": "04595b2fbc2cc31b01890adb8d8580c39af3802ad9e3e4500c1032d204afeebb",
+    "legacy_test_sha256": "27ae6e155a5d6ccce78aaeb8bec3bd986a916f612965578f0c33aa4649d5c644",
+    "event_leakage": 0
+  },
+  "new_or_replaced_paths": [
+    ".github/workflows/social-setfit-large-experiment.yml",
+    "ml/setfit_large_experiment/",
+    "control_reference/",
+    "data/ml/event_safe_v1/"
+  ]
+}
