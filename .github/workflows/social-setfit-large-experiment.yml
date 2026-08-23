@@ -1,0 +1,72 @@
+name: S-monitor SetFit large experiment (manual, isolated)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s-monitor-setfit-large-experiment
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      HF_HOME: /tmp/huggingface
+      TRANSFORMERS_CACHE: /tmp/huggingface/transformers
+      TOKENIZERS_PARALLELISM: "false"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_CACHE_DIR: "1"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Initialize workflow diagnostics
+        run: mkdir -p setfit-large-results && python --version > setfit-large-results/environment.txt
+
+      - name: Install CPU PyTorch
+        run: python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install experiment dependencies
+        run: python -m pip install -r ml/setfit_large_experiment/requirements.txt
+
+      - name: Validate frozen splits
+        run: python ml/setfit_large_experiment/validate_splits.py --data data/ml/event_safe_v1
+
+      - name: Train and evaluate larger encoder
+        run: >-
+          python ml/setfit_large_experiment/train_setfit_large.py
+          --data data/ml/event_safe_v1
+          --output setfit-large-results
+          --compact-reference control_reference/compact_gold_test_event_predictions.csv
+          --model-id intfloat/multilingual-e5-small
+          --model-revision 0e60b8d9d2166d80387f86e3b48ec9ced55f4d15
+          --seed 20260823
+          --batch-size 8
+          --num-iterations 5
+          --body-epochs 1
+          --max-length 384
+
+      - name: Record installed packages
+        if: always()
+        run: python -m pip freeze > setfit-large-results/pip-freeze.txt || true
+
+      - name: Upload diagnostics only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s-monitor-setfit-large-experiment-results
+          path: |
+            setfit-large-results/*.json
+            setfit-large-results/*.csv
+            setfit-large-results/*.txt
+          if-no-files-found: error
+          retention-days: 14
