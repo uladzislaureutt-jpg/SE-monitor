@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-21.social.53-core3.6-editorial-intent"
+MONITOR_BUILD = "2026-08-24.social.55-result-integrity-1.4"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -5161,6 +5161,8 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:с\s+работник|на\s+встрече|в\s+ходе\s+встречи)",
         r"(?:состоял[а-яёіў]*\s+встреч|провел[а-яёіў]*\s+встреч).*"
         r"(?:обсудил|обсуждал|вопрос[а-яёіў]*)",
+        r"(?:направил|накірава)[а-яёіў]*.*(?:обсудит|абмяркоўва)[а-яёіў]*.*"
+        r"(?:сотрудничеств|супрац)[а-яёіў]*",
     )),
     "preventive_service_expansion": tuple(re.compile(value) for value in (
         r"смогут\s+проверит[а-яёіў]*\s+риск[а-яёіў]*.*(?:диспансеризац|скрининг)",
@@ -5204,6 +5206,36 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"точн[а-яёіў]*\s+дат[а-яёіў]*\s+открыти[а-яёіў]*",
         r"рассказал[а-яёіў]*.*как.*расселя[а-яёіў]*\s+студент",
         r"студент[а-яёіў]*\s+ждут\s+в\s+общежити",
+    )),
+    "routine_transport_or_construction": tuple(re.compile(value) for value in (
+        r"(?:на\s+выходн[а-яёіў]*|до\s+\d{1,2}[:.]\d{2}).*"
+        r"(?:закрыл|перекрыл)[а-яёіў]*\s+движени",
+        r"(?:закрыл|перекрыл)[а-яёіў]*\s+(?:движени|развязк|дорог)[а-яёіў]*.*"
+        r"(?:на\s+ремонт|из-за\s+ремонт)",
+        r"(?:нов[а-яёіў]*\s+асфальт|светофор[а-яёіў]*).*"
+        r"(?:закрыл|ремонт)[а-яёіў]*",
+        r"(?:строят|строится|возводят|вядзецца\s+будаўніцтв)[а-яёіў]*.*"
+        r"(?:путь|дорог|магистрал|объект)[а-яёіў]*.*(?:соединит|свяжет|злучыць)",
+    )),
+    "positive_feature_or_profile": tuple(re.compile(value) for value in (
+        r"появил[а-яёіў]*.*(?:для\s+обмена|буккроссинг|книг[а-яёіў]*)",
+        r"(?:приносит|прын[оё]с)[а-яёіў]*\s+на\s+урок[а-яёіў]*.*"
+        r"(?:экспонат|животн|зме[яі])",
+        r"(?:путь|шлях)\s+к\s+(?:собственн[а-яёіў]*\s+)?бренд[а-яёіў]*",
+        r"(?:купил|приобрел|набы)[а-яёіў]*.*(?:хутор|усадьб)[а-яёіў]*.*"
+        r"(?:вернул|восстановил|аднав)[а-яёіў]*.*(?:жизн|да\s+жыцц)",
+        r"(?:пробн[а-яёіў]*\s+урожай|завезл[а-яёіў]*.*(?:капуст|брокколи))",
+    )),
+    "event_or_figurative_collision": tuple(re.compile(value) for value in (
+        r"очеред[а-яёіў]*.*(?:мероприяти|вечер[а-яёіў]*\s+в\s+посольств|каденци)",
+        r"на\s+очереди.*(?:подключени|размещени|оформлени)",
+        r"(?:в\s+лихи[а-яёіў]*\s+девяност|в\s+90[-–—]?[а-яёіў]*).*дефицит",
+        r"реб[её]нок\s+жалует[а-яёіў]*.*не\s+понимает.*(?:урок|школ)",
+    )),
+    "routine_enforcement_incident": tuple(re.compile(value) for value in (
+        r"водител[а-яёіў]*.*(?:поплатил|лишил)[а-яёіў]*.*(?:прав|рубл|штраф)",
+        r"(?:привлечен|привлечены|прыцягнут)[а-яёіў]*\s+к\s+ответственност[а-яёіў]*.*"
+        r"(?:маневр|пдд|аварийн[а-яёіў]*\s+обстановк)",
     )),
     "single_incident": tuple(re.compile(value) for value in (
         r"получил[а-яёіў]*\s+травм[а-яёіў]*.*(?:фестивал|шоу|трюк)",
@@ -5280,6 +5312,8 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"^у\s+банк[а-яёіў]*\s+.+(?:дыр[ауы]|баланс|невыплат|дефицит|убыт)",
         r"^миров[а-яёіў]*\s+(?:здравоохран|рынок|эконом|отрасл)",
         r"(?:глобальн[а-яёіў]*|во\s+всем\s+мире).*(?:нехват|дефицит|кризис)",
+        r"^мир\s+.*(?:на\s+порог[а-яёіў]*|ждет|ожидает)[а-яёіў]*.*"
+        r"(?:кризис|дефицит|нехват)",
     )),
     "multi_story_digest": tuple(re.compile(value) for value in (
         r"^(?:что\s+)?сегодня\s+по\s+новостям",
@@ -5344,6 +5378,19 @@ BOUND_PUBLIC_ISSUE_PATTERNS: dict[
             r"обсужден[а-яёіў]*\s+закончил[а-яёіў]*.*решени[а-яёіў]*\s+не\s+принят",
             r"ответ[а-яёіў]*\s+(?:получил[а-яёіў]*\s+)?расплывчат",
             r"массов[а-яёіў]*\s+критик[а-яёіў]*\s+жител",
+        )),
+    ),
+    "financial_service_access": (
+        tuple(re.compile(value) for value in (
+            r"(?:payoneer|банковск[а-яёіў]*\s+счет|банкаўск[а-яёіў]*\s+рахунак|"
+            r"вывод[а-яёіў]*\s+средств|вывад[а-яёіў]*\s+сродк)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:закрыл|закрыва|не\s+поддержива|не\s+падтрымліва)[а-яёіў]*\s+"
+            r"(?:счет|рахунак|вывод|вывад)",
+            r"ограничени[а-яёіў]*\s+на\s+(?:вывод|операци|счет)",
+            r"(?:белорус|беларус)[а-яёіў]*\s+(?:пользовател|граждан|клиент)[а-яёіў]*.*"
+            r"(?:ограничени|не\s+поддержива|закрыл)",
         )),
     ),
 }
@@ -5526,6 +5573,22 @@ def result_integrity_genre_rejection(
         return "Result Integrity: справочный или рекомендательный жанр без общественной проблемы"
     if matches("routine_announcement") and not direct_public_evidence:
         return "Result Integrity: нейтральное административное сообщение"
+    if matches("routine_transport_or_construction", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence or special_public_interest
+    ):
+        return "Result Integrity: плановое транспортное или строительное сообщение"
+    if matches("positive_feature_or_profile", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence or critical_public_interest
+    ):
+        return "Result Integrity: позитивный репортаж или портрет без общественной проблемы"
+    if matches("event_or_figurative_collision", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence or special_public_interest
+    ):
+        return "Evidence Binding: проблемное слово относится к событию, идиоме или примеру"
+    if matches("routine_enforcement_incident", include_lead=True) and not (
+        resident_explicit or persistence or special_public_interest
+    ):
+        return "Result Integrity: обычное сообщение о дорожном правонарушении"
     if matches("single_incident") and not incident_systemic_evidence:
         return "Result Integrity: единичное происшествие без системной социальной проблемы"
     if matches("private_lifestyle") and not lead_findings:
@@ -5598,6 +5661,7 @@ def evaluate_relevance(
         or domestic_business_loss_signal
         or politics_service_exception
         or "consultation_accountability" in bounded_issue_profiles
+        or "financial_service_access" in bounded_issue_profiles
     ):
         return RelevanceDecision(False, reason=f"политическая тема: {politics_hits[0]}")
 
@@ -5873,11 +5937,13 @@ def evaluate_relevance(
         "consumer_redress": "Качество товаров и услуг",
         "municipal_fixture_failure": "Дороги и благоустройство",
         "consultation_accountability": regulatory_category,
+        "financial_service_access": regulatory_category,
     }
     bound_profile_labels = {
         "consumer_redress": "подтверждённый спор о защите прав потребителя",
         "municipal_fixture_failure": "неисправный коммунальный объект",
         "consultation_accountability": "неопубликованные итоги общественного обсуждения",
+        "financial_service_access": "ограничение доступа белорусов к финансовой услуге",
     }
     for profile in sorted(bounded_issue_profiles):
         category = bound_profile_categories.get(profile)
@@ -7820,6 +7886,31 @@ _EVENT_SEMANTIC_CONCEPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"обмел[а-яёіў]*", r"маловод[а-яёіў]*", r"узровен[а-яёіў]*\s+вод",
         r"уровен[а-яёіў]*\s+вод[а-яёіў]*.*(?:низк|упал|снизил)",
     )),
+    "housing": tuple(re.compile(value) for value in (
+        r"дом[а-яёіў]*", r"жиль[яёа-яіў]*", r"жылл[яёа-яіў]*",
+    )),
+    "construction_defect": tuple(re.compile(value) for value in (
+        r"трещин[а-яёіў]*", r"расколін[а-яёіў]*", r"дефект[а-яёіў]*",
+        r"не\s+хватает\s+(?:кле|раствор)", r"плох[а-яёіў]*\s+качеств[а-яёіў]*",
+        r"(?:дом|жиль|жылл)[а-яёіў]*.*качеств[а-яёіў]*",
+        r"качеств[а-яёіў]*.*(?:дом|жиль|жылл)[а-яёіў]*",
+    )),
+    "complaint": tuple(re.compile(value) for value in (
+        r"жал[оу][а-яёіў]*", r"пожаловал[а-яёіў]*", r"скарг[а-яёіў]*",
+        r"претензи[а-яёіў]*", r"прэтэнзі[а-яёіў]*",
+    )),
+    "financial_service": tuple(re.compile(value) for value in (
+        r"payoneer", r"банковск[а-яёіў]*\s+счет[а-яёіў]*",
+        r"вывод[а-яёіў]*\s+средств", r"вывад[а-яёіў]*\s+сродк",
+    )),
+    "access_restriction": tuple(re.compile(value) for value in (
+        r"финансов[а-яёіў]*\s+ограничени[а-яёіў]*",
+        r"не\s+поддержива[а-яёіў]*", r"закрыва[а-яёіў]*\s+счет[а-яёіў]*",
+        r"ограничени[а-яёіў]*\s+на\s+вывод[а-яёіў]*",
+    )),
+    "belarus_affected": tuple(re.compile(value) for value in (
+        r"белорус[а-яёіў]*", r"беларус[а-яёіў]*",
+    )),
 }
 
 
@@ -7836,6 +7927,10 @@ def _event_semantic_profile(result: ArticleResult) -> tuple[set[str], set[str]]:
         families.add("retail_product_safety")
     if {"natural_water", "low_water"} <= concepts:
         families.add("natural_water_level")
+    if {"housing", "construction_defect", "complaint"} <= concepts:
+        families.add("housing_construction_defect")
+    if {"financial_service", "access_restriction", "belarus_affected"} <= concepts:
+        families.add("financial_service_access")
     return families, concepts
 
 
@@ -7845,8 +7940,6 @@ def _strong_semantic_event_match(
     shared_numbers: set[str],
 ) -> bool:
     """Join multilingual rewrites only when family, facts and scope agree."""
-    if not shared_numbers:
-        return False
     if (
         left.event_region
         and right.event_region
@@ -7856,10 +7949,21 @@ def _strong_semantic_event_match(
         return False
     left_families, left_concepts = _event_semantic_profile(left)
     right_families, right_concepts = _event_semantic_profile(right)
-    return bool(
-        left_families & right_families
-        and len(left_concepts & right_concepts) >= 3
-    )
+    shared_families = left_families & right_families
+    if not shared_families or len(left_concepts & right_concepts) < 3:
+        return False
+    if shared_numbers:
+        return True
+    if not shared_families & {
+        "housing_construction_defect", "financial_service_access",
+    }:
+        return False
+    # Rewrites about the same disputed building often quote different sums
+    # and dates. A large shared vocabulary (including person/place anchors)
+    # is safer here than requiring an identical number.
+    left_tokens = set(_event_tokens(f"{left.title}. {left.excerpt[:1200]}"))
+    right_tokens = set(_event_tokens(f"{right.title}. {right.excerpt[:1200]}"))
+    return len(left_tokens & right_tokens) >= 10
 
 
 def _event_marker_profile(result: ArticleResult) -> tuple[bool, bool]:
@@ -7883,9 +7987,8 @@ def _same_event_scope(left: ArticleResult, right: ArticleResult) -> bool:
         return False
     if left.event_locality or right.event_locality:
         # A source's configured locality describes its newsroom, not
-        # necessarily the event.  When either article has resolved event
-        # geography, an unresolved counterpart must stay generic instead of
-        # being falsely tied to Brest/Grodno/etc. by the source profile.
+        # necessarily the event. When either article has resolved event
+        # geography, an unresolved counterpart stays generic.
         left_locality = normalize_space(left.event_locality).lower()
         right_locality = normalize_space(right.event_locality).lower()
     else:
@@ -7916,7 +8019,12 @@ def _same_event_scope(left: ArticleResult, right: ArticleResult) -> bool:
 
 
 def _looks_like_same_event(left: ArticleResult, right: ArticleResult) -> bool:
-    if not _same_event_scope(left, right):
+    left_numbers = _event_numeric_facts(left)
+    right_numbers = _event_numeric_facts(right)
+    strong_semantic_match = _strong_semantic_event_match(
+        left, right, left_numbers & right_numbers
+    )
+    if not _same_event_scope(left, right) and not strong_semantic_match:
         return False
     left_development, left_analysis = _event_marker_profile(left)
     right_development, right_analysis = _event_marker_profile(right)
@@ -7935,9 +8043,6 @@ def _looks_like_same_event(left: ArticleResult, right: ArticleResult) -> bool:
     if left_addresses and right_addresses and left_addresses.isdisjoint(right_addresses):
         return False
 
-    left_numbers = _event_numeric_facts(left)
-    right_numbers = _event_numeric_facts(right)
-
     if (
         left.event_signature
         and right.event_signature
@@ -7945,7 +8050,7 @@ def _looks_like_same_event(left: ArticleResult, right: ArticleResult) -> bool:
     ):
         return False
 
-    if _strong_semantic_event_match(left, right, left_numbers & right_numbers):
+    if strong_semantic_match:
         return True
 
     left_title = set(_event_tokens(left.title))
@@ -8023,6 +8128,8 @@ def _looks_like_same_event(left: ArticleResult, right: ArticleResult) -> bool:
 
     if same_category:
         return bool(
+            (shared_four_count >= 8 and containment >= 0.55)
+            or
             (shared_four_count >= 2 and title_jaccard >= 0.18)
             or (
                 shared_four_count >= 1
