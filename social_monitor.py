@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-24.social.55-result-integrity-1.4"
+MONITOR_BUILD = "2026-08-25.social.56-source-resilience-1.1-result-event-integrity-1.5"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -108,6 +108,23 @@ STRATEGIC_SOURCE_PROFILES: dict[str, dict[str, Any]] = {
         "protected": False,
         "transport_order": ("requests", "amp"),
         "amp_suffix": "/amp/",
+    },
+    "flagshtok.info": {
+        "protected": False,
+        # Флагшток отдаёт большие sitemap в порядке «новые сначала». Прямые
+        # актуальные карты стабильнее автоматического перебора общих адресов
+        # и не требуют увеличивать лимит источника.
+        "sitemaps": (
+            "https://flagshtok.info/sitemap-news.xml",
+            "https://flagshtok.info/sitemap-part-2026.xml",
+        ),
+        "exact_discovery": True,
+        "skip_homepage": False,
+        "article_path_patterns": (
+            r"^/(?:ru|by)/(?:naviny|regieny)/[^/]+\.html$",
+            r"^/by/telegram/post-[a-z0-9-]+\.html$",
+        ),
+        "transport_order": ("requests",),
     },
     "zerkalo.io": {
         "protected": True,
@@ -974,6 +991,15 @@ EVENT_LOCALITY_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 
 
 EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    ("food_product", "пищевая продукция", (
+        r"пирож", r"десерт", r"кондитер", r"пищев.*продукц",
+        r"харчов.*прадукц",
+    )),
+    ("communal_billing", "коммунальные начисления", (
+        r"общежит[а-яёіў]*.*(?:вод|плат|жиров|счет|сч[её]т)",
+        r"(?:утеч|протеч)[а-яёіў]*.*вод[а-яёіў]*",
+        r"коммунальн[а-яёіў]*.*(?:начисл|списал|счет|сч[её]т|плат)",
+    )),
     ("parking", "парковка/машино-места", (r"парков", r"паркінг", r"машино-мест", r"машынамесц")),
     ("road", "дорога/улица", (
         r"(?<![а-яёіўa-z0-9])дорог(?:а|и|у|е|ой|ою|ам|ами|ах)?(?![а-яёіўa-z0-9])",
@@ -995,12 +1021,38 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     ("telecom", "связь/интернет", (r"интернет", r"інтэрнэт", r"мобильн.*связ", r"мабільн.*сувяз", r"телефонн.*связ", r"тэлефонн.*сувяз", r"iptv", r"телевид", r"тэлебач")),
     ("labor", "труд/оплата труда", (r"зарплат", r"заработн.*плат", r"работник", r"працаўнік", r"работодател", r"наймальнік", r"услови.*труд", r"ўмов.*прац")),
     ("education", "школа/детский сад", (r"школ", r"школ", r"детск.*сад", r"дзіцяч.*сад", r"садик")),
-    ("animals", "содержание животных", (r"животн", r"жыв[её]л", r"собак", r"сабак", r"кошк", r"катоў", r"приют", r"прытул", r"пункт.*содерж")),
+    ("animals", "содержание животных", (
+        r"животн", r"жыв[её]л", r"собак", r"сабак", r"кошк", r"катоў",
+        r"приют", r"прытул", r"пункт.*содерж",
+        r"рыб[а-яёіў]*.*(?:ламп|аквари|вод)",
+    )),
     ("memorial", "кладбище/мемориал", (r"кладбищ", r"могілк", r"мемориал", r"мемарыял", r"памятник", r"помнік")),
 )
 
 
 EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    ("contamination", "микробиологическое загрязнение", (
+        r"кишечн[а-яёіў]*\s+палоч", r"стафилокок", r"s\.?\s*aureus",
+        r"колиформ", r"микробиологическ[а-яёіў]*\s+наруш",
+    )),
+    ("billing_overcharge", "ошибочные начисления/возврат", (
+        r"платил[а-яёіў]*.*за.*(?:утеч|протеч)",
+        r"списал[а-яёіў]*.*на\s+жильц", r"лишн[а-яёіў]*\s+сумм[а-яёіў]*.*жиров",
+        r"вернул[а-яёіў]*.*(?:рубл|жильц|проживающ)",
+    )),
+    ("bullying", "травля/насилие в образовательной среде", (
+        r"буллинг", r"травл[а-яёіў]*", r"избивал[а-яёіў]*\s+толп",
+        r"оскорбля[а-яёіў]*.*сверстник",
+    )),
+    ("hiring_shortage", "невозможность найма работников", (
+        r"не\s+(?:может|могут).*найти.*(?:продав|работник|сотрудник)",
+        r"ищем.*(?:человек|работник|продав).*никто\s+не\s+хочет",
+        r"не\s+может\s+найти\s+продавц",
+    )),
+    ("animal_welfare", "ненадлежащие условия содержания животных", (
+        r"неправильн[а-яёіў]*\s+услови[а-яёіў]*", r"перегрев[а-яёіў]*\s+от\s+ламп",
+        r"нулев[а-яёіў]*\s+фильтрац", r"не\s+хватает\s+вод[а-яёіў]*",
+    )),
     ("outage", "отключение/перебои", (r"отключ", r"адключ", r"перебо", r"перабо", r"пропал[аио]?\s+(?:вода|свет|интернет|связ)", r"нет\s+(?:воды|света|интернета|связи)", r"няма\s+(?:вады|святла|інтэрнэту|сувязі)")),
     ("nonpayment", "невыплата/списание", (r"невыплат", r"не\s+выплат", r"не\s+заплат", r"не\s+выплац", r"списал", r"списан", r"навяз.*услуг", r"платн.*без\s+соглас")),
     ("queue_delay", "очередь/задержка", (
@@ -1198,11 +1250,19 @@ def infer_event_fingerprint(
     object_key, object_label = _best_pattern_label(
         parts,
         EVENT_OBJECT_PATTERNS,
-        {"station_storage": 2, "parking": 1, "water_supply": 1, "lighting": 1},
+        {
+            "station_storage": 2, "communal_billing": 2,
+            "food_product": 2, "parking": 1, "water_supply": 1,
+            "lighting": 1,
+        },
     )
     problem_key, problem_label = _best_pattern_label(
         _event_problem_parts(parts),
         EVENT_PROBLEM_PATTERNS,
+        {
+            "contamination": 3, "billing_overcharge": 3,
+            "bullying": 3, "animal_welfare": 3, "hiring_shortage": 2,
+        },
     )
     signature = ""
     event_scope = locality.casefold() if locality else (
@@ -2371,7 +2431,12 @@ def parse_sitemap_document(xml_text: str | bytes) -> tuple[str, list[dict[str, s
         if local_name(child.tag) not in {"url", "sitemap"}:
             continue
         record: dict[str, str] = {}
-        for item in child:
+        # Google News fields live one level deeper inside <news:news>.
+        # Iterating recursively preserves the direct loc/lastmod fields and
+        # also captures publication_date/title for admission and cutoff logic.
+        for item in child.iter():
+            if item is child:
+                continue
             name = local_name(item.tag)
             if name in {"loc", "lastmod", "publication_date", "title"} and item.text:
                 record[name] = normalize_space(repair_mojibake(item.text))
@@ -2411,8 +2476,40 @@ def collect_from_sitemap(
                 break
         return merged[:limit]
 
+    # Sitemap order is not standardized: some publishers append new entries,
+    # while others (including flagshtok.info) put them first. Inspect a bounded
+    # head and tail, then sort dated entries explicitly newest-first.
+    scan_size = max(limit * 8, 1000)
+    if len(records) > scan_size:
+        scan_records = [*records[:scan_size], *records[-scan_size:]]
+    else:
+        scan_records = list(records)
+    unique_scan_records: list[dict[str, str]] = []
+    seen_scan_urls: set[str] = set()
+    for record in scan_records:
+        record_url = canonicalize_url(record.get("loc", ""))
+        if not record_url or record_url in seen_scan_urls:
+            continue
+        seen_scan_urls.add(record_url)
+        unique_scan_records.append(record)
+    dated_records: list[tuple[dt.datetime, dict[str, str]]] = []
+    undated_records: list[dict[str, str]] = []
+    for record in unique_scan_records:
+        published = parse_datetime(
+            record.get("lastmod") or record.get("publication_date")
+        )
+        if published:
+            dated_records.append((published, record))
+        else:
+            undated_records.append(record)
+    ordered_records = [
+        record for _published, record in sorted(
+            dated_records, key=lambda item: item[0], reverse=True
+        )
+    ] + undated_records
+
     candidates: list[Candidate] = []
-    for record in reversed(records[-max(limit * 8, 1000):]):
+    for record in ordered_records:
         url = canonicalize_url(record.get("loc", ""))
         if not url or not is_source_article_url(url, source):
             continue
@@ -5206,6 +5303,10 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"точн[а-яёіў]*\s+дат[а-яёіў]*\s+открыти[а-яёіў]*",
         r"рассказал[а-яёіў]*.*как.*расселя[а-яёіў]*\s+студент",
         r"студент[а-яёіў]*\s+ждут\s+в\s+общежити",
+        r"платн[а-яёіў]*\s+парков[а-яёіў]*.*"
+        r"(?:расшир|увелич|появ|планиру|довест).*машино-мест",
+        r"(?:увелич|довест)[а-яёіў]*.*(?:количеств|числ)[а-яёіў]*.*"
+        r"машино-мест",
     )),
     "routine_transport_or_construction": tuple(re.compile(value) for value in (
         r"(?:на\s+выходн[а-яёіў]*|до\s+\d{1,2}[:.]\d{2}).*"
@@ -5234,6 +5335,10 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     )),
     "routine_enforcement_incident": tuple(re.compile(value) for value in (
         r"водител[а-яёіў]*.*(?:поплатил|лишил)[а-яёіў]*.*(?:прав|рубл|штраф)",
+        r"водител[а-яёіў]*.*(?:остал[а-яёіў]*\s+без|лиш[её]н[а-яёіў]*)\s+прав.*"
+        r"(?:обгон|маневр|пдд)",
+        r"(?:опасн[а-яёіў]*\s+)?(?:обгон|маневр)[а-яёіў]*.*"
+        r"(?:лиш[её]н[а-яёіў]*\s+прав|штраф)",
         r"(?:привлечен|привлечены|прыцягнут)[а-яёіў]*\s+к\s+ответственност[а-яёіў]*.*"
         r"(?:маневр|пдд|аварийн[а-яёіў]*\s+обстановк)",
     )),
@@ -5249,6 +5354,11 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"терапевт.*мужчин[а-яёіў]*",
         r"у\s+меня\s+инфаркт.*закат",
         r"чем\s+(?:его|ее|её)\s+удивил[а-яёіў]*\s+наш[а-яёіў]*\s+стран",
+        r"(?:какие|где|когда)\s+гриб[а-яёіў]*.*(?:собира|растут|найти)",
+        r"(?:тих[а-яёіў]*\s+охот|грибник[а-яёіў]*).*"
+        r"(?:совет|ориентир|урожай|сбор)",
+        r"очеред[а-яёіў]*\s+на\s+(?:\d+|один|два|две|три|четыре)\s+час[а-яёіў]*.*"
+        r"(?:яблок|урожай).*переработ",
     )),
     "financial_ticker": tuple(re.compile(value) for value in (
         r"курсы?\s+валют",
@@ -5259,6 +5369,8 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"на\s+(?:обмелевш[а-яёіў]*\s+)?эльбе",
         r"в\s+горах\s+кыргызстан[а-яёіў]*",
         r"в\s+германи[а-яёіў]*.*работающ[а-яёіў]*\s+беларус",
+        r"(?:после|за)\s+границ[а-яёіў]*\s+с\s+(?:рф|росси[а-яёіў]*)",
+        r"дефицит\s+топлив[а-яёіў]*.*(?:в\s+рф|в\s+росси[а-яёіў]*)",
     )),
     "promotional_or_corporate": tuple(re.compile(value) for value in (
         r"радиация\s+под\s+контролем",
@@ -5585,9 +5697,7 @@ def result_integrity_genre_rejection(
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
         return "Evidence Binding: проблемное слово относится к событию, идиоме или примеру"
-    if matches("routine_enforcement_incident", include_lead=True) and not (
-        resident_explicit or persistence or special_public_interest
-    ):
+    if matches("routine_enforcement_incident", include_lead=True):
         return "Result Integrity: обычное сообщение о дорожном правонарушении"
     if matches("single_incident") and not incident_systemic_evidence:
         return "Result Integrity: единичное происшествие без системной социальной проблемы"
@@ -5933,6 +6043,37 @@ def evaluate_relevance(
             if find_terms(sentence, product_contamination_hits):
                 special_evidence_indices.append(index)
 
+    # Жалоба на ненадлежащие условия содержания животных может не содержать
+    # традиционных словарных пар социальной темы и проблемы. Признаём узкую
+    # подтверждённую связку самостоятельным общественным сигналом до раннего
+    # контроля целостности результата.
+    animal_welfare_category = "Защита животных и условия содержания"
+    animal_welfare_context = normalized_search_text(preliminary_full_context)
+    animal_welfare_signal = bool(
+        re.search(
+            r"(?:жив[а-яёіў]*\s+рыб|животн|приют|пункт[а-яёіў]*\s+содерж).*"
+            r"(?:неправильн[а-яёіў]*\s+услов|перегрев|нулев[а-яёіў]*\s+фильтрац|"
+            r"не\s+хватает\s+вод|погиба)",
+            animal_welfare_context,
+        )
+    )
+    if animal_welfare_signal and animal_welfare_category in category_weights:
+        category_weights[animal_welfare_category] += 22
+        matched_terms.append("ненадлежащие условия содержания животных")
+
+    education_category = "Образование и дети"
+    bullying_signal = bool(
+        re.search(r"(?:школ|гимназ|ученик|школьник)", animal_welfare_context)
+        and re.search(
+            r"(?:буллинг|травл|избивал|избили|бил[аи]?\s+толп)",
+            animal_welfare_context,
+        )
+        and re.search(r"(?:жалоб|пожаловал|разбирательств|провер)", animal_welfare_context)
+    )
+    if bullying_signal and education_category in category_weights:
+        category_weights[education_category] += 22
+        matched_terms.append("буллинг или насилие в учреждении образования")
+
     bound_profile_categories = {
         "consumer_redress": "Качество товаров и услуг",
         "municipal_fixture_failure": "Дороги и благоустройство",
@@ -5965,6 +6106,8 @@ def evaluate_relevance(
         or hotel_service_signal
         or domestic_business_loss_signal
         or product_contamination_signal
+        or animal_welfare_signal
+        or bullying_signal
         or bounded_issue_profiles
     )
 
@@ -6994,6 +7137,28 @@ def evaluate_relevance(
                 0, category_weights[price_category] - 3
             )
 
+    # Ошибочные начисления жильцам за утечку в общежитии — коммунальная
+    # проблема, даже если в тексте упоминаются виновные работники КУП.
+    communal_overcharge_text = normalized_search_text(full_context)
+    communal_overcharge_signal = bool(
+        re.search(r"(?:общежит|жильц|жировк)", communal_overcharge_text)
+        and re.search(r"(?:утеч|протеч)", communal_overcharge_text)
+        and re.search(
+            r"(?:платил|списал|начисл|вернул|лишн[а-яёіў]*\s+сумм)",
+            communal_overcharge_text,
+        )
+    )
+    if housing_category in category_weights and communal_overcharge_signal:
+        category_weights[housing_category] += 22
+        if work_category in category_weights:
+            category_weights[work_category] = max(
+                0, category_weights[work_category] - 12
+            )
+        if price_category in category_weights:
+            category_weights[price_category] = max(
+                0, category_weights[price_category] - 5
+            )
+
     # Спор о доступе коммунальников в квартиру при капремонте относится
     # к ЖКХ, даже если в тексте часто встречается слово «работники».
     jkh_access_dispute_hits = find_terms(
@@ -7254,6 +7419,15 @@ def evaluate_relevance(
         if land_water_category in category_weights:
             category_weights[land_water_category] = max(
                 0, category_weights[land_water_category] - 4
+            )
+
+    # Публичные жалобы на ненадлежащие условия содержания животных —
+    # самостоятельная социальная тема. Слова «вода» и «фильтрация» в таком
+    # материале не должны ошибочно превращать его в сюжет о ЖКХ.
+    if animal_welfare_category in category_weights and animal_welfare_signal:
+        if housing_category in category_weights:
+            category_weights[housing_category] = max(
+                0, category_weights[housing_category] - 10
             )
 
     category_match_counts: dict[str, int] = {name: 0 for name in categories}
@@ -7871,7 +8045,7 @@ _EVENT_SEMANTIC_CONCEPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "unsafe": tuple(re.compile(value) for value in (
         r"опасн[а-яёіў]*", r"небезопасн[а-яёіў]*", r"небяспечн[а-яёіў]*",
         r"просроч[а-яёіў]*", r"пратэрмін[а-яёіў]*",
-        r"неs+соответств[а-яёіў]*", r"неs+адпавяда[а-яёіў]*",
+        r"не\s+соответств[а-яёіў]*", r"не\s+адпавяда[а-яёіў]*",
         r"нарушени[а-яёіў]*\s+качеств[а-яёіў]*",
     )),
     "enforcement": tuple(re.compile(value) for value in (
@@ -7911,6 +8085,40 @@ _EVENT_SEMANTIC_CONCEPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "belarus_affected": tuple(re.compile(value) for value in (
         r"белорус[а-яёіў]*", r"беларус[а-яёіў]*",
     )),
+    "food_contamination": tuple(re.compile(value) for value in (
+        r"кишечн[а-яёіў]*\s+палоч", r"стафилокок", r"s\.?\s*aureus",
+        r"колиформ", r"микробиологическ[а-яёіў]*\s+наруш",
+    )),
+    "confectionery": tuple(re.compile(value) for value in (
+        r"пирожн[а-яёіў]*", r"десерт[а-яёіў]*", r"кондитерск[а-яёіў]*",
+        r"улитк[а-яёіў]*", r"кокоск[а-яёіў]*",
+    )),
+    "pinsk_food_anchor": tuple(re.compile(value) for value in (
+        r"пинск[а-яёіў]*", r"пінск[а-яёіў]*", r"пинск[а-яёіў]*\s+кооппром",
+    )),
+    "communal_housing": tuple(re.compile(value) for value in (
+        r"общежити[а-яёіў]*", r"коммунальн[а-яёіў]*", r"ку[пп]",
+        r"жировк[а-яёіў]*", r"жильц[а-яёіў]*",
+    )),
+    "water_leak": tuple(re.compile(value) for value in (
+        r"утечк[а-яёіў]*\s+вод", r"протечк[а-яёіў]*", r"текл[а-яёіў]*\s+вод",
+        r"неисправн[а-яёіў]*\s+(?:кран|арматур)",
+    )),
+    "billing_redress": tuple(re.compile(value) for value in (
+        r"платил[а-яёіў]*.*за.*(?:утеч|протеч)", r"списал[а-яёіў]*.*жильц",
+        r"лишн[а-яёіў]*\s+сумм[а-яёіў]*.*жиров", r"вернул[а-яёіў]*.*рубл",
+    )),
+    "store_employment": tuple(re.compile(value) for value in (
+        r"магазин[а-яёіў]*", r"продавц[а-яёіў]*", r"работник[а-яёіў]*",
+        r"нанимател[а-яёіў]*",
+    )),
+    "hiring_failure": tuple(re.compile(value) for value in (
+        r"не\s+может\s+найти", r"год\s+ищем", r"никто\s+не\s+хочет\s+идти",
+        r"не\s+может\s+найти\s+продавц",
+    )),
+    "salary_discussion": tuple(re.compile(value) for value in (
+        r"зарплат[а-яёіў]*", r"1500\s+рубл", r"3000\+?",
+    )),
 }
 
 
@@ -7931,6 +8139,14 @@ def _event_semantic_profile(result: ArticleResult) -> tuple[set[str], set[str]]:
         families.add("housing_construction_defect")
     if {"financial_service", "access_restriction", "belarus_affected"} <= concepts:
         families.add("financial_service_access")
+    if {"food_contamination", "confectionery", "pinsk_food_anchor"} <= concepts:
+        families.add("pinsk_confectionery_safety")
+    if {"food_contamination", "confectionery"} <= concepts:
+        families.add("confectionery_contamination")
+    if {"communal_housing", "water_leak", "billing_redress"} <= concepts:
+        families.add("communal_water_overcharge")
+    if {"store_employment", "hiring_failure", "salary_discussion"} <= concepts:
+        families.add("retail_hiring_shortage")
     return families, concepts
 
 
@@ -7950,9 +8166,31 @@ def _strong_semantic_event_match(
     left_families, left_concepts = _event_semantic_profile(left)
     right_families, right_concepts = _event_semantic_profile(right)
     shared_families = left_families & right_families
-    if not shared_families or len(left_concepts & right_concepts) < 3:
+    if not shared_families:
+        return False
+    if "confectionery_contamination" in shared_families:
+        left_value = normalized_search_text(f"{left.title}. {left.excerpt[:1200]}")
+        right_value = normalized_search_text(f"{right.title}. {right.excerpt[:1200]}")
+        contamination_anchors = (
+            re.compile(r"кишечн[а-яёіў]*\s+палоч"),
+            re.compile(r"стафилокок"), re.compile(r"s\.?\s*aureus"),
+            re.compile(r"пинск[а-яёіў]*"), re.compile(r"улитк[а-яёіў]*"),
+            re.compile(r"кокоск[а-яёіў]*"),
+        )
+        if any(
+            pattern.search(left_value) and pattern.search(right_value)
+            for pattern in contamination_anchors
+        ):
+            return True
+    if len(left_concepts & right_concepts) < 3:
         return False
     if shared_numbers:
+        return True
+    if shared_families & {
+        "pinsk_confectionery_safety",
+        "communal_water_overcharge",
+        "retail_hiring_shortage",
+    }:
         return True
     if not shared_families & {
         "housing_construction_defect", "financial_service_access",
@@ -8166,12 +8404,21 @@ def _looks_like_same_event(left: ArticleResult, right: ArticleResult) -> bool:
     )
 
 
-def _dedup_preference(result: ArticleResult) -> tuple[int, int, int, int, str]:
+def _dedup_preference(
+    result: ArticleResult,
+) -> tuple[int, int, int, int, int, int, str]:
+    # The monitoring contract prefers a full website article to its Telegram
+    # retelling.  Within the same source class, an original title, an official
+    # response and a fuller extraction are more useful to the reader than a
+    # slightly higher keyword score.
+    source_type_rank = 0 if result.source_type == "website" else 1
     return (
         priority_value(result.priority),
-        -result.score,
+        source_type_rank,
+        int(result.title_generated),
         -int(result.official_response),
         -result.text_length,
+        -result.score,
         result.source_name,
     )
 
