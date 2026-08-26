@@ -3182,7 +3182,7 @@ def test_source_candidate_limit_uses_name_override():
     settings = copy.deepcopy(SETTINGS)
     src = source()
     src = Source(**{**src.__dict__, "name": "Zerkalo.io", "domain": "zerkalo.io"})
-    assert social_monitor.source_candidate_limit(src, settings) == 65
+    assert social_monitor.source_candidate_limit(src, settings) == 75
 
 
 def test_source_candidate_limit_keeps_default_for_small_source():

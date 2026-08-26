@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-26.social.57-result-integrity-1.6-event-integrity-1.6"
+MONITOR_BUILD = "2026-08-26.social.58-result-integrity-1.6.1-admission-recall-1.1"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -5507,6 +5507,8 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"^у\s+банк[а-яёіў]*\s+.+(?:дыр[ауы]|баланс|невыплат|дефицит|убыт)",
         r"^миров[а-яёіў]*\s+(?:здравоохран|рынок|эконом|отрасл)",
         r"(?:глобальн[а-яёіў]*|во\s+всем\s+мире).*(?:нехват|дефицит|кризис)",
+        r"(?:регулятор|управлен[а-яёіў]*\s+по\s+регулирован[а-яёіў]*\s+рынк)[а-яёіў]*.*"
+        r"кита[яй][а-яёіў]*.*(?:отзывн[а-яёіў]*\s+кампан|отзыва[а-яёіў]*\s+автомобил)",
         r"^мир\s+.*(?:на\s+порог[а-яёіў]*|ждет|ожидает)[а-яёіў]*.*"
         r"(?:кризис|дефицит|нехват)",
     )),
@@ -5586,6 +5588,92 @@ BOUND_PUBLIC_ISSUE_PATTERNS: dict[
             r"ограничени[а-яёіў]*\s+на\s+(?:вывод|операци|счет)",
             r"(?:белорус|беларус)[а-яёіў]*\s+(?:пользовател|граждан|клиент)[а-яёіў]*.*"
             r"(?:ограничени|не\s+поддержива|закрыл)",
+        )),
+    ),
+    # Result Integrity 1.6.1 / Recall Safety.  These profiles restore narrow
+    # public-interest cases that can be missed when the category term and the
+    # concrete problem are worded differently.  Each profile deliberately
+    # requires both a domain context and bounded evidence; it is not a broad
+    # keyword whitelist.
+    "domestic_product_safety_enforcement": (
+        tuple(re.compile(value) for value in (
+            r"(?:продукт|товар|лапш|какао|шоколад|кондитер|напитк|пищев)",
+            r"(?:госстандарт|санитарн[а-яёіў]*\s+служб|торгов[а-яёіў]*\s+сет)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"в\s+беларус[а-яёіў]*.*запретил[а-яёіў]*.*(?:продав|ввоз|реализац)",
+            r"(?:госстандарт|санитарн[а-яёіў]*\s+служб)[а-яёіў]*.*"
+            r"(?:запретил|изъял|приостановил)[а-яёіў]*",
+            r"(?:опасн[а-яёіў]*\s+красител|не\s+соответств[а-яёіў]*\s+требован|"
+            r"небезопасн[а-яёіў]*\s+продукт).*"
+            r"(?:запретил|изъял|не\s+допустил)[а-яёіў]*",
+        )),
+    ),
+    "labour_rights_enforcement": (
+        tuple(re.compile(value) for value in (
+            r"(?:работник|сотрудник|работодател|начальник|руководител|трудов[а-яёіў]*\s+прав)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:незаконн|необоснованн|самовольн)[а-яёіў]*.*"
+            r"(?:штраф|удержан|приказ|увольнен)",
+            r"(?:придумал|подделал|издал)[а-яёіў]*.*(?:приказ|штраф)[а-яёіў]*.*работник",
+            r"(?:не\s+выплатил|задолжал|удержал)[а-яёіў]*.*(?:зарплат|заработн[а-яёіў]*\s+плат)",
+            r"(?:инспекц[а-яёіў]*\s+труд|прокуратур)[а-яёіў]*.*"
+            r"(?:восстановил|отменил|выявил)[а-яёіў]*.*(?:прав|штраф|приказ)",
+        )),
+    ),
+    "public_transport_capacity_failure": (
+        tuple(re.compile(value) for value in (
+            r"(?:автобус|маршрут|общественн[а-яёіў]*\s+транспорт|пассажир)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"вместо\s+(?:больш|обычн)[а-яёіў]*\s+автобус[а-яёіў]*.*"
+            r"(?:маленьк|микроавтобус)",
+            r"(?:не\s+хватил|нет|не\s+было)[а-яёіў]*\s+(?:мест|вместимост)",
+            r"(?:переполнен|битком|давк)[а-яёіў]*.*(?:автобус|маршрут)",
+            r"пассажир[а-яёіў]*.*(?:жалуют|возмущ)[а-яёіў]*.*"
+            r"(?:автобус|маршрут|мест)",
+        )),
+    ),
+    "real_income_pressure": (
+        tuple(re.compile(value) for value in (
+            r"(?:зарплат|заработк|доход|пенси)[а-яёіў]*",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:инфляц|рост[а-яёіў]*\s+цен|подорожан)[а-яёіў]*.*"
+            r"(?:обогнал|опередил|быстрее|выше).*"
+            r"(?:зарплат|доход|пенси)",
+            r"(?:зарплат|доход|пенси)[а-яёіў]*.*"
+            r"(?:не\s+успева|отста[её]т|ниже).*"
+            r"(?:инфляц|цен|подорожан)",
+            r"(?:реальн[а-яёіў]*\s+(?:доход|зарплат)|покупательн[а-яёіў]*\s+способност)[а-яёіў]*.*"
+            r"(?:снизил|упал|сократил|хуже)",
+            r"сравнил[а-яёіў]*\s+рост\s+зарплат[а-яёіў]*\s+и\s+инфляц",
+        )),
+    ),
+    "employment_contraction": (
+        tuple(re.compile(value) for value in (
+            r"(?:занят[а-яёіў]*\s+в\s+экономик|занятост|рабоч[а-яёіў]*\s+мест)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:количеств|числ)[а-яёіў]*\s+занят[а-яёіў]*.*"
+            r"(?:снизил|сократил|уменьшил)",
+            r"(?:занятост|рабоч[а-яёіў]*\s+мест)[а-яёіў]*.*"
+            r"(?:снизил|сократил|стало\s+меньше)",
+        )),
+    ),
+    "telecom_service_complaint": (
+        tuple(re.compile(value) for value in (
+            r"(?:мобильн[а-яёіў]*\s+(?:оператор|интернет|связ)|оператор[а-яёіў]*\s+связ|"
+            r"интернет-провайдер|трафик)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:клиент|абонент|пользовател|белорус)[а-яёіў]*.*"
+            r"(?:жалует|возмущ|оспарива)[а-яёіў]*",
+            r"(?:неверн|ошибочн|необоснованн)[а-яёіў]*.*"
+            r"(?:списал|начисл|трафик|плат[а-яёіў]*)",
+            r"(?:оператор|провайдер)[а-яёіў]*.*(?:не\s+решил|игнорир|отказал)[а-яёіў]*.*"
+            r"(?:проблем|жалоб|претензи)",
         )),
     ),
 }
@@ -6211,12 +6299,24 @@ def evaluate_relevance(
         "municipal_fixture_failure": "Дороги и благоустройство",
         "consultation_accountability": regulatory_category,
         "financial_service_access": regulatory_category,
+        "domestic_product_safety_enforcement": "Качество товаров и услуг",
+        "labour_rights_enforcement": "Работа, зарплаты и доходы",
+        "public_transport_capacity_failure": "Общественный транспорт",
+        "real_income_pressure": "Работа, зарплаты и доходы",
+        "employment_contraction": "Работа, зарплаты и доходы",
+        "telecom_service_complaint": "Связь, интернет и телевидение",
     }
     bound_profile_labels = {
         "consumer_redress": "подтверждённый спор о защите прав потребителя",
         "municipal_fixture_failure": "неисправный коммунальный объект",
         "consultation_accountability": "неопубликованные итоги общественного обсуждения",
         "financial_service_access": "ограничение доступа белорусов к финансовой услуге",
+        "domestic_product_safety_enforcement": "запрет небезопасного товара в Беларуси",
+        "labour_rights_enforcement": "подтверждённое нарушение трудовых прав",
+        "public_transport_capacity_failure": "нехватка вместимости общественного транспорта",
+        "real_income_pressure": "снижение реальных доходов относительно цен",
+        "employment_contraction": "сокращение занятости или рабочих мест",
+        "telecom_service_complaint": "подтверждённая жалоба на услугу связи",
     }
     for profile in sorted(bounded_issue_profiles):
         category = bound_profile_categories.get(profile)
@@ -7177,7 +7277,13 @@ def evaluate_relevance(
             reason=f"нейтральная благотворительная или социальная кампания: {support_campaign_hits[0]}",
         )
 
-    if macro_hits and not (strong_explicit or resident_hits or domestic_consumer_hits):
+    if macro_hits and not (
+        strong_explicit
+        or resident_hits
+        or domestic_consumer_hits
+        or bounded_issue_profiles
+        & {"real_income_pressure", "employment_contraction"}
+    ):
         return RelevanceDecision(False, reason=f"макроэкономическая тема без жалобы жителей: {macro_hits[0]}")
 
     # Обычные рейды, профилактические акции и усиление контроля ГАИ/милиции
@@ -7199,7 +7305,11 @@ def evaluate_relevance(
 
     # Export/import certification disputes are not resident complaints unless
     # the article also describes a domestic retail or consumer problem.
-    if trade_hits and not domestic_consumer_hits and not resident_hits:
+    if trade_hits and not (
+        domestic_consumer_hits
+        or resident_hits
+        or "domestic_product_safety_enforcement" in bounded_issue_profiles
+    ):
         return RelevanceDecision(False, reason=f"внешнеторговая/корпоративная тема: {trade_hits[0]}")
 
     if leisure_hits and not strong_explicit:
@@ -7211,7 +7321,11 @@ def evaluate_relevance(
     crime_exception_hits = find_terms(
         full_context, topic.get("crime_relevance_exception_terms", [])
     )
-    if crime_hits and not (crime_exception_hits or domestic_illegal_recruitment):
+    if crime_hits and not (
+        crime_exception_hits
+        or domestic_illegal_recruitment
+        or "labour_rights_enforcement" in bounded_issue_profiles
+    ):
         return RelevanceDecision(False, reason=f"криминальная/происшественная тема: {crime_hits[0]}")
 
     # Плесень, сырость, затопление и испорченное имущество внутри дома
