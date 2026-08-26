@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-25.social.56-source-resilience-1.1-result-event-integrity-1.5"
+MONITOR_BUILD = "2026-08-26.social.57-result-integrity-1.6-event-integrity-1.6"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -935,7 +935,12 @@ EVENT_REGION_PATTERNS: tuple[tuple[str, tuple[str, ...]], ...] = (
 
 
 EVENT_LOCALITY_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
-    ("Минск", "Минск", (r"(?<![а-яёіўa-z])минск(?:е|а|у|ом)?(?![а-яёіўa-z])", r"(?<![а-яёіўa-z])мінск(?:у|а|ам|е)?(?![а-яёіўa-z])")),
+    ("Минск", "Минск", (
+        r"(?<![а-яёіўa-z])минск(?:е|а|у|ом)?(?![а-яёіўa-z])",
+        r"(?<![а-яёіўa-z])минск(?:их|ие|ий|ого|ому|ую)(?![а-яёіўa-z])",
+        r"(?<![а-яёіўa-z])мінск(?:у|а|ам|е)?(?![а-яёіўa-z])",
+        r"(?<![а-яёіўa-z])мінск(?:іх|ія|і|ага|аму|ую)(?![а-яёіўa-z])",
+    )),
     ("Брест", "Брестская область", (r"(?<![а-яёіўa-z])брест(?:е|а|у|ом)?(?![а-яёіўa-z])", r"(?<![а-яёіўa-z])брэст(?:е|а|у|ам)?(?![а-яёіўa-z])")),
     ("Барановичи", "Брестская область", (r"баранович(?:и|ах|ей|ам|ами)?", r"баранавіч(?:ы|ах|аў|ам|амі)?")),
     ("Пинск", "Брестская область", (r"(?<![а-яёіўa-z])пинск(?:е|а|у|ом)?(?![а-яёіўa-z])", r"(?<![а-яёіўa-z])пінск(?:у|а|ам|е)?(?![а-яёіўa-z])")),
@@ -1011,13 +1016,24 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     ("station_storage", "камеры хранения на вокзале", (r"камер.*хранен", r"камера.*хранен", r"ячейк.*хранен", r"ячэйк.*захоў")),
     ("public_transport", "общественный транспорт", (r"автобус", r"аўтобус", r"маршрут", r"остановк", r"прыпынк", r"вокзал", r"поезд", r"цягнік")),
     ("water_supply", "водоснабжение", (r"водоснаб", r"водопровод", r"питьев.*вод", r"пітн.*вад", r"горяч.*вод", r"гарач.*вад")),
-    ("natural_water", "река/озеро/берег", (r"(?<![а-яёіўa-z])рек(?:а|е|и|у|ой|ах|ами)(?![а-яёіўa-z])", r"(?<![а-яёіўa-z])рак(?:а|і|у|ой|ах|амі)(?![а-яёіўa-z])", r"озер", r"возер", r"водо[её]м", r"вада[её]м", r"пруд", r"берег", r"бераг")),
+    ("natural_water", "река/озеро/берег", (
+        r"(?<![а-яёіўa-z])рек(?:а|е|и|у|ой|ах|ами)(?![а-яёіўa-z])",
+        r"(?<![а-яёіўa-z])рак(?:а|і|у|ой|ах|амі)(?![а-яёіўa-z])",
+        r"озер", r"возер", r"водо[её]м", r"вада[её]м", r"пруд",
+        r"берег", r"бераг", r"днепр", r"дняпро", r"припят", r"прыпяц",
+        r"неман", r"нёман", r"западн[а-яёіў]*\s+двин", r"заходн[а-яёіў]*\s+дзвін",
+        r"сож", r"буг",
+    )),
     ("waste", "мусор/санитарное состояние", (r"мусор", r"смец", r"свалк", r"звалк", r"санитар", r"антысанітар")),
     ("greenery", "озеленение/покос", (r"трав", r"покос", r"косил", r"дерев", r"дрэў", r"(?<![а-яёіўa-z])парк(?:е|а|у|ом|и|ах)?(?![а-яёіўa-z])", r"сквер")),
     ("lighting", "уличное освещение", (r"освещ", r"асвятл", r"фонар")),
     ("housing", "жилой дом/двор", (r"жкх", r"коммунальн.*(?:плат|услуг|служб)", r"камунальн.*(?:плац|паслуг|служб)", r"подъезд", r"пад'езд", r"подвал", r"падвал", r"лифт", r"ліфт", r"крыша", r"дах", r"двор", r"двар")),
     ("healthcare", "медицина", (r"поликлин", r"паліклін", r"больниц", r"бальніц", r"врач", r"урач", r"медицин", r"медыцын")),
     ("retail", "магазин/торговля", (r"магазин", r"крама", r"торгов", r"гандл")),
+    ("consumer_goods", "непродовольственные потребительские товары", (
+        r"обув[а-яёіў]*", r"абут[а-яёіў]*", r"одежд[а-яёіў]*",
+        r"вопратк[а-яёіў]*", r"потребительск[а-яёіў]*\s+товар",
+    )),
     ("telecom", "связь/интернет", (r"интернет", r"інтэрнэт", r"мобильн.*связ", r"мабільн.*сувяз", r"телефонн.*связ", r"тэлефонн.*сувяз", r"iptv", r"телевид", r"тэлебач")),
     ("labor", "труд/оплата труда", (r"зарплат", r"заработн.*плат", r"работник", r"працаўнік", r"работодател", r"наймальнік", r"услови.*труд", r"ўмов.*прац")),
     ("education", "школа/детский сад", (r"школ", r"школ", r"детск.*сад", r"дзіцяч.*сад", r"садик")),
@@ -1052,6 +1068,17 @@ EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     ("animal_welfare", "ненадлежащие условия содержания животных", (
         r"неправильн[а-яёіў]*\s+услови[а-яёіў]*", r"перегрев[а-яёіў]*\s+от\s+ламп",
         r"нулев[а-яёіў]*\s+фильтрац", r"не\s+хватает\s+вод[а-яёіў]*",
+    )),
+    ("low_water", "критическое обмеление/низкий уровень воды", (
+        r"критическ[а-яёіў]*\s+обмел", r"катастрофическ[а-яёіў]*\s+обмел",
+        r"обмел[а-яёіў]*", r"маловод[а-яёіў]*",
+        r"уровен[а-яёіў]*\s+вод[а-яёіў]*.*(?:низк|упал|снизил)",
+        r"узровен[а-яёіў]*\s+вад[а-яёіў]*.*(?:нізк|упаў|зніз)",
+    )),
+    ("counterfeit", "контрафакт/отсутствие документов о безопасности", (
+        r"контрафакт[а-яёіў]*", r"падробк[а-яёіў]*",
+        r"без\s+документ[а-яёіў]*.*(?:качеств|безопасност)",
+        r"не\s+было\s+документ[а-яёіў]*.*(?:качеств|безопасност)",
     )),
     ("outage", "отключение/перебои", (r"отключ", r"адключ", r"перебо", r"перабо", r"пропал[аио]?\s+(?:вода|свет|интернет|связ)", r"нет\s+(?:воды|света|интернета|связи)", r"няма\s+(?:вады|святла|інтэрнэту|сувязі)")),
     ("nonpayment", "невыплата/списание", (r"невыплат", r"не\s+выплат", r"не\s+заплат", r"не\s+выплац", r"списал", r"списан", r"навяз.*услуг", r"платн.*без\s+соглас")),
@@ -1260,7 +1287,7 @@ def infer_event_fingerprint(
         _event_problem_parts(parts),
         EVENT_PROBLEM_PATTERNS,
         {
-            "contamination": 3, "billing_overcharge": 3,
+            "contamination": 5, "billing_overcharge": 3,
             "bullying": 3, "animal_welfare": 3, "hiring_shortage": 2,
         },
     )
@@ -1268,6 +1295,19 @@ def infer_event_fingerprint(
     event_scope = locality.casefold() if locality else (
         f"region:{region.casefold()}" if region else ""
     )
+    # A rare pair of microbiological findings is a stronger event anchor than
+    # an omitted locality in a short Telegram rewrite.  Normalising this one
+    # narrow family to a national scope allows the next-day short retelling to
+    # connect to the fuller regional reports, while a single pathogen remains
+    # locality-bound and cannot collapse unrelated recalls.
+    combined_event_text = " ".join((title_text, summary_text, opening_text))
+    if (
+        object_key == "food_product"
+        and problem_key == "contamination"
+        and re.search(r"кишечн[а-яёіўa-z0-9]*\s+палоч", combined_event_text)
+        and re.search(r"стафилокок", combined_event_text)
+    ):
+        event_scope = "беларусь:кишечная-палочка+стафилококк"
     if event_scope and object_key and problem_key:
         signature = "|".join((event_scope, object_key, problem_key))
     return EventFingerprint(
@@ -5250,6 +5290,39 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:отключ|приостанов|не\s+будет).*(?:электр|вод|газ|тепл)",
         r"(?:электроснабж|водоснабж|газоснабж)[а-яёіў]*\s+будет\s+отсутствоват.*"
         r"(?:работ[а-яёіў]*\s+на|ремонт)",
+        r"без\s+(?:вод[а-яёіў]*|свет[а-яёіў]*|электричеств[а-яёіў]*)\s+"
+        r"на\s+время\s+(?:планов[а-яёіў]*\s+)?работ",
+        r"(?:предупреждени|предупредил)[а-яёіў]*.*(?:отключ|без\s+вод[а-яёіў]*)",
+    )),
+    "positive_medical_achievement": tuple(re.compile(value) for value in (
+        r"впервые\s+(?:в\s+беларус[а-яёіў]*\s+)?(?:имплантировал|установил|провел)[а-яёіў]*.*"
+        r"(?:клапан|имплант|операц)",
+        r"(?:новейш|уникальн|перв[а-яёіў]*\s+подобн)[а-яёіў]*.*"
+        r"(?:сердечн[а-яёіў]*\s+клапан|операц|методик)",
+    )),
+    "neutral_service_launch": tuple(re.compile(value) for value in (
+        r"(?:с\s+\d{1,2}\s+[а-яёіў]+\s+\d{4}\s+года\s+)?"
+        r"(?:в\s+беларус[а-яёіў]*\s+)?заработает\s+сервис.*(?:поиск|найти).*репетитор",
+        r"запуска[а-яёіў]*\s+(?:проект|сервис).*"
+        r"(?:репетитор|логопед|музыкальн[а-яёіў]*\s+руководител)",
+    )),
+    "neutral_regulatory_explainer": tuple(re.compile(value) for value in (
+        r"^кого\s+теперь\s+будут\s+направлят[а-яёіў]*\s+в\s+соцучреждени[а-яёіў]*.*"
+        r"нов[а-яёіў]*\s+правил",
+        r"вступа[а-яёіў]*\s+в\s+силу\s+изменени[а-яёіў]*.*"
+        r"(?:социальн[а-яёіў]*\s+пансионат|центр[а-яёіў]*\s+социальн[а-яёіў]*\s+реабилитац)",
+    )),
+    "cultural_or_migration_commentary": tuple(re.compile(value) for value in (
+        r"как\s+себя\s+вести\s+в\s+беларус[а-яёіў]*",
+        r"памятк[а-яёіў]*.*(?:переезжающ|переехал)[а-яёіў]*.*беларус",
+        r"почему\s+белорус[а-яёіў]*\s+не\s+люб[а-яёіў]*.*(?:турист|россиян)",
+        r"почему\s+беларус[а-яёіў]*\s+не\s+люб[а-яёіў]*.*(?:турыст|расіян)",
+    )),
+    "resolved_minor_emergency": tuple(re.compile(value) for value in (
+        r"(?:самостоятельно|самастойна)\s+ликвидировал[а-яёіў]*.*"
+        r"(?:тлени|загорани|пожар)",
+        r"пострадавш[а-яёіў]*\s+нет.*(?:риск|угроз)[а-яёіў]*\s+"
+        r"(?:загорани|пожар)[а-яёіў]*\s+(?:нет|отсутств)",
     )),
     "protocol_or_personnel": tuple(re.compile(value) for value in (
         r"(?:аккредитовал|назначил|представил)[а-яёіў]*\s+нов[а-яёіў]*\s+"
@@ -5341,6 +5414,9 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:лиш[её]н[а-яёіў]*\s+прав|штраф)",
         r"(?:привлечен|привлечены|прыцягнут)[а-яёіў]*\s+к\s+ответственност[а-яёіў]*.*"
         r"(?:маневр|пдд|аварийн[а-яёіў]*\s+обстановк)",
+        r"(?:снесл|задел)[а-яёіў]*\s+зеркал[а-яёіў]*.*(?:гаи|штраф)",
+        r"вызвал[а-яёіў]*\s+гаи.*получил[а-яёіў]*\s+штраф",
+        r"водител[а-яёіў]*\s+спорят.*справедливост[а-яёіў]*\s+наказан",
     )),
     "single_incident": tuple(re.compile(value) for value in (
         r"получил[а-яёіў]*\s+травм[а-яёіў]*.*(?:фестивал|шоу|трюк)",
@@ -5348,6 +5424,9 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:обнаружил[а-яёіў]*|нашли)\s+тел[а-яёіў]*.*(?:пропавш|альпинист)",
         r"спасател[а-яёіў]*.*(?:собак|кот[а-яёіў]*|животн[а-яёіў]*)",
         r"авиабомб[а-яёіў]*.*втор[а-яёіў]*\s+миров[а-яёіў]*",
+        r"самолет[а-яёіў]*.*экстренн[а-яёіў]*\s+сел[а-яёіў]*.*пассажир",
+        r"(?:пассажир|человек)[а-яёіў]*.*(?:умер|скончал)[а-яёіў]*.*"
+        r"(?:самолет|борт|рейс)",
     )),
     "private_lifestyle": tuple(re.compile(value) for value in (
         r"соседк[а-яёіў]*.*бикини",
@@ -5408,6 +5487,10 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"чем\s+(?:вс[её]|усе)\s+закончил",
         r"как\s+отреагировал[а-яёіў]*\s+(?:общество|соцсет|пользовател)",
         r"подростк[а-яёіў]*\s+устроил[а-яёіў]*.*(?:вечерин|посиделк)",
+        r"(?:показа[ўл]|паказа[ўл]|снял)[а-яёіў]*,?\s+(?:как|як)\s+.*"
+        r"(?:припарковал|прыпаркава)[а-яёіў]*",
+        r"(?:автомобил|аўтамабіл)[а-яёіў]*\s+на\s+(?:российск|расейск)[а-яёіў]*\s+"
+        r"(?:номер|нумар)[а-яёіў]*.*(?:парк|пдд|даі|гаи)",
     )),
     "private_tenancy_dispute": tuple(re.compile(value) for value in (
         r"хозя(?:йк|ин)[а-яёіў]*.*(?:не\s+хотел[а-яёіў]*\s+возвращ|залог)",
@@ -5628,9 +5711,29 @@ def result_integrity_genre_rejection(
     ):
         return "Editorial Intent: порядок получения услуги или пособия без жалобы"
     if matches("scheduled_service_notice") and not (
-        title_explicit or lead_findings or persistence or special_public_interest
+        resident_explicit or lead_findings or persistence or special_public_interest
     ):
         return "Editorial Intent: плановое сервисное уведомление"
+    if matches("positive_medical_achievement", include_lead=True) and not (
+        resident_explicit or persistence or special_public_interest
+    ):
+        return "Editorial Intent: медицинское достижение без проблемы доступности"
+    if matches("neutral_service_launch", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence or special_public_interest
+    ):
+        return "Editorial Intent: запуск сервиса без подтверждённой проблемы"
+    if matches("neutral_regulatory_explainer", include_lead=True) and not (
+        resident_explicit or persistence or bound_regulatory_discussion
+    ):
+        return "Editorial Intent: нейтральное разъяснение новых правил"
+    if matches("cultural_or_migration_commentary", include_lead=True) and not (
+        lead_findings or persistence or critical_public_interest
+    ):
+        return "Editorial Intent: культурно-миграционный комментарий без общественной проблемы"
+    if matches("resolved_minor_emergency", include_lead=True) and not (
+        resident_explicit or persistence or special_public_interest
+    ):
+        return "Result Integrity: локальное происшествие без пострадавших и ущерба"
     if matches("protocol_or_personnel") and not (
         institutional_problem_evidence
     ):
@@ -6026,13 +6129,18 @@ def evaluate_relevance(
             "небезопасн продукт", "микробиологическ загрязнен",
         ),
     )
+    normalized_product_context = normalized_search_text(preliminary_full_context)
     product_contamination_signal = bool(
         product_contamination_hits
         and (
             finding_hits
             or re.search(
-                r"\b(?:нашл|выяв|обнаруж|признан)[а-яёіўa-z0-9]*",
-                normalized_search_text(preliminary_full_context),
+                r"\b(?:нашл|выяв|обнаруж|признан|оказал|запрет)[а-яёіўa-z0-9]*",
+                normalized_product_context,
+            )
+            or (
+                re.search(r"кишечн[а-яёіўa-z0-9]*\s+палоч", normalized_product_context)
+                and re.search(r"стафилокок", normalized_product_context)
             )
         )
     )
@@ -6043,6 +6151,29 @@ def evaluate_relevance(
             if find_terms(sentence, product_contamination_hits):
                 special_evidence_indices.append(index)
 
+    counterfeit_product_hits = find_terms(
+        preliminary_full_context,
+        (
+            "контрафакт", "поддельн товар", "падроблен тавар",
+            "re:без\\s+документ[а-яёіўa-z0-9]*.*(?:качеств|безопасност)",
+            "re:не\\s+было\\s+документ[а-яёіўa-z0-9]*.*(?:качеств|безопасност)",
+        ),
+    )
+    counterfeit_product_signal = bool(
+        counterfeit_product_hits
+        and re.search(
+            r"(?:контрафакт|поддельн|падроблен|изъял|оштрафовал|"
+            r"без\s+документ|не\s+было\s+документ)",
+            normalized_search_text(preliminary_full_context),
+        )
+    )
+    if counterfeit_product_signal:
+        category_weights["Качество товаров и услуг"] += 20
+        matched_terms.extend(counterfeit_product_hits)
+        for index, sentence in enumerate(body):
+            if find_terms(sentence, counterfeit_product_hits):
+                special_evidence_indices.append(index)
+
     # Жалоба на ненадлежащие условия содержания животных может не содержать
     # традиционных словарных пар социальной темы и проблемы. Признаём узкую
     # подтверждённую связку самостоятельным общественным сигналом до раннего
@@ -6051,9 +6182,10 @@ def evaluate_relevance(
     animal_welfare_context = normalized_search_text(preliminary_full_context)
     animal_welfare_signal = bool(
         re.search(
-            r"(?:жив[а-яёіў]*\s+рыб|животн|приют|пункт[а-яёіў]*\s+содерж).*"
+            r"(?:жив[а-яёіў]*\s+рыб|животн|приют|пункт[а-яёіў]*\s+содерж|"
+            r"рыб[а-яёіў]*.*(?:кафе|декор|ламп|аквари)).*"
             r"(?:неправильн[а-яёіў]*\s+услов|перегрев|нулев[а-яёіў]*\s+фильтрац|"
-            r"не\s+хватает\s+вод|погиба)",
+            r"отсутств[а-яёіў]*\s+фильтрац|не\s+хватает\s+вод|погиба)",
             animal_welfare_context,
         )
     )
@@ -6106,6 +6238,7 @@ def evaluate_relevance(
         or hotel_service_signal
         or domestic_business_loss_signal
         or product_contamination_signal
+        or counterfeit_product_signal
         or animal_welfare_signal
         or bullying_signal
         or bounded_issue_profiles
@@ -6349,6 +6482,7 @@ def evaluate_relevance(
             domestic_illegal_recruitment
             or domestic_business_loss_signal
             or product_contamination_signal
+            or counterfeit_product_signal
             or building_envelope_signal
             or hotel_service_signal
         ),
