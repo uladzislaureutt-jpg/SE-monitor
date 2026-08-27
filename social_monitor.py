@@ -3492,6 +3492,7 @@ def soft_admission_tail_budget(
     limit: int,
     sitemap_reserve: int,
     cutoff: dt.datetime | None = None,
+    settings: dict[str, Any] | None = None,
 ) -> int:
     merged = deduplicate_candidates(candidates)
     soft = [
@@ -3507,9 +3508,18 @@ def soft_admission_tail_budget(
     )
     cap_threshold = max(3, min(10, max(1, limit // 6)))
     if reliable_non_sitemap >= cap_threshold:
+        # The tail ceiling used to be the raw (global, source-agnostic)
+        # sitemap_reserve. It is now scaled per source via
+        # soft_admission_budget_ceiling(); sitemap_reserve is kept as a
+        # fallback only for callers that do not pass settings.
+        soft_ceiling = (
+            soft_admission_budget_ceiling(limit, settings)
+            if settings is not None
+            else max(0, sitemap_reserve)
+        )
         remaining_after_trusted = max(0, limit - min(limit, len(merged) - len(soft)))
         return min(
-            max(0, sitemap_reserve),
+            soft_ceiling,
             len(soft),
             remaining_after_trusted,
         )
@@ -3542,7 +3552,7 @@ def select_balanced_source_candidates(
         if candidate_admission_decision(item, cutoff).status == "soft"
     ]
     soft_budget = soft_admission_tail_budget(
-        merged, limit, sitemap_reserve, cutoff
+        merged, limit, sitemap_reserve, cutoff, settings=settings
     )
     trusted_limit = max(0, limit - soft_budget)
     reserves = {
@@ -3563,7 +3573,17 @@ def select_balanced_source_candidates(
             soft,
             key=lambda item: candidate_admission_sort_key(item, cutoff, settings),
         )
-    selected.extend(soft_ordered[:soft_budget])
+    # Service-like routes (ad redirects, marketplace/forum controls, etc.)
+    # stay counted as "soft" for budget accounting, but must never be spent
+    # from the tail budget themselves: they should not fill the extra
+    # headroom that soft_admission_budget_ceiling() now allocates for
+    # genuinely ambiguous (mostly undated_sitemap_only) candidates. Any
+    # leftover soft budget is simply left unused rather than reaching into
+    # known-junk routes.
+    soft_admissible = [
+        item for item in soft_ordered if not candidate_service_like(item)
+    ]
+    selected.extend(soft_admissible[:soft_budget])
     selected = deduplicate_candidates(selected)[:limit]
 
     # The configured source limit is a soft operating budget.  A fresh/current
@@ -3635,6 +3655,46 @@ def source_soft_overflow_limit(
         cap = 15
     proportional = int(base_limit * ratio)
     if proportional < base_limit * ratio:
+        proportional += 1
+    return min(cap, max(floor, proportional)) if cap else 0
+
+
+def soft_admission_budget_ceiling(
+    limit: int,
+    settings: dict[str, Any] | None,
+) -> int:
+    """Per-source ceiling for "soft"-status (mostly undated_sitemap_only)
+    candidate admission, used by soft_admission_tail_budget() when the
+    source already has a reliable non-sitemap flow covering its base
+    budget (see reliable_non_sitemap there).
+
+    Previously this ceiling was the single global
+    discovery.sitemap_candidate_reserve value (default 5), applied
+    identically to every source regardless of its own configured
+    candidate limit. That silently capped high-volume, high-priority
+    sources at just 5 admitted undated candidates per run even when
+    their sitemap discovery produced dozens more, while smaller sources
+    with the same fixed cap were barely affected. This scales the
+    ceiling with the source's own per_source_candidate_limit /
+    source_candidate_limits value, the same ratio/floor/cap pattern
+    already used by source_soft_overflow_limit().
+    """
+    monitor = (settings or {}).get("monitor", {})
+    try:
+        ratio = float(monitor.get("soft_admission_ratio", 0.2))
+    except (TypeError, ValueError):
+        ratio = 0.2
+    ratio = max(0.0, min(0.50, ratio))
+    try:
+        floor = max(0, int(monitor.get("soft_admission_floor", 5)))
+    except (TypeError, ValueError):
+        floor = 5
+    try:
+        cap = max(0, int(monitor.get("soft_admission_cap", 20)))
+    except (TypeError, ValueError):
+        cap = 20
+    proportional = int(limit * ratio)
+    if proportional < limit * ratio:
         proportional += 1
     return min(cap, max(floor, proportional)) if cap else 0
 
@@ -3984,7 +4044,7 @@ def collect_source_candidates(
                 item.status == "soft" for item in selected_admission
             ),
             soft_tail_budget=soft_admission_tail_budget(
-                merged, limit, sitemap_reserve, cutoff
+                merged, limit, sitemap_reserve, cutoff, settings=settings
             ),
             clipped_soft=sum(
                 item.status == "soft" for item in clipped_admission
