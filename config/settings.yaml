@@ -12,16 +12,37 @@ monitor:
   user_agent: Private Belarus Social Monitor/1.0 (+https://github.com/)
   planned_source_reserve: 8
   planned_source_candidate_limit: 60
+  # Ceiling for "soft"-status (mostly undated_sitemap_only) candidate admission
+  # per source per run, when the source already has a reliable non-sitemap
+  # flow (feed/homepage/telegram) covering its base budget. Scaled from each
+  # source's own per_source_candidate_limit / source_candidate_limits value,
+  # the same ratio/floor/cap pattern as core33_soft_limit_*. Previously this
+  # was pinned to the single global discovery.sitemap_candidate_reserve (5)
+  # for every source regardless of its configured limit, which silently
+  # capped high-volume A-priority sources (e.g. Наша Ніва, ВГР, Onlíner) at
+  # just 5 admitted undated candidates per run even when their sitemap
+  # discovered dozens more. See soft_admission_budget_ceiling() in
+  # social_monitor.py.
+  soft_admission_ratio: 0.2
+  soft_admission_floor: 5
+  soft_admission_cap: 20
+  # 2026-08-26 (run 13): clipped_fresh telemetry showed genuinely dated
+  # candidates exceeding the base limit on the day, not just ambiguous
+  # undated tail — Белновости 70->85 needed, Виртуальный Брест 65->100
+  # needed. Raised with modest headroom (90 / 105). Based on a SINGLE day
+  # of telemetry — re-check clipped_fresh over the next several runs before
+  # treating these as confirmed persistent limits (see
+  # test_admission_11_raises_only_persistent_limit_sources).
   source_candidate_limits:
     Onlíner: 80
     Zerkalo.io: 75
     Наша Ніва: 75
     NewGrodno: 75
-    Белновости: 70
+    Белновости: 90
     Минская правда: 70
     Smartpress.by: 60
     CityDog: 60
-    Виртуальный Брест: 65
+    Виртуальный Брест: 105
     БрестСИТИ: 65
     Медиа-Полесье: 50
     Hrodna.life: 50
@@ -41,7 +62,6 @@ monitor:
     Позірк: 60
     Reform.news: 55
     Хартия-97: 55
-    Солидарность: 55
     Брест Live: 30
     Беларусь за МКАДом: 30
 discovery:
