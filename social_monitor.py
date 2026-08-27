@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-27.social.60-result-event-integrity-1.7"
+MONITOR_BUILD = "2026-08-27.social.61-result-event-integrity-1.8"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -1295,6 +1295,22 @@ def infer_event_fingerprint(
     event_scope = locality.casefold() if locality else (
         f"region:{region.casefold()}" if region else ""
     )
+    # Result Event Integrity 1.8: republic-wide statistics and national
+    # announcements often name no single locality by design (e.g. a BelStat
+    # employment figure for all of Belarus). Requiring a locality here
+    # silently dropped these from Event Echo merging even when object+problem
+    # were unambiguous (see the 2026-08-27 "занятость в экономике" case,
+    # which never merged across sources for exactly this reason). Only the
+    # explicit national marker already used by infer_event_geography()
+    # qualifies for the fallback: a story that merely FAILED locality
+    # extraction (a river article naming a place the gazetteer doesn't
+    # recognise) must not be papered over with a fake national scope — that
+    # would risk false merges between unrelated Belarus-wide stories instead
+    # of fixing the real gap, which is locality coverage.
+    if not event_scope and bool(
+        re.search(r"(?<![а-яёіўa-z])беларус|(?<![а-яёіўa-z])белорус", title_text)
+    ):
+        event_scope = "беларусь"
     # A rare pair of microbiological findings is a stronger event anchor than
     # an omitted locality in a short Telegram rewrite.  Normalising this one
     # narrow family to a national scope allows the next-day short retelling to
@@ -5799,6 +5815,53 @@ def bound_public_issue_profiles(text: str) -> set[str]:
     }
 
 
+POSITIVE_POLARITY_REVERSAL_PATTERNS: tuple[str, ...] = (
+    r"выше.{0,25}(?:инфляц|рост[а-яёіў]*\s+цен)",
+    r"ниже.{0,25}рост[а-яёіў]*\s+(?:зарплат|доход)",
+    r"быстрее.{0,25}инфляц",
+    r"опережа[а-яёіў]*.{0,25}инфляц",
+    r"покупательн[а-яёіў]*\s+способност[а-яёіў]*.{0,50}"
+    r"(?:вырос|увеличил|повысил|стала\s+выше)",
+    r"(?:вырос|увеличил|повысил[а-яёіў]*|стал[а-яёіў]*\s+выше).{0,50}"
+    r"(?:зарплат|доход|уровень\s+жизни)",
+)
+
+NEGATIVE_OUTCOME_EVIDENCE_PATTERNS: tuple[str, ...] = (
+    r"снизил[а-яёіў]*", r"упал[а-яёіў]*", r"сократил[а-яёіў]*",
+    r"стал[а-яёіў]*\s+хуже", r"ухудш[а-яёіў]*",
+    r"не\s+хватает", r"не\s+хапае", r"недостаточ[а-яёіў]*",
+    r"ниже\s+прожиточн", r"задолженност", r"просроч[а-яёіў]*",
+    r"жалоб[а-яёіў]*", r"пожаловал[а-яёіў]*", r"скардз[а-яёіў]*",
+)
+
+
+def has_unreversed_negative_outcome(text: str) -> bool:
+    """True when the text names a genuine negative outcome that is not
+    immediately reframed as a positive comparison.
+
+    Result Event Integrity 1.8: a "findings"/"persistence" override was
+    letting positively-framed comparisons back in whenever the piece was
+    data-rich — e.g. "рост цен оказался ниже роста зарплат" ("price growth
+    trailed wage growth") contains a word that superficially resembles a
+    decline ("ниже"/"lower"), and the article is packed with concrete
+    figures, so it read as "verified finding" even though the finding is
+    positive, not a problem. This checks that a real negative-outcome marker
+    is present and is not immediately neutralised by an adjacent
+    positive-comparison phrase before treating the evidence as genuine.
+    """
+    folded = normalized_search_text(text)
+    if not any(
+        re.search(pattern, folded) for pattern in NEGATIVE_OUTCOME_EVIDENCE_PATTERNS
+    ):
+        return False
+    if any(
+        re.search(pattern, folded)
+        for pattern in POSITIVE_POLARITY_REVERSAL_PATTERNS
+    ):
+        return False
+    return True
+
+
 def result_integrity_genre_rejection(
     title: str,
     lead: str,
@@ -5946,7 +6009,8 @@ def result_integrity_genre_rejection(
     ):
         return "Result Integrity: обычное правоохранительное сообщение без социальной проблемы"
     if matches("positive_income_comparison", include_lead=True) and not (
-        resident_explicit or lead_findings or persistence
+        (resident_explicit or lead_findings or persistence)
+        and has_unreversed_negative_outcome(folded_lead)
     ):
         return "Result Integrity: положительная динамика доходов без подтверждённой проблемы"
     if matches("cultural_or_migration_commentary", include_lead=True) and not (
@@ -9012,6 +9076,14 @@ def prune_state(state: dict[str, Any], retain_days: int) -> None:
             stale.append(url)
     for url in stale:
         seen.pop(url, None)
+    # Result Event Integrity 1.8: the title cache (see title_cache below) has
+    # no timestamp of its own, so it is pruned in lockstep with `seen` —
+    # anything no longer worth remembering as "seen" is no longer worth
+    # remembering a stable title for either.
+    title_cache = state.setdefault("title_cache", {})
+    for url in list(title_cache):
+        if url not in seen:
+            title_cache.pop(url, None)
 
 
 def build_country_coverage(
@@ -9849,6 +9921,52 @@ th:first-child,td:first-child {{text-align:left}}
 """
 
 
+def write_rejected_signals_csv(
+    path: Path,
+    processing_outcomes: dict[str, tuple[Candidate, "CandidateProcessingTelemetry"]],
+) -> None:
+    """Internal debug artifact: candidates whose title+summary already showed
+    a "strong" topic+problem signal (metadata_prefilter) but were still
+    rejected by the full-text relevance decision, with the exact reason.
+
+    Not part of the public report — the daily workflow only uploads
+    reports/, and this file is written to a separate debug/ directory, so it
+    stays a local/internal aid for tracing cases like the 2026-08-27
+    BGmedia Vileyka-Molodechno minibus rejection ("нет связки социальной
+    темы и проблемы" despite a strong preliminary signal), where the public
+    artifacts kept only aggregate counts and no way to trace a specific
+    candidate's outcome.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "source", "priority", "title", "url", "published_at",
+        "discovered_via", "prefilter_status", "rejection_reason",
+        "final_stage",
+    ]
+    rows = [
+        (candidate, trace)
+        for candidate, trace in processing_outcomes.values()
+        if trace.prefilter_status == "strong"
+        and trace.final_stage in ("relevance_rejected", "date_rejected", "excerpt_empty")
+    ]
+    rows.sort(key=lambda pair: (pair[0].source.name, pair[0].url))
+    with path.open("w", encoding="utf-8-sig", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
+        for candidate, trace in rows:
+            writer.writerow({
+                "source": candidate.source.name,
+                "priority": candidate.source.priority,
+                "title": candidate.title,
+                "url": candidate.url,
+                "published_at": candidate.published_at,
+                "discovered_via": candidate.discovered_via,
+                "prefilter_status": trace.prefilter_status,
+                "rejection_reason": trace.rejection_reason or trace.final_stage,
+                "final_stage": trace.final_stage,
+            })
+
+
 def write_csv_report(path: Path, results: list[ArticleResult]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
@@ -10388,6 +10506,22 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
             item.published_at,
         )
     )
+    # Result Event Integrity 1.8: a source can quietly edit its own page
+    # title (punctuation, wording) between two runs that both see the same
+    # URL — 2026-08-27 showed the identical zerkalo.io URL go from a plain
+    # hyphen to an em-dash in its headline across runs 14/16. That is a
+    # cosmetic, non-deterministic-looking diff for anything comparing runs
+    # by title text. The first successfully published title for a URL is
+    # cached and reused on any later run that reprocesses that same URL, so
+    # the public title stays stable even when the source's own page changes.
+    title_cache: dict[str, str] = state.setdefault("title_cache", {})
+    for result in results:
+        cache_key = canonicalize_url(result.url)
+        cached_title = title_cache.get(cache_key)
+        if cached_title:
+            result.title = cached_title
+        elif result.title:
+            title_cache[cache_key] = result.title
     # Only fully processed candidates enter seen. Degraded candidates are kept
     # in a bounded retry queue and therefore cannot disappear silently after a
     # metadata-only or failed extraction.
@@ -10455,6 +10589,13 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
     errors_path = reports_dir / f"social_errors_{date_stamp}.txt"
     coverage_path = reports_dir / f"social_coverage_{date_stamp}.csv"
     access_telemetry_path = reports_dir / f"social_access_telemetry_{date_stamp}.csv"
+    # Internal debug artifact only — deliberately outside reports/, since the
+    # daily workflow uploads the whole reports/ directory as the public
+    # artifact and this trace (candidate-level rejection reasons) is meant
+    # for local/maintainer inspection, not the published report.
+    rejected_signals_path = (
+        project_root / "debug" / f"rejected_signals_{date_stamp}.csv"
+    )
 
     report_started = time.perf_counter()
     html_report = build_html_report(
@@ -10463,6 +10604,7 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
     html_path.write_text(html_report, encoding="utf-8")
     write_csv_report(csv_path, results)
     write_coverage_csv(coverage_path, source_coverage)
+    write_rejected_signals_csv(rejected_signals_path, processing_outcomes)
     errors_path.write_text("\n".join(errors), encoding="utf-8")
     report_seconds = time.perf_counter() - report_started
 
