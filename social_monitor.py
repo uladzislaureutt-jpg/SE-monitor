@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-26.social.59-result-integrity-1.6.2-regression-hotfix"
+MONITOR_BUILD = "2026-08-27.social.60-result-event-integrity-1.7"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -5371,6 +5371,33 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"нов[а-яёіў]*\s+правил",
         r"вступа[а-яёіў]*\s+в\s+силу\s+изменени[а-яёіў]*.*"
         r"(?:социальн[а-яёіў]*\s+пансионат|центр[а-яёіў]*\s+социальн[а-яёіў]*\s+реабилитац)",
+        r"(?:начал[а-яёіў]*\s+действоват|действуют).*нов[а-яёіў]*\s+правил[а-яёіў]*.*"
+        r"(?:направлени[а-яёіў]*\s+в\s+соцучреждени|социальн[а-яёіў]*\s+пансионат)",
+    )),
+    "career_explainer": tuple(re.compile(value) for value in (
+        r"^кто\s+такие\s+программист[а-яёіў]*\s+1с\s+и\s+почему\s+они\s+нужны",
+        r"^професси[а-яёіў]*\s+программист[а-яёіў]*\s+1с.*(?:чем\s+занима|почему\s+нуж)",
+    )),
+    "foreign_residency_facilitation": tuple(re.compile(value) for value in (
+        r"кипр[а-яёіў]*.*(?:разрешил|начал\s+выдават)[а-яёіў]*.*"
+        r"вид[а-яёіў]*\s+на\s+жительств[а-яёіў]*.*просроченн[а-яёіў]*\s+паспорт",
+        r"вид[а-яёіў]*\s+на\s+жительств[а-яёіў]*.*кипр[а-яёіў]*.*"
+        r"просроченн[а-яёіў]*\s+паспорт",
+    )),
+    "general_policy_statement": tuple(re.compile(value) for value in (
+        r"борьб[а-яёіў]*\s+с\s+некачественн[а-яёіў]*\s+импорт[а-яёіў]*.*"
+        r"будет\s+только\s+ужесточат",
+        r"(?:правительств|премьер)[а-яёіў]*.*(?:будет|намерен)[а-яёіў]*.*"
+        r"ужесточ[а-яёіў]*\s+(?:контрол|борьб)[а-яёіў]*.*импорт",
+    )),
+    "routine_law_enforcement_procedure": tuple(re.compile(value) for value in (
+        r"следч[а-яёіў]*\s+комитет[а-яёіў]*\s+начал[а-яёіў]*\s+спецпроизводств",
+        r"следч[а-яёіў]*\s+камітэт[а-яёіў]*\s+пачаў\s+спецвытворчасц",
+    )),
+    "positive_income_comparison": tuple(re.compile(value) for value in (
+        r"рост\s+(?:потребительск[а-яёіў]*\s+)?цен.*(?:ниже|меньше).*рост[а-яёіў]*\s+зарплат",
+        r"покупательн[а-яёіў]*\s+способност[а-яёіў]*.*(?:увеличил|вырос|стала\s+выше)",
+        r"зарплат[а-яёіў]*\s+(?:росл|вырос)[а-яёіў]*\s+(?:быстрее|выше).*инфляц",
     )),
     "cultural_or_migration_commentary": tuple(re.compile(value) for value in (
         r"как\s+себя\s+вести\s+в\s+беларус[а-яёіў]*",
@@ -5498,6 +5525,8 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:совет|ориентир|урожай|сбор)",
         r"очеред[а-яёіў]*\s+на\s+(?:\d+|один|два|две|три|четыре)\s+час[а-яёіў]*.*"
         r"(?:яблок|урожай).*переработ",
+        r"сам[а-яёіў]*\s+утеплил[а-яёіў]*.*(?:двухэтажн[а-яёіў]*\s+)?дом.*сэконом",
+        r"чем\s+опасн[а-яёіў]*\s+болотн[а-яёіў]*\s+фотосесси",
     )),
     "financial_ticker": tuple(re.compile(value) for value in (
         r"курсы?\s+валют",
@@ -5551,6 +5580,7 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:припарковал|прыпаркава)[а-яёіў]*",
         r"(?:автомобил|аўтамабіл)[а-яёіў]*\s+на\s+(?:российск|расейск)[а-яёіў]*\s+"
         r"(?:номер|нумар)[а-яёіў]*.*(?:парк|пдд|даі|гаи)",
+        r"продал[а-яёіў]*.*просроченн[а-яёіў]*\s+на\s+сем[ья]\s+лет.*киндер",
     )),
     "private_tenancy_dispute": tuple(re.compile(value) for value in (
         r"хозя(?:йк|ин)[а-яёіў]*.*(?:не\s+хотел[а-яёіў]*\s+возвращ|залог)",
@@ -5576,6 +5606,7 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"^(?:что\s+)?сегодня\s+по\s+новостям",
         r"^(?:главн[а-яёіў]*|важн[а-яёіў]*)\s+новост[а-яёіў]*\s+(?:дня|вечера|утра)",
         r"вечерн[а-яёіў]*\s+выпуск",
+        r"^какие\s+новост[а-яёіў]*\s+прин[её]с\s+сегодняшн[а-яёіў]*\s+день",
     )),
     "hypothetical_derivative": tuple(re.compile(value) for value in (
         r"а\s+что,?\s+если\s+бы",
@@ -5692,7 +5723,12 @@ BOUND_PUBLIC_ISSUE_PATTERNS: dict[
         )),
         tuple(re.compile(value) for value in (
             r"вместо\s+(?:больш|обычн)[а-яёіў]*\s+автобус[а-яёіў]*.*"
-            r"(?:маленьк|микроавтобус)",
+            r"(?:маленьк|мал[а-яёіў]*\s+автобус|микроавтобус|"
+            r"меньш[а-яёіў]*\s+вместимост)",
+            r"(?:подал|прислал|приехал|пустил)[а-яёіў]*.*"
+            r"автобус[а-яёіў]*\s+(?:мал[а-яёіў]*|меньш[а-яёіў]*\s+вместимост)",
+            r"автобус[а-яёіў]*\s+(?:мал[а-яёіў]*|меньш[а-яёіў]*\s+вместимост).*"
+            r"вместо\s+(?:больш|обычн)[а-яёіў]*",
             r"(?:не\s+хватил|нет|не\s+было)[а-яёіў]*\s+(?:мест|вместимост)",
             r"(?:переполнен|битком|давк)[а-яёіў]*.*(?:автобус|маршрут)",
             r"пассажир[а-яёіў]*.*(?:жалуют|возмущ)[а-яёіў]*.*"
@@ -5724,6 +5760,15 @@ BOUND_PUBLIC_ISSUE_PATTERNS: dict[
             r"(?:снизил|сократил|уменьшил)",
             r"(?:занятост|рабоч[а-яёіў]*\s+мест)[а-яёіў]*.*"
             r"(?:снизил|сократил|стало\s+меньше)",
+        )),
+    ),
+    "inactive_population_statistic": (
+        tuple(re.compile(value) for value in (
+            r"(?:нетунеядц|не\s+занят[а-яёіў]*\s+в\s+экономик)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:сколько|числ|количеств|свеж[а-яёіў]*\s+данн|белстат)",
+            r"(?:полной|повышенн)[а-яёіў]*\s+стоимост[а-яёіў]*.*(?:жкх|коммунальн[а-яёіў]*\s+услуг)",
         )),
     ),
     "telecom_service_complaint": (
@@ -5847,8 +5892,14 @@ def result_integrity_genre_rejection(
         return "Result Integrity: многосюжетная сводка без самостоятельного события"
     if matches("hypothetical_derivative") and not actual_public_evidence:
         return "Result Integrity: гипотетическая или сгенерированная иллюстрация события"
-    if matches("global_or_foreign_corporate") and not (
-        domestic_scope
+    explicit_domestic_market_link = bool(re.search(
+        r"(?:в|на)\s+беларус[а-яёіў]*.*(?:рынок|продаж|ввоз|эксплуатац|"
+        r"зарегистрирован|поставк|дилер|владельц)",
+        folded_lead,
+    ))
+    if matches("global_or_foreign_corporate", include_lead=True) and not (
+        explicit_domestic_market_link
+        and domestic_scope
         and (resident_or_systemic_evidence or regulatory_public_interest)
     ):
         return "Result Integrity: зарубежный или глобальный корпоративный сюжет"
@@ -5878,6 +5929,26 @@ def result_integrity_genre_rejection(
         resident_explicit or persistence or bound_regulatory_discussion
     ):
         return "Editorial Intent: нейтральное разъяснение новых правил"
+    if matches("career_explainer", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence
+    ):
+        return "Editorial Intent: справочный материал о профессии"
+    if matches("foreign_residency_facilitation", include_lead=True) and not (
+        lead_findings or persistence or bound_regulatory_discussion
+    ):
+        return "Result Integrity: зарубежное административное послабление без проблемы в Беларуси"
+    if matches("general_policy_statement", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence
+    ):
+        return "Editorial Intent: общее политико-экономическое заявление без установленного нарушения"
+    if matches("routine_law_enforcement_procedure", include_lead=True) and not (
+        resident_explicit or persistence or critical_public_interest
+    ):
+        return "Result Integrity: обычное правоохранительное сообщение без социальной проблемы"
+    if matches("positive_income_comparison", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence
+    ):
+        return "Result Integrity: положительная динамика доходов без подтверждённой проблемы"
     if matches("cultural_or_migration_commentary", include_lead=True) and not (
         lead_findings or persistence or critical_public_interest
     ):
@@ -6368,6 +6439,7 @@ def evaluate_relevance(
         "public_transport_capacity_failure": "Общественный транспорт",
         "real_income_pressure": "Работа, зарплаты и доходы",
         "employment_contraction": "Работа, зарплаты и доходы",
+        "inactive_population_statistic": "Работа, зарплаты и доходы",
         "telecom_service_complaint": "Связь, интернет и телевидение",
     }
     bound_profile_labels = {
@@ -6380,6 +6452,7 @@ def evaluate_relevance(
         "public_transport_capacity_failure": "нехватка вместимости общественного транспорта",
         "real_income_pressure": "снижение реальных доходов относительно цен",
         "employment_contraction": "сокращение занятости или рабочих мест",
+        "inactive_population_statistic": "статистика граждан, не занятых в экономике",
         "telecom_service_complaint": "подтверждённая жалоба на услугу связи",
     }
     for profile in sorted(bounded_issue_profiles):
@@ -7625,6 +7698,80 @@ def evaluate_relevance(
                 0, category_weights[construction_category] - 4
             )
 
+    # Result Integrity 1.7: предмет жалобы важнее буквального имени жилого
+    # комплекса. «Северный Берег» — название новостройки, а не природный
+    # берег; претензии дольщиков к балконам относятся к строительству.
+    normalized_category_context = normalized_search_text(full_context)
+    development_complaint_signal = bool(
+        re.search(r"(?:дольщик|застройщик|жил[а-яёіў]*\s+комплекс|новострой)", normalized_category_context)
+        and re.search(r"(?:балкон|фасад|проект|строят\s+другое|продают\s+одно)", normalized_category_context)
+        and re.search(r"(?:жалоб|пожаловал|претензи|не\s+соответств)", normalized_category_context)
+    )
+    if development_complaint_signal and construction_category in category_weights:
+        category_weights[construction_category] += 24
+        if "Земля, водоёмы и доступ к природе" in category_weights:
+            category_weights["Земля, водоёмы и доступ к природе"] = max(
+                0, category_weights["Земля, водоёмы и доступ к природе"] - 16
+            )
+
+    # Очередь, невозможность записаться или пройти осмотр у гинеколога —
+    # доступность здравоохранения, даже если в статье обсуждается график работы.
+    healthcare_category = "Здравоохранение"
+    healthcare_access_signal = bool(
+        re.search(r"(?:гинеколог|поликлиник|амбулатори|врач|медицинск[а-яёіў]*\s+осмотр)", normalized_category_context)
+        and re.search(r"(?:очеред|не\s+попаст|невозможн[а-яёіў]*\s+записат|как\s+пройти|нет\s+талон)", normalized_category_context)
+    )
+    if healthcare_access_signal and healthcare_category in category_weights:
+        category_weights[healthcare_category] += 24
+        if work_category in category_weights:
+            category_weights[work_category] = max(0, category_weights[work_category] - 12)
+
+    # Заваленная мусором контейнерная площадка относится к благоустройству /
+    # коммунальному содержанию территории, а не к трудовым отношениям.
+    waste_site_signal = bool(
+        re.search(r"контейнерн[а-яёіў]*\s+площадк", normalized_category_context)
+        and re.search(r"(?:завален|переполнен|не\s+вывоз|куч[а-яёіў]*\s+мусор|мусор)", normalized_category_context)
+        and re.search(r"(?:жалоб|пожаловал|обращен|что\s+ответил)", normalized_category_context)
+    )
+    if waste_site_signal and beautification_category in category_weights:
+        category_weights[beautification_category] += 24
+        if work_category in category_weights:
+            category_weights[work_category] = max(0, category_weights[work_category] - 14)
+
+    # Свежая статистика базы незанятых относится к занятости и доходам, а
+    # упоминание повышенной коммунальной оплаты описывает последствие статуса.
+    inactive_population_signal = bool(
+        re.search(r"(?:нетунеядц|не\s+занят[а-яёіў]*\s+в\s+экономик)", normalized_category_context)
+        and re.search(r"(?:сколько|числ|количеств|свеж[а-яёіў]*\s+данн|белстат)", normalized_category_context)
+    )
+    if inactive_population_signal and work_category in category_weights:
+        category_weights[work_category] += 22
+        if housing_category in category_weights:
+            category_weights[housing_category] = max(0, category_weights[housing_category] - 10)
+
+    # Постановление МАРТ о нормативе отечественного ассортимента — изменение
+    # регулирования торговли; критика качества остаётся содержанием, но не
+    # должна перетягивать карточку в категорию единичного качества товара.
+    retail_regulation_signal = bool(
+        re.search(r"(?:март|министерств[а-яёіў]*\s+антимонопольн)[а-яёіў]*", normalized_category_context)
+        and re.search(r"(?:постановлени|норматив)[а-яёіў]*.*(?:ассортимент|белорусск[а-яёіў]*\s+товар)", normalized_category_context)
+    )
+    if retail_regulation_signal and regulatory_category in category_weights:
+        category_weights[regulatory_category] += 22
+        if quality_category in category_weights:
+            category_weights[quality_category] = max(0, category_weights[quality_category] - 8)
+
+    # Комплекс коммунальных вопросов на выездном приёме (отопление, вода,
+    # содержание территории) относится к ЖКХ, а не к качеству товара.
+    communal_resident_issue_signal = bool(
+        re.search(r"(?:отоплен|водоснабж|жкх|контейнерн[а-яёіў]*\s+площадк)", normalized_category_context)
+        and re.search(r"(?:прием\s+граждан|приём\s+граждан|жалоб|обращен|жител)", normalized_category_context)
+    )
+    if communal_resident_issue_signal and housing_category in category_weights:
+        category_weights[housing_category] += 22
+        if quality_category in category_weights:
+            category_weights[quality_category] = max(0, category_weights[quality_category] - 10)
+
     # Жалобы гостей на состояние гостиницы описывают качество коммерческой
     # услуги, а не состояние жилого фонда.
     if (
@@ -8352,7 +8499,8 @@ _EVENT_SEMANTIC_CONCEPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     )),
     "product": tuple(re.compile(value) for value in (
         r"продукт[а-яёіў]*", r"товар[а-яёіў]*", r"продукц[а-яёіў]*",
-        r"тавар[а-яёіў]*", r"харчов[а-яёіў]*",
+        r"тавар[а-яёіў]*", r"харчов[а-яёіў]*", r"шоколад[а-яёіў]*",
+        r"какао-порош[а-яёіў]*", r"спре[йя][а-яёіў]*\s+для\s+ног",
     )),
     "unsafe": tuple(re.compile(value) for value in (
         r"опасн[а-яёіў]*", r"небезопасн[а-яёіў]*", r"небяспечн[а-яёіў]*",
@@ -8431,6 +8579,41 @@ _EVENT_SEMANTIC_CONCEPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "salary_discussion": tuple(re.compile(value) for value in (
         r"зарплат[а-яёіў]*", r"1500\s+рубл", r"3000\+?",
     )),
+    "charged_brand": tuple(re.compile(value) for value in (
+        r"чаржед", r"charged",
+    )),
+    "foot_spray": tuple(re.compile(value) for value in (
+        r"спре[йя][а-яёіў]*\s+для\s+ног", r"средств[а-яёіў]*\s+для\s+ног",
+    )),
+    "boric_acid": tuple(re.compile(value) for value in (
+        r"борн[а-яёіў]*\s+кислот",
+    )),
+    "cocoa_powder": tuple(re.compile(value) for value in (
+        r"какао-порош", r"какао\s+порош",
+    )),
+    "employment_count": tuple(re.compile(value) for value in (
+        r"(?:числ|количеств)[а-яёіў]*\s+занят[а-яёіў]*\s+в\s+экономик",
+        r"занят[а-яёіў]*\s+в\s+экономик[а-яёіў]*.*(?:снизил|сократил|уменьшил)",
+    )),
+    "inactive_population_count": tuple(re.compile(value) for value in (
+        r"(?:сколько|числ|количеств)[а-яёіў]*.*(?:нетунеядц|не\s+занят[а-яёіў]*\s+в\s+экономик)",
+        r"(?:нетунеядц|не\s+занят[а-яёіў]*\s+в\s+экономик).*"
+        r"(?:сколько|числ|количеств|свеж[а-яёіў]*\s+данн)",
+    )),
+    "public_works_control": tuple(re.compile(value) for value in (
+        r"(?:кгк|комитет[а-яёіў]*\s+госконтрол)[а-яёіў]*.*"
+        r"(?:мост|путепровод|строительств)",
+    )),
+    "overspend": tuple(re.compile(value) for value in (
+        r"(?:необоснованн|излишн|завышенн)[а-яёіў]*\s+(?:трат|расход|стоимост|объем)",
+    )),
+    "cyprus": tuple(re.compile(value) for value in (r"кипр[а-яёіў]*",)),
+    "residency_permit": tuple(re.compile(value) for value in (
+        r"вид[а-яёіў]*\s+на\s+жительств",
+    )),
+    "expired_passport": tuple(re.compile(value) for value in (
+        r"просроченн[а-яёіў]*\s+паспорт",
+    )),
 }
 
 
@@ -8459,6 +8642,22 @@ def _event_semantic_profile(result: ArticleResult) -> tuple[set[str], set[str]]:
         families.add("communal_water_overcharge")
     if {"store_employment", "hiring_failure", "salary_discussion"} <= concepts:
         families.add("retail_hiring_shortage")
+    if {"product", "unsafe", "charged_brand"} <= concepts:
+        families.add("charged_chocolate_recall")
+    if {"product", "foot_spray", "boric_acid"} <= concepts:
+        families.add("boric_foot_spray_recall")
+    if {"product", "cocoa_powder"} <= concepts and concepts & {
+        "unsafe", "enforcement"
+    }:
+        families.add("cocoa_powder_recall")
+    if "employment_count" in concepts:
+        families.add("employment_contraction_statistic")
+    if "inactive_population_count" in concepts:
+        families.add("inactive_population_statistic")
+    if {"public_works_control", "overspend"} <= concepts:
+        families.add("public_works_overspend")
+    if {"cyprus", "residency_permit", "expired_passport"} <= concepts:
+        families.add("cyprus_residency_facilitation")
     return families, concepts
 
 
@@ -8480,9 +8679,28 @@ def _strong_semantic_event_match(
     shared_families = left_families & right_families
     if not shared_families:
         return False
+    left_value = normalized_search_text(f"{left.title}. {left.excerpt[:1200]}")
+    right_value = normalized_search_text(f"{right.title}. {right.excerpt[:1200]}")
+    if "natural_water_level" in shared_families:
+        named_waters = ("припят", "днепр", "неман", "сож", "березин", "двин")
+        if any(anchor in left_value and anchor in right_value for anchor in named_waters):
+            return True
+    if shared_families & {
+        "charged_chocolate_recall",
+        "boric_foot_spray_recall",
+        "cocoa_powder_recall",
+        "cyprus_residency_facilitation",
+    }:
+        return True
+    if "employment_contraction_statistic" in shared_families and shared_numbers:
+        return True
+    if "inactive_population_statistic" in shared_families:
+        return True
+    if "public_works_overspend" in shared_families and (
+        shared_numbers or len(left_concepts & right_concepts) >= 3
+    ):
+        return True
     if "confectionery_contamination" in shared_families:
-        left_value = normalized_search_text(f"{left.title}. {left.excerpt[:1200]}")
-        right_value = normalized_search_text(f"{right.title}. {right.excerpt[:1200]}")
         contamination_anchors = (
             re.compile(r"кишечн[а-яёіў]*\s+палоч"),
             re.compile(r"стафилокок"), re.compile(r"s\.?\s*aureus"),
@@ -8597,6 +8815,7 @@ def _looks_like_same_event(left: ArticleResult, right: ArticleResult) -> bool:
         left.event_signature
         and right.event_signature
         and left.event_signature != right.event_signature
+        and not strong_semantic_match
     ):
         return False
 
