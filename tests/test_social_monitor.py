@@ -5571,10 +5571,19 @@ def test_architecture_core32b_report30_nasha_niva_keeps_telegram_plus_soft_tail(
         for item in selected
     ]
 
-    assert len(selected) == 23
+    # Soft-tail ceiling is now proportional to the source's own limit (60)
+    # via soft_admission_ratio/floor/cap in settings.yaml, not the fixed
+    # global discovery.sitemap_candidate_reserve (5) used previously.
+    # See soft_admission_budget_ceiling().
+    assert len(selected) == 30
     assert statuses.count("fresh") == 18
-    assert statuses.count("soft") == 5
+    assert statuses.count("soft") == 12
     assert statuses[:18] == ["fresh"] * 18
+    assert social_monitor.soft_admission_tail_budget(
+        [*telegram, *sitemap], 60, 5, cutoff, settings=SETTINGS
+    ) == 12
+    # Without settings, the function falls back to the raw sitemap_reserve
+    # argument for backward compatibility with callers that don't pass it.
     assert social_monitor.soft_admission_tail_budget(
         [*telegram, *sitemap], 60, 5, cutoff
     ) == 5
@@ -5923,10 +5932,12 @@ def test_architecture_core32b1_onliner_soft_routes_do_not_displace_editorial_bud
         for item in selected
     ]
 
-    assert len(selected) == 47
+    # Soft-tail ceiling is proportional to Onlíner's own limit (65) via
+    # soft_admission_ratio/floor/cap, not the fixed global 5 used previously.
+    assert len(selected) == 55
     assert statuses.count("fresh") == 30
     assert statuses.count("current") == 12
-    assert statuses.count("soft") == 5
+    assert statuses.count("soft") == 13
     assert all(
         "ab.onliner.by" not in item.url
         and "catalog.onliner.by" not in item.url
@@ -6091,10 +6102,14 @@ def test_architecture_core32b11_onliner_completed_routes_do_not_use_trusted_budg
         for item in selected
     ]
 
-    assert len(selected) == 35
+    # Soft-tail ceiling is now 13 (proportional to limit=65), but only 10
+    # legitimate soft candidates (editorial_soft) exist; service-like routes
+    # never fill the leftover headroom regardless of ceiling size — see
+    # candidate_service_like() filtering in select_balanced_source_candidates.
+    assert len(selected) == 40
     assert statuses.count("fresh") == 30
     assert statuses.count("current") == 0
-    assert statuses.count("soft") == 5
+    assert statuses.count("soft") == 10
     assert all("go.onliner.by" not in item.url for item in selected)
     assert all("mb.onliner.by" not in item.url for item in selected)
 

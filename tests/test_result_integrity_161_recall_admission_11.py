@@ -129,11 +129,19 @@ def test_admission_11_raises_only_persistent_limit_sources():
         "Zerkalo.io": 75,
         "Наша Ніва": 75,
         "NewGrodno": 75,
-        "Белновости": 70,
+        # Raised 70->90 on 2026-08-26 report-13 telemetry: clipped_fresh=21
+        # (genuinely dated candidates cut by the base limit, not just
+        # ambiguous tail). Single-day evidence — re-confirm as persistent
+        # over subsequent runs.
+        "Белновости": 90,
         "Минская правда": 70,
         "Smartpress.by": 60,
         "CityDog": 60,
-        "Виртуальный Брест": 65,
+        # Raised 65->105 on 2026-08-26 report-13 telemetry: clipped_fresh=36,
+        # the largest single-day dated-candidate overflow observed across
+        # all sources that day. Single-day evidence — re-confirm as
+        # persistent over subsequent runs.
+        "Виртуальный Брест": 105,
         "БрестСИТИ": 65,
         "ВГР": 60,
         "Слуцк-Город": 55,
