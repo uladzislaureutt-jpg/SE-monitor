@@ -118,6 +118,25 @@ jobs:
           retention-days: 14
           if-no-files-found: warn
 
+      # Internal diagnostic trace only — candidate-level rejection reasons
+      # for candidates that already showed a "strong" preliminary topic and
+      # problem signal (metadata_prefilter) but were still rejected by the
+      # full-text relevance decision. Deliberately a separate artifact from
+      # "Upload report files" above: it is written to debug/ specifically
+      # so it never ends up inside the public reports/ bundle. Before this
+      # step, write_rejected_signals_csv() ran on every scheduled and
+      # dry-run execution but its output only ever existed on the
+      # short-lived GitHub Actions runner, so it was unreachable for the
+      # 2026-08-27 report-17 investigation.
+      - name: Upload debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: social-debug-${{ github.run_number }}
+          path: debug/
+          retention-days: 7
+          if-no-files-found: warn
+
       - name: Save monitoring state
         if: ${{ success() && inputs.dry_run != true }}
         run: |
