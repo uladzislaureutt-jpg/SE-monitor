@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-27.social.61-result-event-integrity-1.8"
+MONITOR_BUILD = "2026-08-27.social.62-result-event-integrity-1.9"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -1490,11 +1490,40 @@ def same_site(url: str, domain: str) -> bool:
     return host == domain or host.endswith("." + domain) or domain.endswith("." + host)
 
 
+# Domains where a bare numeric route is a known duplicate/redirect risk
+# against an already-admitted localized form (e.g. nashaniva.com serves
+# canonical articles at /ru/<id> and /be_latn/<id>/, and its bare /<id>
+# route was deliberately left "unknown" pending diagnosis of its
+# extraction/duplication behavior — see
+# test_architecture_core32a22_nasha_niva_comments_guard_covers_all_locales).
+# The general numeric-id article rule below must not override that
+# considered decision for these specific domains.
+NUMERIC_ARTICLE_ID_EXCLUDED_DOMAINS: frozenset[str] = frozenset({"nashaniva.com"})
+
+
 def is_probable_article_url(url: str, domain: str) -> bool:
     if not same_site(url, domain):
         return False
     parsed = urllib.parse.urlsplit(url)
     path = parsed.path.lower()
+    segments = [segment for segment in path.split("/") if segment]
+    # Some outlets (vkurier.by is the diagnosed case: /238683, /238672, ...)
+    # publish articles directly under the domain root as a bare numeric CMS
+    # id, shorter than the length-8 floor below that was tuned for
+    # slug-style paths. Without this, every article such a source publishes
+    # is silently unreachable — vkurier.by returned zero candidates across
+    # feed, sitemap and homepage for 6+ consecutive days even though it was
+    # actively publishing, purely because of this gap. Bounded to 5-9 digits
+    # so short numbers (pagination, "/2024" year archives) and implausibly
+    # long ones (hashes, timestamps) don't qualify.
+    if (
+        len(segments) == 1
+        and segments[0].isdigit()
+        and 5 <= len(segments[0]) <= 9
+        and not any(part in path for part in BLOCKED_PATH_PARTS)
+        and domain.lower() not in NUMERIC_ARTICLE_ID_EXCLUDED_DOMAINS
+    ):
+        return True
     if len(path.strip("/")) < 8:
         return False
     if any(part in path for part in BLOCKED_PATH_PARTS):
@@ -1503,7 +1532,6 @@ def is_probable_article_url(url: str, domain: str) -> bool:
         return False
     if path.endswith(ARTICLE_EXTENSIONS):
         return True
-    segments = [segment for segment in path.split("/") if segment]
     if len(segments) >= 2 or bool(re.search(r"/20\d{2}/", path)):
         return True
     # WordPress and several Belarusian media use a single long slug directly
