@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-27.social.62-result-event-integrity-1.9"
+MONITOR_BUILD = "2026-08-28.social.63-result-event-integrity-1.10"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -219,6 +219,34 @@ STRATEGIC_SOURCE_PROFILES: dict[str, dict[str, Any]] = {
             "source_specific", "embedded_json", "json_ld", "generic_html",
         ),
         "embedded_json": True,
+        "prefer_largest_container": True,
+        "chromium_threshold": 250,
+    },
+    "vkurier.by": {
+        # Result Event Integrity 1.10: discovery was fixed (2026.social.62,
+        # is_probable_article_url numeric-id support), but the very next
+        # dry-run (report-18, 2026-08-28) showed all 26 newly-discovered
+        # candidates failing extraction (access_status "extraction_blind")
+        # despite fetch_ok=26/26. A manually fetched sample article
+        # (vkurier.by/238683) was a normal, full WordPress post, so the page
+        # itself is not obviously empty — but this could not be confirmed
+        # against what the requests-transport pipeline actually receives.
+        # vkurier.by shares the exact same access-restriction history as the
+        # other protected=True Belarusian outlets already in this table
+        # (blocked in-country since August 2020, on the republican
+        # "extremist materials" list since January 2022), which is the same
+        # category of site where a chromium fallback and the
+        # prefer_largest_container policy have already paid off (belsat.eu
+        # above). Both are low-risk hedges either way: if the real cause
+        # turns out to be a CSS-selector mismatch rather than a transport
+        # issue, chromium will not help but will not make things worse
+        # either, and prefer_largest_container is strictly at least as good
+        # as the previous strict-priority extraction order. See the new
+        # html_length column in debug/rejected_signals_*.csv (Result Event
+        # Integrity 1.10) for confirming which cause it actually is on the
+        # next run.
+        "protected": True,
+        "transport_order": ("requests", "chromium"),
         "prefer_largest_container": True,
         "chromium_threshold": 250,
     },
@@ -671,6 +699,7 @@ class CandidateProcessingTelemetry:
     transport_status_code: int = 0
     transport_failure_class: str = ""
     http_observations: tuple["HttpObservation", ...] = ()
+    html_length: int = 0
 
 
 @dataclass
@@ -829,6 +858,13 @@ class ArticleExtraction:
     chromium_attempts: int = 0
     http_attempts: int = 0
     http_observations: tuple["HttpObservation", ...] = ()
+    # Result Event Integrity 1.10: raw fetched HTML length, independent of
+    # whether any extraction strategy found article text. Distinguishes a
+    # genuine "page had no usable body" case from "page fetched fine but our
+    # extraction logic missed it" — see the 2026-08-28 vkurier.by
+    # extraction_blind investigation, where this could not be told apart
+    # from the report/coverage telemetry alone.
+    html_length: int = 0
 
     def __iter__(self):
         # Сохраняет совместимость со старым кодом: title, text = extract_article(...)
@@ -4997,6 +5033,7 @@ def extract_article(
             if rendered_html:
                 extraction_started = time.perf_counter()
                 rendered = extract_article_from_html(candidate, rendered_html)
+                rendered.html_length = len(rendered_html)
                 extraction_seconds += time.perf_counter() - extraction_started
                 rendered.transport = "chromium"
                 rendered.transport_status = "ok"
@@ -5038,6 +5075,7 @@ def extract_article(
 
     extraction_started = time.perf_counter()
     extracted = extract_article_from_html(candidate, response.content)
+    extracted.html_length = len(response.content)
     extraction_seconds += time.perf_counter() - extraction_started
     extracted.transport = transport or "requests"
     extracted.transport_status = "ok"
@@ -5058,6 +5096,7 @@ def extract_article(
             amp_extracted = extract_article_from_html(
                 candidate, amp_response.content
             )
+            amp_extracted.html_length = len(amp_response.content)
             extraction_seconds += time.perf_counter() - extraction_started
             if amp_extracted.text:
                 amp_extracted.transport = "amp"
@@ -8329,6 +8368,7 @@ def process_candidate_detailed(
         trace.transport_status_code = extracted.transport_status_code
         trace.transport_failure_class = extracted.transport_failure_class
         trace.http_observations = extracted.http_observations
+        trace.html_length = extracted.html_length
     else:
         title, text = extracted
         extracted_published_at = ""
@@ -9955,7 +9995,8 @@ def write_rejected_signals_csv(
 ) -> None:
     """Internal debug artifact: candidates whose title+summary already showed
     a "strong" topic+problem signal (metadata_prefilter) but were still
-    rejected by the full-text relevance decision, with the exact reason.
+    rejected by the full-text relevance decision, with the exact reason —
+    OR whose extraction failed outright despite that same strong signal.
 
     Not part of the public report — the daily workflow only uploads
     reports/, and this file is written to a separate debug/ directory, so it
@@ -9964,18 +10005,36 @@ def write_rejected_signals_csv(
     темы и проблемы" despite a strong preliminary signal), where the public
     artifacts kept only aggregate counts and no way to trace a specific
     candidate's outcome.
+
+    Result Event Integrity 1.10: extraction failures (final_stage
+    "degraded_queued", degraded_reason "extraction_failed") were not
+    captured here, so the 2026-08-28 vkurier.by extraction_blind run (26/26
+    candidates, strong prefilter signal on several) produced zero rows and
+    gave no way to tell "the fetched page had no usable body" apart from
+    "our extraction logic missed a normal page" — the two have very
+    different fixes. html_length (raw fetched bytes, independent of what
+    any extraction strategy found) is included specifically to answer that:
+    a small html_length points at the source/transport side (e.g. a bot
+    challenge page), a large one with text_length == 0 points at the
+    extraction selectors themselves.
     """
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
         "source", "priority", "title", "url", "published_at",
         "discovered_via", "prefilter_status", "rejection_reason",
-        "final_stage",
+        "final_stage", "html_length", "text_length",
     ]
     rows = [
         (candidate, trace)
         for candidate, trace in processing_outcomes.values()
         if trace.prefilter_status == "strong"
-        and trace.final_stage in ("relevance_rejected", "date_rejected", "excerpt_empty")
+        and (
+            trace.final_stage in ("relevance_rejected", "date_rejected", "excerpt_empty")
+            or (
+                trace.final_stage == "degraded_queued"
+                and trace.degraded_reason == "extraction_failed"
+            )
+        )
     ]
     rows.sort(key=lambda pair: (pair[0].source.name, pair[0].url))
     with path.open("w", encoding="utf-8-sig", newline="") as file:
@@ -9990,8 +10049,15 @@ def write_rejected_signals_csv(
                 "published_at": candidate.published_at,
                 "discovered_via": candidate.discovered_via,
                 "prefilter_status": trace.prefilter_status,
-                "rejection_reason": trace.rejection_reason or trace.final_stage,
+                "rejection_reason": (
+                    trace.rejection_reason
+                    or ("html fetched, no article text extracted" if trace.degraded_reason == "extraction_failed" else "")
+                    or (f"degraded: {trace.degraded_reason}" if trace.degraded_reason else "")
+                    or trace.final_stage
+                ),
                 "final_stage": trace.final_stage,
+                "html_length": trace.html_length,
+                "text_length": trace.text_length,
             })
 
 
