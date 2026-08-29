@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-28.social.64-result-event-integrity-1.11"
+MONITOR_BUILD = "2026-08-29.social.65-result-event-integrity-1.12"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -5009,13 +5009,17 @@ def extract_article(
             response = amp_response
             transport = "amp"
 
-    # For Belsat, Chromium is also a recovery transport when the static HTTP
-    # request itself failed/circuit-opened, not only when static HTML is thin.
-    if (
-        not response
-        and "chromium" in transport_order
-        and candidate.source.adapter == "belsat_article"
-    ):
+    # Chromium is also a recovery transport when the static HTTP request
+    # itself failed/circuit-opened, not only when static HTML is thin. This
+    # used to be hard-restricted to adapter == "belsat_article" (only
+    # Belsat had chromium in its transport_order at the time), which
+    # silently made the vkurier.by protected+chromium profile
+    # (Result Event Integrity 1.10) a no-op — chromium_attempts stayed 0 on
+    # every real run regardless of the profile. transport_order is the
+    # actual intended gate; render_belsat_article_html() has no
+    # Belsat-specific logic in its body, it is a plain headless-Chromium
+    # fetch for any URL.
+    if not response and "chromium" in transport_order:
         decision = recovery.transport_decision(candidate.source, "chromium") if recovery else "normal"
         if decision == "skip":
             circuit_skipped = True
@@ -5124,7 +5128,6 @@ def extract_article(
     chromium_threshold = int(profile.get("chromium_threshold", 250))
     if (
         "chromium" in transport_order
-        and candidate.source.adapter == "belsat_article"
         and len(extracted.text) < chromium_threshold
     ):
         decision = recovery.transport_decision(candidate.source, "chromium") if recovery else "normal"
