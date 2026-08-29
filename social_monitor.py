@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-29.social.65-result-event-integrity-1.12"
+MONITOR_BUILD = "2026-08-29.social.66-result-event-integrity-1.13"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -10141,6 +10141,16 @@ def write_rejected_signals_csv(
     a small html_length points at the source/transport side (e.g. a bot
     challenge page), a large one with text_length == 0 points at the
     extraction selectors themselves.
+
+    Result Event Integrity 1.13: the "strong prefilter" requirement was
+    still gating extraction failures too, and report-22 (chromium fix from
+    1.12 confirmed active — chromium_attempts=26 — extraction_failed still
+    26/26) showed exactly why that's the wrong bar: vkurier.by's candidates
+    scored "possible"/"needs_text" that day, not "strong", so the one run
+    that most needed html_length diagnostics produced zero debug rows.
+    Prefilter status reflects topical promise from title+summary alone; it
+    has nothing to do with whether full-text extraction will succeed, so
+    extraction failures are no longer filtered by it.
     """
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
@@ -10151,13 +10161,13 @@ def write_rejected_signals_csv(
     rows = [
         (candidate, trace)
         for candidate, trace in processing_outcomes.values()
-        if trace.prefilter_status == "strong"
-        and (
-            trace.final_stage in ("relevance_rejected", "date_rejected", "excerpt_empty")
-            or (
-                trace.final_stage == "degraded_queued"
-                and trace.degraded_reason == "extraction_failed"
-            )
+        if (
+            trace.prefilter_status == "strong"
+            and trace.final_stage in ("relevance_rejected", "date_rejected", "excerpt_empty")
+        )
+        or (
+            trace.final_stage == "degraded_queued"
+            and trace.degraded_reason == "extraction_failed"
         )
     ]
     rows.sort(key=lambda pair: (pair[0].source.name, pair[0].url))
