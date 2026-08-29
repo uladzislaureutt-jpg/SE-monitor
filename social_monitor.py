@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-29.social.66-result-event-integrity-1.13"
+MONITOR_BUILD = "2026-08-30.social.68-result-event-integrity-1.15"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -60,6 +60,31 @@ CONTENT_NOISE_SELECTORS = (
     "[class*='breadcrumb'], [id*='breadcrumb'], "
     "[class*='share'], [id*='share']"
 )
+
+# Result Event Integrity 1.15: these are structural page containers, never
+# themselves "noise" regardless of what utility/layout classes a theme puts
+# on them. The vkurier.by extraction_blind investigation (2026-08-29/30,
+# reports 18-23) traced all the way down to <body class="... sidebar-right">
+# — the WordPress theme's own "sidebar is on the right" layout hint on
+# <body> — matching the broad [class*='sidebar'] noise pattern above and
+# decomposing the entire <body>, taking the real article with it. This is
+# not vkurier.by-specific: any theme that puts a layout/utility class
+# containing one of these substrings (sidebar, widget, social, comment...)
+# directly on a structural container is silently unrecoverable today. This
+# is the root-cause fix; the vkurier.by SOURCE_PRECLEAN_CONTENT_SELECTORS
+# entry stays in place as defense-in-depth, not as the primary fix.
+CONTENT_NOISE_PROTECTED_TAGS = frozenset({"html", "body", "main", "article"})
+
+
+def remove_content_noise(soup: Any) -> None:
+    """Decompose CONTENT_NOISE_SELECTORS matches, except structural page
+    containers (see CONTENT_NOISE_PROTECTED_TAGS) — a noise class landing on
+    one of those must never take the whole document/article with it.
+    """
+    for tag in soup.select(CONTENT_NOISE_SELECTORS):
+        if tag.name in CONTENT_NOISE_PROTECTED_TAGS:
+            continue
+        tag.decompose()
 
 ARTICLE_CONTENT_SELECTORS = (
     "[itemprop='articleBody']",
@@ -452,6 +477,25 @@ SOURCE_PRECLEAN_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
         ".edgtf-post-text-main", ".amp-wp-article-content",
         ".amp-wp-content",
     ),
+    # Result Event Integrity 1.14: vkurier.by extraction_blind, confirmed
+    # 2026-08-29/30 across 3 real runs (chromium included — chromium_seconds
+    # >400s, chromium_attempts=26/26) to NOT be a transport/bot-detection
+    # issue: html_length is consistently 67-90KB of real, substantial HTML
+    # (26 different articles across ADT, politics, weather, sponsored
+    # content...), yet text_length is 0 every single time regardless of
+    # which extraction strategy runs. The guessed SOURCE_CONTENT_SELECTORS
+    # entry for vkurier.by (.article-content/.entry-content/.post-content/
+    # .td-post-content) never matched anything real. Rather than guess
+    # another exact class name blind, anchor on the standard HTML5 <article>
+    # /<main> tags a modern WordPress theme (confirmed via meta generator)
+    # is very likely to use, and skip the aggressive CONTENT_NOISE_SELECTORS
+    # pass the same way the Pozirk fix already did for exactly this failure
+    # mode (its wrapper's own class name collided with the noise list).
+    # Unverified without raw HTML — if this does not resolve it, the debug
+    # artifact will keep showing html_length>0/text_length==0 and the next
+    # step is getting an actual view-source snippet rather than guessing
+    # again.
+    "vkurier.by": ("article", "main"),
 }
 
 SOURCE_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
@@ -4488,8 +4532,7 @@ def extract_source_specific_article_text(
         return ""
 
     clone = BeautifulSoup(str(soup), "html.parser")
-    for tag in clone.select(CONTENT_NOISE_SELECTORS):
-        tag.decompose()
+    remove_content_noise(clone)
 
     checked_nodes: set[int] = set()
     for selector in selectors:
@@ -4514,8 +4557,7 @@ def extract_source_specific_article_text(
 
 def extract_scored_article_text(soup: BeautifulSoup, source: Source) -> str:
     """Choose the strongest article container for profiled JS-heavy sources."""
-    for tag in soup.select(CONTENT_NOISE_SELECTORS):
-        tag.decompose()
+    remove_content_noise(soup)
 
     selectors = SOURCE_CONTENT_SELECTORS.get(source.domain, ()) + ARTICLE_CONTENT_SELECTORS
     selector_text = ", ".join(dict.fromkeys([
@@ -4545,8 +4587,7 @@ def extract_scored_article_text(soup: BeautifulSoup, source: Source) -> str:
 
 
 def extract_main_article_text(soup: BeautifulSoup, source: Source) -> str:
-    for tag in soup.select(CONTENT_NOISE_SELECTORS):
-        tag.decompose()
+    remove_content_noise(soup)
 
     checked_nodes: set[int] = set()
     selectors = SOURCE_CONTENT_SELECTORS.get(source.domain, ()) + ARTICLE_CONTENT_SELECTORS
