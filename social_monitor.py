@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-28.social.63-result-event-integrity-1.10"
+MONITOR_BUILD = "2026-08-28.social.64-result-event-integrity-1.11"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -5882,51 +5882,169 @@ def bound_public_issue_profiles(text: str) -> set[str]:
     }
 
 
-POSITIVE_POLARITY_REVERSAL_PATTERNS: tuple[str, ...] = (
-    r"выше.{0,25}(?:инфляц|рост[а-яёіў]*\s+цен)",
-    r"ниже.{0,25}рост[а-яёіў]*\s+(?:зарплат|доход)",
-    r"быстрее.{0,25}инфляц",
-    r"опережа[а-яёіў]*.{0,25}инфляц",
-    r"покупательн[а-яёіў]*\s+способност[а-яёіў]*.{0,50}"
-    r"(?:вырос|увеличил|повысил|стала\s+выше)",
-    r"(?:вырос|увеличил|повысил[а-яёіў]*|стал[а-яёіў]*\s+выше).{0,50}"
-    r"(?:зарплат|доход|уровень\s+жизни)",
+# Result Event Integrity 1.11: rethought from an ever-growing list of exact
+# "positive framing" phrases — three real articles slipped through with
+# three different wordings of the same underlying idea across two days
+# ("рост цен ниже роста зарплат", "покупательная способность увеличилась",
+# "доходы подскочили на 7,5%, безработица обновила рекордный минимум") —
+# into a compositional mechanism instead. A small, bounded vocabulary of
+# DIRECTION markers (words meaning "increased"/"decreased", independent of
+# subject) is combined with a small, bounded table of which economic/social
+# SUBJECTS treat an increase as good news vs a problem. Polarity is derived
+# from (subject, nearest direction marker) pairs, so a genuinely new
+# phrasing of an already-known subject is handled without being
+# individually enumerated — only a new subject or direction verb needs
+# adding, not every new sentence shape built from them.
+
+INCREASE_MARKERS: tuple[str, ...] = (
+    r"вырос[а-яёіў]*", r"рост[а-яёіў]*", r"увеличил[а-яёіў]*",
+    r"повысил[а-яёіў]*", r"подскочил[а-яёіў]*", r"взлетел[а-яёіў]*",
+    r"поднял[а-яёіў]*", r"прибав[а-яёіў]*", r"нарастил[а-яёіў]*",
+    r"укрепил[а-яёіў]*", r"ускорил[а-яёіў]*",
+    r"рекордн[а-яёіў]*\s+максимум", r"положительн[а-яёіў]*\s+динамик[а-яёіў]*",
 )
 
-NEGATIVE_OUTCOME_EVIDENCE_PATTERNS: tuple[str, ...] = (
-    r"снизил[а-яёіў]*", r"упал[а-яёіў]*", r"сократил[а-яёіў]*",
-    r"стал[а-яёіў]*\s+хуже", r"ухудш[а-яёіў]*",
-    r"не\s+хватает", r"не\s+хапае", r"недостаточ[а-яёіў]*",
-    r"ниже\s+прожиточн", r"задолженност", r"просроч[а-яёіў]*",
-    r"жалоб[а-яёіў]*", r"пожаловал[а-яёіў]*", r"скардз[а-яёіў]*",
+DECREASE_MARKERS: tuple[str, ...] = (
+    r"снизил[а-яёіў]*", r"снижен[а-яёіў]*", r"упал[а-яёіў]*",
+    r"сократил[а-яёіў]*", r"ухудш[а-яёіў]*", r"замедлил[а-яёіў]*",
+    r"обвалил[а-яёіў]*", r"рухнул[а-яёіў]*", r"спад[а-яёіў]*",
+    r"рекордн[а-яёіў]*\s+минимум",
 )
+
+COMPARATIVE_LOWER_MARKERS: tuple[str, ...] = (r"ниже", r"меньше", r"медленнее")
+COMPARATIVE_HIGHER_MARKERS: tuple[str, ...] = (
+    r"выше", r"больше", r"быстрее", r"опережа[а-яёіў]*",
+)
+
+# A subject mentioned inside a concessive clause ("даже с учётом роста
+# цен...", "несмотря на рост цен...") is being conceded, not asserted as
+# the sentence's point — the point is whatever follows. Without this, "даже
+# с учётом накопленного роста цен покупательная способность стала выше"
+# ("even accounting for price growth, purchasing power rose") flagged
+# "рост цен" as a standalone problem, even though the sentence's actual
+# conclusion (purchasing power rising) is positive.
+CONCESSIVE_MARKERS: tuple[str, ...] = (
+    r"несмотря\s+на", r"даже\s+с\s+учет[а-яёіў]*", r"даже\s+если",
+    r"хотя\s+и", r"вопреки",
+)
+
+# Whether an INCREASE in this subject is good news for residents (True) or
+# a problem (False). A decrease has the opposite polarity by construction —
+# the table needs one bit per subject, not one entry per phrasing.
+SUBJECT_INCREASE_IS_GOOD: tuple[tuple[str, bool], ...] = (
+    (r"покупательн[а-яёіў]*\s+способност[а-яёіў]*", True),
+    (r"зарплат[а-яёіў]*", True),
+    (r"доход[а-яёіў]*", True),
+    (r"пенси[а-яёіў]*", True),
+    (r"уровень\s+жизни", True),
+    (r"безработ[а-яёіў]*", False),
+    (r"цен[а-яёіў]*", False),
+    (r"инфляц[а-яёіў]*", False),
+    (r"тариф[а-яёіў]*", False),
+    (r"задолженност[а-яёіў]*", False),
+    (r"просроч[а-яёіў]*", False),
+    (r"очеред[а-яёіў]*", False),
+    (r"штраф[а-яёіў]*", False),
+)
+
+
+def _nearest_direction(sentence: str, position: int, window: int = 55) -> bool | None:
+    """True = increase, False = decrease, None = no direction marker within
+    `window` characters of `position`. Proximity keeps a mixed sentence
+    ("доходы выросли, а безработица снизилась") from letting a decrease
+    marker meant for one subject bleed into another subject's verdict.
+    """
+    nearby = sentence[max(0, position - window):position + window]
+    increase = any(re.search(pattern, nearby) for pattern in INCREASE_MARKERS)
+    decrease = any(re.search(pattern, nearby) for pattern in DECREASE_MARKERS)
+    if increase and not decrease:
+        return True
+    if decrease and not increase:
+        return False
+    return None
+
+
+def _sentence_direction_polarity(sentence: str) -> bool | None:
+    """Whether this sentence names a genuine social/economic problem
+    (True), genuinely positive news (False), or has no clear
+    subject+direction signal at all (None).
+    """
+    subjects = [
+        (match.start(), good_if_up)
+        for pattern, good_if_up in SUBJECT_INCREASE_IS_GOOD
+        for match in re.finditer(pattern, sentence)
+    ]
+    if not subjects:
+        return None
+    # Comparative form ("рост X {ниже/выше} роста Y") between two subjects
+    # of opposite polarity: "ниже"/"выше" here describes the relationship
+    # between the two subjects, not either one's own direction, so this is
+    # resolved before the per-subject proximity check below.
+    if len(subjects) >= 2:
+        (pos_a, good_a), (pos_b, good_b) = sorted(subjects)[:2]
+        if good_a != good_b:
+            between = sentence[pos_a:pos_b]
+            if any(re.search(p, between) for p in COMPARATIVE_LOWER_MARKERS):
+                return good_a
+            if any(re.search(p, between) for p in COMPARATIVE_HIGHER_MARKERS):
+                return not good_a
+    verdicts = []
+    for position, good_if_up in subjects:
+        preceding = sentence[max(0, position - 40):position]
+        if any(re.search(p, preceding) for p in CONCESSIVE_MARKERS):
+            continue
+        direction = _nearest_direction(sentence, position)
+        if direction is not None:
+            verdicts.append(direction != good_if_up)
+    if not verdicts:
+        return None
+    return any(verdicts)
+
+
+def economic_direction_signal(text: str) -> bool | None:
+    """Sentence-level compositional read of the whole text.
+
+    Returns True if any sentence names a genuine negative economic/social
+    outcome (see _sentence_direction_polarity) or explicit complaint
+    language; False if at least one sentence shows a clear (subject,
+    direction) pairing and none of them are negative — i.e. the text makes
+    an economic claim and that claim is unambiguously positive; None if the
+    text contains no clear economic subject+direction signal at all (there
+    is nothing here to judge either way).
+
+    Result Event Integrity 1.11: the False case is what "положительная
+    динамика доходов" needs to trigger on for genre rejection even when the
+    text does not happen to match the older fixed positive_income_comparison
+    phrase list — e.g. "доходы подскочили на 7,5%, безработица обновила
+    рекордный минимум" makes a purely positive economic claim without using
+    any of the specific comparative wordings that list enumerated.
+    """
+    folded = normalized_search_text(text)
+    saw_positive = False
+    for sentence in split_sentences(folded):
+        polarity = _sentence_direction_polarity(sentence)
+        if polarity is True:
+            return True
+        if polarity is False:
+            saw_positive = True
+    if re.search(
+        r"жалоб[а-яёіў]*|пожаловал[а-яёіў]*|скардз[а-яёіў]*|"
+        r"не\s+хватает|не\s+хапае|недостаточ[а-яёіў]*|"
+        r"стал[а-яёіў]*\s+хуже|ухудш[а-яёіў]*",
+        folded,
+    ):
+        return True
+    return False if saw_positive else None
 
 
 def has_unreversed_negative_outcome(text: str) -> bool:
-    """True when the text names a genuine negative outcome that is not
-    immediately reframed as a positive comparison.
-
-    Result Event Integrity 1.8: a "findings"/"persistence" override was
-    letting positively-framed comparisons back in whenever the piece was
-    data-rich — e.g. "рост цен оказался ниже роста зарплат" ("price growth
-    trailed wage growth") contains a word that superficially resembles a
-    decline ("ниже"/"lower"), and the article is packed with concrete
-    figures, so it read as "verified finding" even though the finding is
-    positive, not a problem. This checks that a real negative-outcome marker
-    is present and is not immediately neutralised by an adjacent
-    positive-comparison phrase before treating the evidence as genuine.
+    """True when the text names a genuine negative economic/social outcome
+    that its own subject+direction pairing does not reframe as positive.
+    Kept as a thin bool-only wrapper around economic_direction_signal() for
+    call sites (and tests) that only care about "is there a real problem
+    here", not the fuller "is there a purely positive claim" signal.
     """
-    folded = normalized_search_text(text)
-    if not any(
-        re.search(pattern, folded) for pattern in NEGATIVE_OUTCOME_EVIDENCE_PATTERNS
-    ):
-        return False
-    if any(
-        re.search(pattern, folded)
-        for pattern in POSITIVE_POLARITY_REVERSAL_PATTERNS
-    ):
-        return False
-    return True
+    return economic_direction_signal(text) is True
 
 
 def result_integrity_genre_rejection(
@@ -6075,7 +6193,10 @@ def result_integrity_genre_rejection(
         resident_explicit or persistence or critical_public_interest
     ):
         return "Result Integrity: обычное правоохранительное сообщение без социальной проблемы"
-    if matches("positive_income_comparison", include_lead=True) and not (
+    if (
+        matches("positive_income_comparison", include_lead=True)
+        or economic_direction_signal(f"{folded_title} {folded_lead}") is False
+    ) and not (
         (resident_explicit or lead_findings or persistence)
         and has_unreversed_negative_outcome(folded_lead)
     ):
