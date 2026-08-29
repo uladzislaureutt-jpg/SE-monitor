@@ -72,12 +72,17 @@ def test_write_rejected_signals_csv_now_captures_extraction_failures():
         html_length=48213,
         text_length=0,
     )
-    # A weak-signal extraction failure must still be excluded, same as
-    # before for relevance-stage rejections.
+    # Result Event Integrity 1.13: a weaker-prefilter extraction failure
+    # must now be captured too — report-22 showed vkurier.by scoring only
+    # "possible"/"needs_text" that day (never "strong"), so the run that
+    # most needed html_length diagnostics produced zero rows under the old
+    # "strong only" rule. Prefilter status reflects topical promise from
+    # title+summary alone and has nothing to do with whether full-text
+    # extraction succeeds.
     weak_candidate = social_monitor.Candidate(
         source=vkurier_source(),
         url="https://vkurier.by/238999",
-        title="Прогноз погоды на выходные",
+        title="Обычная заметка",
         discovered_via="homepage",
     )
     weak_trace = social_monitor.CandidateProcessingTelemetry(
@@ -115,7 +120,8 @@ def test_write_rejected_signals_csv_now_captures_extraction_failures():
     assert "238683" in content
     assert "html fetched, no article text extracted" in content
     assert "48213" in content
-    assert "238999" not in content
+    assert "238999" in content
+    assert "40000" in content
     assert "238700" not in content
 
 
