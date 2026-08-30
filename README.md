@@ -32,7 +32,7 @@
 
 ## Установка и запуск
 
-1. Этот пакет обновляет сборку `2026-08-27.social.60-result-event-integrity-1.7` до `2026-08-30.social.61-source-access-integrity-1.0`. Распакуйте его и скопируйте **содержимое** в корень репозитория S-monitor. Замените `social_monitor.py`; остальные четыре пути из списка выше будут добавлены либо заменены.
+1. Этот пакет обновляет сборку `2026-08-27.social.60-result-event-integrity-1.7` до `2026-08-30.social.61-source-access-integrity-1.1`. Распакуйте его и скопируйте **содержимое** в корень репозитория S-monitor. Замените `social_monitor.py`; остальные четыре пути из списка выше будут добавлены либо заменены.
 2. В GitHub откройте **Actions** → **Source access diagnostic (14 candidates)** → **Run workflow**.
 3. После завершения скачайте artifact `source-access-diagnostic-N`.
 

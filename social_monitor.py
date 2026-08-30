@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-30.social.61-source-access-integrity-1.0"
+MONITOR_BUILD = "2026-08-30.social.61-source-access-integrity-1.1"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -60,6 +60,19 @@ CONTENT_NOISE_SELECTORS = (
     "[class*='breadcrumb'], [id*='breadcrumb'], "
     "[class*='share'], [id*='share']"
 )
+
+# Broad layout classes such as ``sidebar-right`` may be applied to body, main
+# or article. Keep those structural ancestors while removing nested widgets.
+CONTENT_NOISE_PROTECTED_TAGS = frozenset({"html", "body", "main", "article"})
+
+
+def remove_content_noise(soup: BeautifulSoup) -> None:
+    """Remove auxiliary blocks without deleting the article's root container."""
+    for tag in soup.select(CONTENT_NOISE_SELECTORS):
+        if str(getattr(tag, "name", "")).lower() in CONTENT_NOISE_PROTECTED_TAGS:
+            continue
+        tag.decompose()
+
 
 ARTICLE_CONTENT_SELECTORS = (
     "[itemprop='articleBody']",
@@ -4444,8 +4457,7 @@ def extract_source_specific_article_text(
         return ""
 
     clone = BeautifulSoup(str(soup), "html.parser")
-    for tag in clone.select(CONTENT_NOISE_SELECTORS):
-        tag.decompose()
+    remove_content_noise(clone)
 
     checked_nodes: set[int] = set()
     for selector in selectors:
@@ -4470,8 +4482,7 @@ def extract_source_specific_article_text(
 
 def extract_scored_article_text(soup: BeautifulSoup, source: Source) -> str:
     """Choose the strongest article container for profiled JS-heavy sources."""
-    for tag in soup.select(CONTENT_NOISE_SELECTORS):
-        tag.decompose()
+    remove_content_noise(soup)
 
     selectors = SOURCE_CONTENT_SELECTORS.get(source.domain, ()) + ARTICLE_CONTENT_SELECTORS
     selector_text = ", ".join(dict.fromkeys([
@@ -4501,8 +4512,7 @@ def extract_scored_article_text(soup: BeautifulSoup, source: Source) -> str:
 
 
 def extract_main_article_text(soup: BeautifulSoup, source: Source) -> str:
-    for tag in soup.select(CONTENT_NOISE_SELECTORS):
-        tag.decompose()
+    remove_content_noise(soup)
 
     checked_nodes: set[int] = set()
     selectors = SOURCE_CONTENT_SELECTORS.get(source.domain, ()) + ARTICLE_CONTENT_SELECTORS
