@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Read-only availability and extraction diagnostic for S-monitor candidates.
+"""Read-only availability and production-extraction diagnostic for candidates.
 
-The script deliberately does not import the monitor, does not read or write its
-state/cache, and does not update source configuration. It uses only public HTTP
-GET requests and stores a compact diagnostic report under the requested folder.
+The script imports only pure production helpers.  It never runs the monitor,
+reads or writes state/cache, changes source configuration, or sends delivery.
 """
 
 from __future__ import annotations
@@ -70,22 +69,6 @@ COMMON_DISCOVERY_PATHS = (
     "/news-sitemap.xml",
 )
 
-SKIP_LINK_PARTS = (
-    "/tag/",
-    "/category/",
-    "/author/",
-    "/page/",
-    "/search",
-    "/contacts",
-    "/contact",
-    "/about",
-    "/login",
-    "/register",
-    "/advert",
-    "/reklam",
-    "/privacy",
-)
-SKIP_EXTENSIONS = (".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".pdf", ".mp4", ".mp3", ".zip")
 BLOCK_MARKERS = ("cloudflare", "access denied", "just a moment", "captcha", "временно ограничен")
 
 
@@ -162,6 +145,8 @@ class Diagnostic:
     production_checked: bool = False
     production_articles_recognized: int = 0
     production_candidates_seen: int = 0
+    production_article_probes: int = 0
+    production_probe_adapter: str = "robust_article"
     production_extraction_strategy: str = ""
     production_text_chars: int = 0
     errors: list[str] = field(default_factory=list)
@@ -188,6 +173,8 @@ class Diagnostic:
             "production_checked": self.production_checked,
             "production_articles_recognized": self.production_articles_recognized,
             "production_candidates_seen": self.production_candidates_seen,
+            "production_article_probes": self.production_article_probes,
+            "production_probe_adapter": self.production_probe_adapter,
             "production_extraction_strategy": self.production_extraction_strategy,
             "production_text_chars": self.production_text_chars,
             "errors": " | ".join(self.errors),
@@ -229,7 +216,7 @@ def parse_html(html: str) -> PageParser:
 
 
 def normal_host(value: str) -> str:
-    return urlparse(value).netloc.lower().removeprefix("www.")
+    return (urlparse(value).hostname or "").lower().removeprefix("www.")
 
 
 def clean_url(value: str) -> str:
@@ -237,37 +224,46 @@ def clean_url(value: str) -> str:
     return urlunparse((parsed.scheme, parsed.netloc, parsed.path, "", parsed.query, ""))
 
 
-def candidate_article_urls(listing_url: str, links: Iterable[tuple[str, str]], expected_domain: str) -> list[str]:
-    results: list[tuple[int, str]] = []
+def same_site_listing_urls(
+    listing_url: str,
+    links: Iterable[tuple[str, str]],
+    expected_domain: str,
+) -> list[str]:
+    """Return only de-duplicated same-site hrefs.
+
+    This intentionally makes no independent judgement about whether a link is
+    an article.  That decision belongs exclusively to production
+    ``classify_source_url()`` below.
+    """
+    results: list[str] = []
     seen: set[str] = set()
     expected = expected_domain.lower().removeprefix("www.")
-    listing_clean = clean_url(listing_url).rstrip("/")
     for href, _ in links:
         absolute = clean_url(urljoin(listing_url, href))
         parsed = urlparse(absolute)
         if parsed.scheme not in {"http", "https"} or normal_host(absolute) != expected:
             continue
-        path = parsed.path.lower()
-        if not path or absolute.rstrip("/") == listing_clean or any(item in path for item in SKIP_LINK_PARTS):
-            continue
-        if path.endswith(SKIP_EXTENSIONS) or parsed.query.startswith("page="):
-            continue
         if absolute in seen:
             continue
         seen.add(absolute)
-        score = 0
-        if re.search(r"/(20\d{2})/\d{2}/", path):
-            score += 8
-        if "/news/" in path or "/novosti/" in path or "/item/" in path:
-            score += 5
-        if path.endswith(".html"):
-            score += 4
-        if len(path.strip("/")) > 24:
-            score += 2
-        if parsed.query:
-            score -= 1
-        results.append((score, absolute))
-    return [url for _, url in sorted(results, key=lambda item: (-item[0], item[1]))][:20]
+        results.append(absolute)
+    return results
+
+
+def production_article_urls(
+    source: dict[str, str],
+    listing_url: str,
+    links: Iterable[tuple[str, str]],
+) -> tuple[list[str], int]:
+    """Classify every same-site listing link using production code only."""
+    if _production is None:
+        raise RuntimeError(f"social_monitor.py unavailable: {PRODUCTION_MODULE_ERROR}")
+    candidates = same_site_listing_urls(listing_url, links, source["domain"])
+    articles = [
+        url for url in candidates
+        if _production.classify_source_url(url, source["domain"]) == "article"
+    ]
+    return articles, len(candidates)
 
 
 def newest_listing_date(text: str) -> date | None:
@@ -298,57 +294,16 @@ def is_feed_or_sitemap(result: FetchResult) -> bool:
 
 
 def real_production_check(
-    source: dict[str, str],
-    listing_url: str,
-    links: Iterable[tuple[str, str]],
-    best_article_url: str,
-    best_article_html: str,
+    source: dict[str, str], article_url: str, article_html: str,
 ) -> dict[str, object]:
-    """Run the actual production URL classifier and article extractor
-    against what this diagnostic already fetched, read-only. Returns a dict
-    with production_* fields; empty/zero values if social_monitor could not
-    be imported (e.g. the script was run outside a full repo checkout).
-
-    This never touches data/state.json, data/discovery_cache.json, or
-    config/sources.csv, and never calls run_monitor()/main() — only pure
-    classification and extraction functions.
-    """
-    result: dict[str, object] = {
-        "production_articles_recognized": 0,
-        "production_candidates_seen": 0,
-        "production_extraction_strategy": "",
-        "production_text_chars": 0,
-    }
+    """Extract a production-classified article with the real extractor only."""
     if _production is None:
-        return result
-
+        raise RuntimeError(f"social_monitor.py unavailable: {PRODUCTION_MODULE_ERROR}")
     domain = source["domain"]
-    seen_hosts: set[str] = set()
-    candidate_urls: list[str] = []
-    for href, _ in links:
-        absolute = clean_url(urljoin(listing_url, href))
-        if normal_host(absolute) != domain.lower().removeprefix("www.") or absolute in seen_hosts:
-            continue
-        seen_hosts.add(absolute)
-        candidate_urls.append(absolute)
-    result["production_candidates_seen"] = len(candidate_urls)
     try:
-        result["production_articles_recognized"] = sum(
-            1 for url in candidate_urls
-            if _production.classify_source_url(url, domain) == "article"
-        )
-    except Exception as exc:  # Defensive: a classifier crash must not abort the run.
-        result["production_articles_recognized"] = f"error: {type(exc).__name__}: {exc}"
-
-    if not best_article_url or not best_article_html:
-        return result
-    try:
-        # adapter="robust_article" opts into the broadest extraction cascade
-        # (source-specific selectors -> JSON-LD -> generic HTML, including
-        # the scored "best container" fallback) so this diagnostic gives a
-        # new source the same benefit of the doubt production's most
-        # permissive existing adapter would, rather than under-reporting
-        # what a properly configured entry in config/sources.csv could do.
+        # The planned source row must use this adapter if the source is later
+        # accepted; the report records it explicitly instead of pretending to
+        # test an as-yet nonexistent sources.csv row.
         probe_source = _production.Source(
             enabled=True, country="Беларусь", country_code="BY-XX",
             locality=source.get("locality_hint", "") or "Беларусь",
@@ -358,14 +313,18 @@ def real_production_check(
             adapter="robust_article",
         )
         probe_candidate = _production.Candidate(
-            source=probe_source, url=best_article_url, discovered_via="diagnostic",
+            source=probe_source, url=article_url, discovered_via="diagnostic",
         )
-        extracted = _production.extract_article_from_html(probe_candidate, best_article_html)
-        result["production_extraction_strategy"] = extracted.extraction_strategy or "empty"
-        result["production_text_chars"] = len(extracted.text)
+        extracted = _production.extract_article_from_html(probe_candidate, article_html)
+        return {
+            "production_extraction_strategy": extracted.extraction_strategy or "empty",
+            "production_text_chars": len(extracted.text),
+        }
     except Exception as exc:  # Defensive: an extractor crash must not abort the run.
-        result["production_extraction_strategy"] = f"error: {type(exc).__name__}: {exc}"
-    return result
+        return {
+            "production_extraction_strategy": f"error: {type(exc).__name__}: {exc}",
+            "production_text_chars": 0,
+        }
 
 
 def diagnose(source: dict[str, str]) -> Diagnostic:
@@ -412,15 +371,32 @@ def diagnose(source: dict[str, str]) -> Diagnostic:
         if discovered.status and 200 <= discovered.status < 400 and is_feed_or_sitemap(discovered):
             record.rss_or_sitemap_hits.append(discovered.final_url or endpoint)
 
-    candidates = candidate_article_urls(listing.final_url or source["listing_url"], parsed_listing.links, source["domain"])
-    record.article_candidates = len(candidates)
-    if not candidates:
-        record.status = "homepage_only"
-        record.note = "Лента доступна, но диагностике не удалось надежно выделить статью: нужен адресный адаптер или иной listing URL."
+    record.production_checked = True
+    try:
+        candidates, candidates_seen = production_article_urls(
+            source, listing.final_url or source["listing_url"], parsed_listing.links,
+        )
+    except Exception as exc:
+        record.status = "collector_error"
+        record.errors.append(f"production classifier: {type(exc).__name__}: {exc}")
+        record.note = "Production-классификатор недоступен; результат не может считаться техническим подтверждением."
         return record
 
-    best_text = 0
-    best_article_html = ""
+    record.production_candidates_seen = candidates_seen
+    record.production_articles_recognized = len(candidates)
+    record.article_candidates = len(candidates)
+    if not candidates:
+        record.status = "discovery_not_recognized" if candidates_seen else "homepage_only"
+        record.note = (
+            "Ссылки на странице найдены, но production classify_source_url() "
+            "ни одну не признал статьёй — нужна проверка URL-паттерна до "
+            "включения в config/sources.csv."
+            if candidates_seen else
+            "Лента доступна, но на ней не найдено ссылок того же домена."
+        )
+        return record
+
+    best_production_text = -1
     for article_url in candidates[:MAX_ARTICLE_PROBES]:
         article = fetch(article_url)
         if article.error:
@@ -431,93 +407,42 @@ def diagnose(source: dict[str, str]) -> Diagnostic:
             continue
         if not article.status or not (200 <= article.status < 400):
             continue
+        record.production_article_probes += 1
         article_parsed = parse_html(article.body)
-        article_text = " ".join(article_parsed.text)
-        text_length = len(article_text)
-        if text_length > best_text:
-            best_text = text_length
-            best_article_html = article.body
+        text_length = len(" ".join(article_parsed.text))
+        production_result = real_production_check(source, article.final_url or article_url, article.body)
+        production_text = int(production_result["production_text_chars"])
+        if production_text > best_production_text:
+            best_production_text = production_text
             record.best_article_url = article.final_url or article_url
             record.best_article_status = article.status
             record.best_article_text_chars = text_length
             record.best_article_title = " ".join(article_parsed.h1 or article_parsed.title)[:250]
+            record.production_extraction_strategy = str(production_result["production_extraction_strategy"])
+            record.production_text_chars = production_text
 
-    record.production_checked = _production is not None
-    production_result = real_production_check(
-        source, listing.final_url or source["listing_url"], parsed_listing.links,
-        record.best_article_url, best_article_html,
-    )
-    record.production_articles_recognized = production_result["production_articles_recognized"]
-    record.production_candidates_seen = production_result["production_candidates_seen"]
-    record.production_extraction_strategy = production_result["production_extraction_strategy"]
-    record.production_text_chars = production_result["production_text_chars"]
-
-    if _production is None:
-        record.errors.append(f"production module unavailable: {PRODUCTION_MODULE_ERROR}")
-
-    # Result Event Integrity lesson: decide primarily on what production's
-    # own classifier/extractor would actually do, not on this script's own
-    # simplified heuristics. vkurier.by passed a naive "500+ chars of
-    # page-wide text" check for over a week while production extracted zero
-    # characters — this diagnostic must not repeat that mismatch for the
-    # next 14 sources.
-    if record.production_checked:
-        if record.production_articles_recognized == 0 and record.production_candidates_seen > 0:
-            record.status = "discovery_not_recognized"
-            record.note = (
-                "Ссылки на странице найдены, но производственный "
-                "classify_source_url() ни одну не признал статьёй — "
-                "нужна проверка URL-паттерна (см. is_probable_article_url) "
-                "до включения в config/sources.csv, а не после."
-            )
-        elif record.production_text_chars < PRODUCTION_EXTRACTION_MIN_CHARS:
-            record.status = "extract_blocked_by_pipeline"
-            record.note = (
-                f"Наивный парсер нашёл {record.best_article_text_chars} "
-                "симв. текста на странице, но реальный "
-                "extract_article_from_html() — "
-                f"{record.production_text_chars}. Именно так выглядел "
-                "vkurier.by все прогоны до диагностики по сырому HTML: "
-                "нужен SOURCE_CONTENT_SELECTORS/SOURCE_PRECLEAN_CONTENT_SELECTORS "
-                "для этого домена, а не отказ от источника."
-            )
-        elif record.newest_date_age_days is not None and record.newest_date_age_days <= RECENCY_DAYS:
-            record.status = "pass_recent"
-            record.note = (
-                "Лента свежая, ссылка на статью найдена, "
-                f"production-экстрактор ({record.production_extraction_strategy}) "
-                "подтвердил извлекаемость текста."
-            )
-        else:
-            record.status = "extract_ok_no_fresh_date"
-            record.note = (
-                "Production-экстрактор подтвердил извлекаемость текста, но "
-                "свежесть ленты не подтверждена датой; проверить дату и "
-                "пагинацию вручную."
-            )
-        return record
-
-    # Fallback path: social_monitor.py was not importable (e.g. the script
-    # ran outside a full repo checkout). Less reliable — flagged in the note
-    # and in the production_checked column so this is never silently
-    # mistaken for a production-verified result.
-    if record.best_article_text_chars < 500:
-        record.status = "homepage_only"
+    if record.production_article_probes == 0:
+        record.status = "collector_error"
+        record.note = "Production распознал статьи, но ни одну из первых диагностических проб не удалось скачать."
+    elif record.production_text_chars < PRODUCTION_EXTRACTION_MIN_CHARS:
+        record.status = "extract_blocked_by_pipeline"
         record.note = (
-            "[БЕЗ production-проверки] Статья открывается недостаточно "
-            "полно; нужен анализ HTML-структуры или специализированный "
-            "экстрактор."
+            f"Production-классификатор выбрал только статьи; максимум текста "
+            f"после extract_article_from_html() — {record.production_text_chars} символов. "
+            "Нужен адресный селектор/предочистка, а не отказ от источника."
         )
     elif record.newest_date_age_days is not None and record.newest_date_age_days <= RECENCY_DAYS:
         record.status = "pass_recent"
         record.note = (
-            "[БЕЗ production-проверки, только наивный парсер] Лента "
-            "свежая, ссылка на статью найдена, текст доступен для "
-            "извлечения."
+            "Лента свежая; production-классификатор и production-экстрактор "
+            f"подтвердили статью ({record.production_extraction_strategy})."
         )
     else:
         record.status = "extract_ok_no_fresh_date"
-        record.note = "Текст извлекается, но свежесть ленты не подтверждена датой; проверить дату и пагинацию вручную."
+        record.note = (
+            "Production-классификатор и production-экстрактор подтвердили "
+            "статью, но свежесть ленты не доказана датой; проверить пагинацию."
+        )
     return record
 
 
@@ -568,6 +493,13 @@ def main() -> int:
     parser.add_argument("--out-dir", required=True, type=Path, help="Directory for diagnostic reports")
     parser.add_argument("--workers", type=int, default=MAX_WORKERS, help="Maximum concurrent sources (default: 3)")
     args = parser.parse_args()
+    if _production is None:
+        print(
+            "FATAL: social_monitor.py could not be imported; refusing a "
+            "non-production diagnostic: " + PRODUCTION_MODULE_ERROR,
+            file=sys.stderr,
+        )
+        return 2
     sources = load_candidates(args.candidates)
     records: list[Diagnostic] = []
     with ThreadPoolExecutor(max_workers=max(1, min(args.workers, MAX_WORKERS))) as executor:

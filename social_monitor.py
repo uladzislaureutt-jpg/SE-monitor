@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-30.social.68-result-event-integrity-1.15"
+MONITOR_BUILD = "2026-08-30.social.61-source-access-integrity-1.0"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -60,31 +60,6 @@ CONTENT_NOISE_SELECTORS = (
     "[class*='breadcrumb'], [id*='breadcrumb'], "
     "[class*='share'], [id*='share']"
 )
-
-# Result Event Integrity 1.15: these are structural page containers, never
-# themselves "noise" regardless of what utility/layout classes a theme puts
-# on them. The vkurier.by extraction_blind investigation (2026-08-29/30,
-# reports 18-23) traced all the way down to <body class="... sidebar-right">
-# — the WordPress theme's own "sidebar is on the right" layout hint on
-# <body> — matching the broad [class*='sidebar'] noise pattern above and
-# decomposing the entire <body>, taking the real article with it. This is
-# not vkurier.by-specific: any theme that puts a layout/utility class
-# containing one of these substrings (sidebar, widget, social, comment...)
-# directly on a structural container is silently unrecoverable today. This
-# is the root-cause fix; the vkurier.by SOURCE_PRECLEAN_CONTENT_SELECTORS
-# entry stays in place as defense-in-depth, not as the primary fix.
-CONTENT_NOISE_PROTECTED_TAGS = frozenset({"html", "body", "main", "article"})
-
-
-def remove_content_noise(soup: Any) -> None:
-    """Decompose CONTENT_NOISE_SELECTORS matches, except structural page
-    containers (see CONTENT_NOISE_PROTECTED_TAGS) — a noise class landing on
-    one of those must never take the whole document/article with it.
-    """
-    for tag in soup.select(CONTENT_NOISE_SELECTORS):
-        if tag.name in CONTENT_NOISE_PROTECTED_TAGS:
-            continue
-        tag.decompose()
 
 ARTICLE_CONTENT_SELECTORS = (
     "[itemprop='articleBody']",
@@ -164,6 +139,35 @@ STRATEGIC_SOURCE_PROFILES: dict[str, dict[str, Any]] = {
         # stable newsroom shape has a verified article body and should consume
         # the source admission budget.
         "article_path_patterns": (r"^/news/[^/]+/\d+/?$",),
+        "article_path_allowlist_only": True,
+    },
+    # Dormant profiles for the regional candidates diagnosed in the separate
+    # source-access workflow.  They do not add or enable sources by
+    # themselves; they merely ensure that, once a source row is approved, the
+    # production URL classifier accepts the site's actual article shape.
+    "hoiniki.by": {
+        # WordPress posts use ?p=<numeric id>; ?cat and ?page_id are archive
+        # and service pages and deliberately remain unclassified.
+        "article_query_patterns": (r"(?:^|&)p=\d+(?:&|$)",),
+    },
+    "klich.by": {
+        "article_query_patterns": (r"(?:^|&)p=\d+(?:&|$)",),
+    },
+    "orshanka.by": {
+        "article_query_patterns": (r"(?:^|&)p=\d+(?:&|$)",),
+    },
+    "pvestnik.by": {
+        # This WordPress site exposes month/day archives under /YYYY/MM/DD/.
+        # Its publication pages are either a numeric WordPress slug or a
+        # transliterated multi-word slug directly below the root.
+        "blocked_path_patterns": (
+            r"^/20\d{2}/(?:0[1-9]|1[0-2])(?:/|$)",
+            r"^/(?:author|category|tag|page)(?:/|$)",
+        ),
+        "article_path_patterns": (
+            r"^/\d+(?:-\d+)?/?$",
+            r"^/[a-z0-9]+(?:-[a-z0-9]+){2,}/?$",
+        ),
         "article_path_allowlist_only": True,
     },
     "nashaniva.com": {
@@ -247,34 +251,6 @@ STRATEGIC_SOURCE_PROFILES: dict[str, dict[str, Any]] = {
         "prefer_largest_container": True,
         "chromium_threshold": 250,
     },
-    "vkurier.by": {
-        # Result Event Integrity 1.10: discovery was fixed (2026.social.62,
-        # is_probable_article_url numeric-id support), but the very next
-        # dry-run (report-18, 2026-08-28) showed all 26 newly-discovered
-        # candidates failing extraction (access_status "extraction_blind")
-        # despite fetch_ok=26/26. A manually fetched sample article
-        # (vkurier.by/238683) was a normal, full WordPress post, so the page
-        # itself is not obviously empty — but this could not be confirmed
-        # against what the requests-transport pipeline actually receives.
-        # vkurier.by shares the exact same access-restriction history as the
-        # other protected=True Belarusian outlets already in this table
-        # (blocked in-country since August 2020, on the republican
-        # "extremist materials" list since January 2022), which is the same
-        # category of site where a chromium fallback and the
-        # prefer_largest_container policy have already paid off (belsat.eu
-        # above). Both are low-risk hedges either way: if the real cause
-        # turns out to be a CSS-selector mismatch rather than a transport
-        # issue, chromium will not help but will not make things worse
-        # either, and prefer_largest_container is strictly at least as good
-        # as the previous strict-priority extraction order. See the new
-        # html_length column in debug/rejected_signals_*.csv (Result Event
-        # Integrity 1.10) for confirming which cause it actually is on the
-        # next run.
-        "protected": True,
-        "transport_order": ("requests", "chromium"),
-        "prefer_largest_container": True,
-        "chromium_threshold": 250,
-    },
     # Dormant strategic profiles. They do not enable a source; they only
     # centralize the access policy if/when the source is present in sources.csv.
     "reform.news": {
@@ -346,6 +322,7 @@ def source_profile_for_domain(
     profile.setdefault("exact_discovery", False)
     profile.setdefault("skip_homepage", False)
     profile.setdefault("article_path_patterns", ())
+    profile.setdefault("article_query_patterns", ())
     profile.setdefault("transport_order", ("requests",))
     profile.setdefault(
         "extraction_order",
@@ -363,6 +340,7 @@ def source_profile_for_domain(
     # Lists are easier to serialize into coverage/debugging output.
     for field in (
         "feeds", "sitemaps", "listing_pages", "article_path_patterns",
+        "article_query_patterns",
         "transport_order", "extraction_order", "mirror_domains",
         "blocked_path_patterns",
     ):
@@ -432,6 +410,11 @@ def classify_source_url(
         if re.search(pattern, path, flags=re.IGNORECASE):
             return "article"
 
+    query = parsed.query
+    for pattern in profile.get("article_query_patterns", []):
+        if re.search(pattern, query, flags=re.IGNORECASE):
+            return "article"
+
     # Some mixed-purpose portals expose many URL types from the same homepage.
     # A diagnosed allowlist prevents service pages from falling through to the
     # deliberately broad generic article heuristic.  This remains dormant for
@@ -477,25 +460,6 @@ SOURCE_PRECLEAN_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
         ".edgtf-post-text-main", ".amp-wp-article-content",
         ".amp-wp-content",
     ),
-    # Result Event Integrity 1.14: vkurier.by extraction_blind, confirmed
-    # 2026-08-29/30 across 3 real runs (chromium included — chromium_seconds
-    # >400s, chromium_attempts=26/26) to NOT be a transport/bot-detection
-    # issue: html_length is consistently 67-90KB of real, substantial HTML
-    # (26 different articles across ADT, politics, weather, sponsored
-    # content...), yet text_length is 0 every single time regardless of
-    # which extraction strategy runs. The guessed SOURCE_CONTENT_SELECTORS
-    # entry for vkurier.by (.article-content/.entry-content/.post-content/
-    # .td-post-content) never matched anything real. Rather than guess
-    # another exact class name blind, anchor on the standard HTML5 <article>
-    # /<main> tags a modern WordPress theme (confirmed via meta generator)
-    # is very likely to use, and skip the aggressive CONTENT_NOISE_SELECTORS
-    # pass the same way the Pozirk fix already did for exactly this failure
-    # mode (its wrapper's own class name collided with the noise list).
-    # Unverified without raw HTML — if this does not resolve it, the debug
-    # artifact will keep showing html_length>0/text_length==0 and the next
-    # step is getting an actual view-source snippet rather than guessing
-    # again.
-    "vkurier.by": ("article", "main"),
 }
 
 SOURCE_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
@@ -743,7 +707,6 @@ class CandidateProcessingTelemetry:
     transport_status_code: int = 0
     transport_failure_class: str = ""
     http_observations: tuple["HttpObservation", ...] = ()
-    html_length: int = 0
 
 
 @dataclass
@@ -902,13 +865,6 @@ class ArticleExtraction:
     chromium_attempts: int = 0
     http_attempts: int = 0
     http_observations: tuple["HttpObservation", ...] = ()
-    # Result Event Integrity 1.10: raw fetched HTML length, independent of
-    # whether any extraction strategy found article text. Distinguishes a
-    # genuine "page had no usable body" case from "page fetched fine but our
-    # extraction logic missed it" — see the 2026-08-28 vkurier.by
-    # extraction_blind investigation, where this could not be told apart
-    # from the report/coverage telemetry alone.
-    html_length: int = 0
 
     def __iter__(self):
         # Сохраняет совместимость со старым кодом: title, text = extract_article(...)
@@ -1375,22 +1331,6 @@ def infer_event_fingerprint(
     event_scope = locality.casefold() if locality else (
         f"region:{region.casefold()}" if region else ""
     )
-    # Result Event Integrity 1.8: republic-wide statistics and national
-    # announcements often name no single locality by design (e.g. a BelStat
-    # employment figure for all of Belarus). Requiring a locality here
-    # silently dropped these from Event Echo merging even when object+problem
-    # were unambiguous (see the 2026-08-27 "занятость в экономике" case,
-    # which never merged across sources for exactly this reason). Only the
-    # explicit national marker already used by infer_event_geography()
-    # qualifies for the fallback: a story that merely FAILED locality
-    # extraction (a river article naming a place the gazetteer doesn't
-    # recognise) must not be papered over with a fake national scope — that
-    # would risk false merges between unrelated Belarus-wide stories instead
-    # of fixing the real gap, which is locality coverage.
-    if not event_scope and bool(
-        re.search(r"(?<![а-яёіўa-z])беларус|(?<![а-яёіўa-z])белорус", title_text)
-    ):
-        event_scope = "беларусь"
     # A rare pair of microbiological findings is a stronger event anchor than
     # an omitted locality in a short Telegram rewrite.  Normalising this one
     # narrow family to a national scope allows the next-day short retelling to
@@ -1570,40 +1510,11 @@ def same_site(url: str, domain: str) -> bool:
     return host == domain or host.endswith("." + domain) or domain.endswith("." + host)
 
 
-# Domains where a bare numeric route is a known duplicate/redirect risk
-# against an already-admitted localized form (e.g. nashaniva.com serves
-# canonical articles at /ru/<id> and /be_latn/<id>/, and its bare /<id>
-# route was deliberately left "unknown" pending diagnosis of its
-# extraction/duplication behavior — see
-# test_architecture_core32a22_nasha_niva_comments_guard_covers_all_locales).
-# The general numeric-id article rule below must not override that
-# considered decision for these specific domains.
-NUMERIC_ARTICLE_ID_EXCLUDED_DOMAINS: frozenset[str] = frozenset({"nashaniva.com"})
-
-
 def is_probable_article_url(url: str, domain: str) -> bool:
     if not same_site(url, domain):
         return False
     parsed = urllib.parse.urlsplit(url)
     path = parsed.path.lower()
-    segments = [segment for segment in path.split("/") if segment]
-    # Some outlets (vkurier.by is the diagnosed case: /238683, /238672, ...)
-    # publish articles directly under the domain root as a bare numeric CMS
-    # id, shorter than the length-8 floor below that was tuned for
-    # slug-style paths. Without this, every article such a source publishes
-    # is silently unreachable — vkurier.by returned zero candidates across
-    # feed, sitemap and homepage for 6+ consecutive days even though it was
-    # actively publishing, purely because of this gap. Bounded to 5-9 digits
-    # so short numbers (pagination, "/2024" year archives) and implausibly
-    # long ones (hashes, timestamps) don't qualify.
-    if (
-        len(segments) == 1
-        and segments[0].isdigit()
-        and 5 <= len(segments[0]) <= 9
-        and not any(part in path for part in BLOCKED_PATH_PARTS)
-        and domain.lower() not in NUMERIC_ARTICLE_ID_EXCLUDED_DOMAINS
-    ):
-        return True
     if len(path.strip("/")) < 8:
         return False
     if any(part in path for part in BLOCKED_PATH_PARTS):
@@ -1612,6 +1523,7 @@ def is_probable_article_url(url: str, domain: str) -> bool:
         return False
     if path.endswith(ARTICLE_EXTENSIONS):
         return True
+    segments = [segment for segment in path.split("/") if segment]
     if len(segments) >= 2 or bool(re.search(r"/20\d{2}/", path)):
         return True
     # WordPress and several Belarusian media use a single long slug directly
@@ -4532,7 +4444,8 @@ def extract_source_specific_article_text(
         return ""
 
     clone = BeautifulSoup(str(soup), "html.parser")
-    remove_content_noise(clone)
+    for tag in clone.select(CONTENT_NOISE_SELECTORS):
+        tag.decompose()
 
     checked_nodes: set[int] = set()
     for selector in selectors:
@@ -4557,7 +4470,8 @@ def extract_source_specific_article_text(
 
 def extract_scored_article_text(soup: BeautifulSoup, source: Source) -> str:
     """Choose the strongest article container for profiled JS-heavy sources."""
-    remove_content_noise(soup)
+    for tag in soup.select(CONTENT_NOISE_SELECTORS):
+        tag.decompose()
 
     selectors = SOURCE_CONTENT_SELECTORS.get(source.domain, ()) + ARTICLE_CONTENT_SELECTORS
     selector_text = ", ".join(dict.fromkeys([
@@ -4587,7 +4501,8 @@ def extract_scored_article_text(soup: BeautifulSoup, source: Source) -> str:
 
 
 def extract_main_article_text(soup: BeautifulSoup, source: Source) -> str:
-    remove_content_noise(soup)
+    for tag in soup.select(CONTENT_NOISE_SELECTORS):
+        tag.decompose()
 
     checked_nodes: set[int] = set()
     selectors = SOURCE_CONTENT_SELECTORS.get(source.domain, ()) + ARTICLE_CONTENT_SELECTORS
@@ -5050,17 +4965,13 @@ def extract_article(
             response = amp_response
             transport = "amp"
 
-    # Chromium is also a recovery transport when the static HTTP request
-    # itself failed/circuit-opened, not only when static HTML is thin. This
-    # used to be hard-restricted to adapter == "belsat_article" (only
-    # Belsat had chromium in its transport_order at the time), which
-    # silently made the vkurier.by protected+chromium profile
-    # (Result Event Integrity 1.10) a no-op — chromium_attempts stayed 0 on
-    # every real run regardless of the profile. transport_order is the
-    # actual intended gate; render_belsat_article_html() has no
-    # Belsat-specific logic in its body, it is a plain headless-Chromium
-    # fetch for any URL.
-    if not response and "chromium" in transport_order:
+    # For Belsat, Chromium is also a recovery transport when the static HTTP
+    # request itself failed/circuit-opened, not only when static HTML is thin.
+    if (
+        not response
+        and "chromium" in transport_order
+        and candidate.source.adapter == "belsat_article"
+    ):
         decision = recovery.transport_decision(candidate.source, "chromium") if recovery else "normal"
         if decision == "skip":
             circuit_skipped = True
@@ -5078,7 +4989,6 @@ def extract_article(
             if rendered_html:
                 extraction_started = time.perf_counter()
                 rendered = extract_article_from_html(candidate, rendered_html)
-                rendered.html_length = len(rendered_html)
                 extraction_seconds += time.perf_counter() - extraction_started
                 rendered.transport = "chromium"
                 rendered.transport_status = "ok"
@@ -5120,7 +5030,6 @@ def extract_article(
 
     extraction_started = time.perf_counter()
     extracted = extract_article_from_html(candidate, response.content)
-    extracted.html_length = len(response.content)
     extraction_seconds += time.perf_counter() - extraction_started
     extracted.transport = transport or "requests"
     extracted.transport_status = "ok"
@@ -5141,7 +5050,6 @@ def extract_article(
             amp_extracted = extract_article_from_html(
                 candidate, amp_response.content
             )
-            amp_extracted.html_length = len(amp_response.content)
             extraction_seconds += time.perf_counter() - extraction_started
             if amp_extracted.text:
                 amp_extracted.transport = "amp"
@@ -5169,6 +5077,7 @@ def extract_article(
     chromium_threshold = int(profile.get("chromium_threshold", 250))
     if (
         "chromium" in transport_order
+        and candidate.source.adapter == "belsat_article"
         and len(extracted.text) < chromium_threshold
     ):
         decision = recovery.transport_decision(candidate.source, "chromium") if recovery else "normal"
@@ -5926,171 +5835,6 @@ def bound_public_issue_profiles(text: str) -> set[str]:
     }
 
 
-# Result Event Integrity 1.11: rethought from an ever-growing list of exact
-# "positive framing" phrases — three real articles slipped through with
-# three different wordings of the same underlying idea across two days
-# ("рост цен ниже роста зарплат", "покупательная способность увеличилась",
-# "доходы подскочили на 7,5%, безработица обновила рекордный минимум") —
-# into a compositional mechanism instead. A small, bounded vocabulary of
-# DIRECTION markers (words meaning "increased"/"decreased", independent of
-# subject) is combined with a small, bounded table of which economic/social
-# SUBJECTS treat an increase as good news vs a problem. Polarity is derived
-# from (subject, nearest direction marker) pairs, so a genuinely new
-# phrasing of an already-known subject is handled without being
-# individually enumerated — only a new subject or direction verb needs
-# adding, not every new sentence shape built from them.
-
-INCREASE_MARKERS: tuple[str, ...] = (
-    r"вырос[а-яёіў]*", r"рост[а-яёіў]*", r"увеличил[а-яёіў]*",
-    r"повысил[а-яёіў]*", r"подскочил[а-яёіў]*", r"взлетел[а-яёіў]*",
-    r"поднял[а-яёіў]*", r"прибав[а-яёіў]*", r"нарастил[а-яёіў]*",
-    r"укрепил[а-яёіў]*", r"ускорил[а-яёіў]*",
-    r"рекордн[а-яёіў]*\s+максимум", r"положительн[а-яёіў]*\s+динамик[а-яёіў]*",
-)
-
-DECREASE_MARKERS: tuple[str, ...] = (
-    r"снизил[а-яёіў]*", r"снижен[а-яёіў]*", r"упал[а-яёіў]*",
-    r"сократил[а-яёіў]*", r"ухудш[а-яёіў]*", r"замедлил[а-яёіў]*",
-    r"обвалил[а-яёіў]*", r"рухнул[а-яёіў]*", r"спад[а-яёіў]*",
-    r"рекордн[а-яёіў]*\s+минимум",
-)
-
-COMPARATIVE_LOWER_MARKERS: tuple[str, ...] = (r"ниже", r"меньше", r"медленнее")
-COMPARATIVE_HIGHER_MARKERS: tuple[str, ...] = (
-    r"выше", r"больше", r"быстрее", r"опережа[а-яёіў]*",
-)
-
-# A subject mentioned inside a concessive clause ("даже с учётом роста
-# цен...", "несмотря на рост цен...") is being conceded, not asserted as
-# the sentence's point — the point is whatever follows. Without this, "даже
-# с учётом накопленного роста цен покупательная способность стала выше"
-# ("even accounting for price growth, purchasing power rose") flagged
-# "рост цен" as a standalone problem, even though the sentence's actual
-# conclusion (purchasing power rising) is positive.
-CONCESSIVE_MARKERS: tuple[str, ...] = (
-    r"несмотря\s+на", r"даже\s+с\s+учет[а-яёіў]*", r"даже\s+если",
-    r"хотя\s+и", r"вопреки",
-)
-
-# Whether an INCREASE in this subject is good news for residents (True) or
-# a problem (False). A decrease has the opposite polarity by construction —
-# the table needs one bit per subject, not one entry per phrasing.
-SUBJECT_INCREASE_IS_GOOD: tuple[tuple[str, bool], ...] = (
-    (r"покупательн[а-яёіў]*\s+способност[а-яёіў]*", True),
-    (r"зарплат[а-яёіў]*", True),
-    (r"доход[а-яёіў]*", True),
-    (r"пенси[а-яёіў]*", True),
-    (r"уровень\s+жизни", True),
-    (r"безработ[а-яёіў]*", False),
-    (r"цен[а-яёіў]*", False),
-    (r"инфляц[а-яёіў]*", False),
-    (r"тариф[а-яёіў]*", False),
-    (r"задолженност[а-яёіў]*", False),
-    (r"просроч[а-яёіў]*", False),
-    (r"очеред[а-яёіў]*", False),
-    (r"штраф[а-яёіў]*", False),
-)
-
-
-def _nearest_direction(sentence: str, position: int, window: int = 55) -> bool | None:
-    """True = increase, False = decrease, None = no direction marker within
-    `window` characters of `position`. Proximity keeps a mixed sentence
-    ("доходы выросли, а безработица снизилась") from letting a decrease
-    marker meant for one subject bleed into another subject's verdict.
-    """
-    nearby = sentence[max(0, position - window):position + window]
-    increase = any(re.search(pattern, nearby) for pattern in INCREASE_MARKERS)
-    decrease = any(re.search(pattern, nearby) for pattern in DECREASE_MARKERS)
-    if increase and not decrease:
-        return True
-    if decrease and not increase:
-        return False
-    return None
-
-
-def _sentence_direction_polarity(sentence: str) -> bool | None:
-    """Whether this sentence names a genuine social/economic problem
-    (True), genuinely positive news (False), or has no clear
-    subject+direction signal at all (None).
-    """
-    subjects = [
-        (match.start(), good_if_up)
-        for pattern, good_if_up in SUBJECT_INCREASE_IS_GOOD
-        for match in re.finditer(pattern, sentence)
-    ]
-    if not subjects:
-        return None
-    # Comparative form ("рост X {ниже/выше} роста Y") between two subjects
-    # of opposite polarity: "ниже"/"выше" here describes the relationship
-    # between the two subjects, not either one's own direction, so this is
-    # resolved before the per-subject proximity check below.
-    if len(subjects) >= 2:
-        (pos_a, good_a), (pos_b, good_b) = sorted(subjects)[:2]
-        if good_a != good_b:
-            between = sentence[pos_a:pos_b]
-            if any(re.search(p, between) for p in COMPARATIVE_LOWER_MARKERS):
-                return good_a
-            if any(re.search(p, between) for p in COMPARATIVE_HIGHER_MARKERS):
-                return not good_a
-    verdicts = []
-    for position, good_if_up in subjects:
-        preceding = sentence[max(0, position - 40):position]
-        if any(re.search(p, preceding) for p in CONCESSIVE_MARKERS):
-            continue
-        direction = _nearest_direction(sentence, position)
-        if direction is not None:
-            verdicts.append(direction != good_if_up)
-    if not verdicts:
-        return None
-    return any(verdicts)
-
-
-def economic_direction_signal(text: str) -> bool | None:
-    """Sentence-level compositional read of the whole text.
-
-    Returns True if any sentence names a genuine negative economic/social
-    outcome (see _sentence_direction_polarity) or explicit complaint
-    language; False if at least one sentence shows a clear (subject,
-    direction) pairing and none of them are negative — i.e. the text makes
-    an economic claim and that claim is unambiguously positive; None if the
-    text contains no clear economic subject+direction signal at all (there
-    is nothing here to judge either way).
-
-    Result Event Integrity 1.11: the False case is what "положительная
-    динамика доходов" needs to trigger on for genre rejection even when the
-    text does not happen to match the older fixed positive_income_comparison
-    phrase list — e.g. "доходы подскочили на 7,5%, безработица обновила
-    рекордный минимум" makes a purely positive economic claim without using
-    any of the specific comparative wordings that list enumerated.
-    """
-    folded = normalized_search_text(text)
-    saw_positive = False
-    for sentence in split_sentences(folded):
-        polarity = _sentence_direction_polarity(sentence)
-        if polarity is True:
-            return True
-        if polarity is False:
-            saw_positive = True
-    if re.search(
-        r"жалоб[а-яёіў]*|пожаловал[а-яёіў]*|скардз[а-яёіў]*|"
-        r"не\s+хватает|не\s+хапае|недостаточ[а-яёіў]*|"
-        r"стал[а-яёіў]*\s+хуже|ухудш[а-яёіў]*",
-        folded,
-    ):
-        return True
-    return False if saw_positive else None
-
-
-def has_unreversed_negative_outcome(text: str) -> bool:
-    """True when the text names a genuine negative economic/social outcome
-    that its own subject+direction pairing does not reframe as positive.
-    Kept as a thin bool-only wrapper around economic_direction_signal() for
-    call sites (and tests) that only care about "is there a real problem
-    here", not the fuller "is there a purely positive claim" signal.
-    """
-    return economic_direction_signal(text) is True
-
-
 def result_integrity_genre_rejection(
     title: str,
     lead: str,
@@ -6237,12 +5981,8 @@ def result_integrity_genre_rejection(
         resident_explicit or persistence or critical_public_interest
     ):
         return "Result Integrity: обычное правоохранительное сообщение без социальной проблемы"
-    if (
-        matches("positive_income_comparison", include_lead=True)
-        or economic_direction_signal(f"{folded_title} {folded_lead}") is False
-    ) and not (
-        (resident_explicit or lead_findings or persistence)
-        and has_unreversed_negative_outcome(folded_lead)
+    if matches("positive_income_comparison", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence
     ):
         return "Result Integrity: положительная динамика доходов без подтверждённой проблемы"
     if matches("cultural_or_migration_commentary", include_lead=True) and not (
@@ -8533,7 +8273,6 @@ def process_candidate_detailed(
         trace.transport_status_code = extracted.transport_status_code
         trace.transport_failure_class = extracted.transport_failure_class
         trace.http_observations = extracted.http_observations
-        trace.html_length = extracted.html_length
     else:
         title, text = extracted
         extracted_published_at = ""
@@ -9309,14 +9048,6 @@ def prune_state(state: dict[str, Any], retain_days: int) -> None:
             stale.append(url)
     for url in stale:
         seen.pop(url, None)
-    # Result Event Integrity 1.8: the title cache (see title_cache below) has
-    # no timestamp of its own, so it is pruned in lockstep with `seen` —
-    # anything no longer worth remembering as "seen" is no longer worth
-    # remembering a stable title for either.
-    title_cache = state.setdefault("title_cache", {})
-    for url in list(title_cache):
-        if url not in seen:
-            title_cache.pop(url, None)
 
 
 def build_country_coverage(
@@ -10154,88 +9885,6 @@ th:first-child,td:first-child {{text-align:left}}
 """
 
 
-def write_rejected_signals_csv(
-    path: Path,
-    processing_outcomes: dict[str, tuple[Candidate, "CandidateProcessingTelemetry"]],
-) -> None:
-    """Internal debug artifact: candidates whose title+summary already showed
-    a "strong" topic+problem signal (metadata_prefilter) but were still
-    rejected by the full-text relevance decision, with the exact reason —
-    OR whose extraction failed outright despite that same strong signal.
-
-    Not part of the public report — the daily workflow only uploads
-    reports/, and this file is written to a separate debug/ directory, so it
-    stays a local/internal aid for tracing cases like the 2026-08-27
-    BGmedia Vileyka-Molodechno minibus rejection ("нет связки социальной
-    темы и проблемы" despite a strong preliminary signal), where the public
-    artifacts kept only aggregate counts and no way to trace a specific
-    candidate's outcome.
-
-    Result Event Integrity 1.10: extraction failures (final_stage
-    "degraded_queued", degraded_reason "extraction_failed") were not
-    captured here, so the 2026-08-28 vkurier.by extraction_blind run (26/26
-    candidates, strong prefilter signal on several) produced zero rows and
-    gave no way to tell "the fetched page had no usable body" apart from
-    "our extraction logic missed a normal page" — the two have very
-    different fixes. html_length (raw fetched bytes, independent of what
-    any extraction strategy found) is included specifically to answer that:
-    a small html_length points at the source/transport side (e.g. a bot
-    challenge page), a large one with text_length == 0 points at the
-    extraction selectors themselves.
-
-    Result Event Integrity 1.13: the "strong prefilter" requirement was
-    still gating extraction failures too, and report-22 (chromium fix from
-    1.12 confirmed active — chromium_attempts=26 — extraction_failed still
-    26/26) showed exactly why that's the wrong bar: vkurier.by's candidates
-    scored "possible"/"needs_text" that day, not "strong", so the one run
-    that most needed html_length diagnostics produced zero debug rows.
-    Prefilter status reflects topical promise from title+summary alone; it
-    has nothing to do with whether full-text extraction will succeed, so
-    extraction failures are no longer filtered by it.
-    """
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames = [
-        "source", "priority", "title", "url", "published_at",
-        "discovered_via", "prefilter_status", "rejection_reason",
-        "final_stage", "html_length", "text_length",
-    ]
-    rows = [
-        (candidate, trace)
-        for candidate, trace in processing_outcomes.values()
-        if (
-            trace.prefilter_status == "strong"
-            and trace.final_stage in ("relevance_rejected", "date_rejected", "excerpt_empty")
-        )
-        or (
-            trace.final_stage == "degraded_queued"
-            and trace.degraded_reason == "extraction_failed"
-        )
-    ]
-    rows.sort(key=lambda pair: (pair[0].source.name, pair[0].url))
-    with path.open("w", encoding="utf-8-sig", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        for candidate, trace in rows:
-            writer.writerow({
-                "source": candidate.source.name,
-                "priority": candidate.source.priority,
-                "title": candidate.title,
-                "url": candidate.url,
-                "published_at": candidate.published_at,
-                "discovered_via": candidate.discovered_via,
-                "prefilter_status": trace.prefilter_status,
-                "rejection_reason": (
-                    trace.rejection_reason
-                    or ("html fetched, no article text extracted" if trace.degraded_reason == "extraction_failed" else "")
-                    or (f"degraded: {trace.degraded_reason}" if trace.degraded_reason else "")
-                    or trace.final_stage
-                ),
-                "final_stage": trace.final_stage,
-                "html_length": trace.html_length,
-                "text_length": trace.text_length,
-            })
-
-
 def write_csv_report(path: Path, results: list[ArticleResult]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
@@ -10775,22 +10424,6 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
             item.published_at,
         )
     )
-    # Result Event Integrity 1.8: a source can quietly edit its own page
-    # title (punctuation, wording) between two runs that both see the same
-    # URL — 2026-08-27 showed the identical zerkalo.io URL go from a plain
-    # hyphen to an em-dash in its headline across runs 14/16. That is a
-    # cosmetic, non-deterministic-looking diff for anything comparing runs
-    # by title text. The first successfully published title for a URL is
-    # cached and reused on any later run that reprocesses that same URL, so
-    # the public title stays stable even when the source's own page changes.
-    title_cache: dict[str, str] = state.setdefault("title_cache", {})
-    for result in results:
-        cache_key = canonicalize_url(result.url)
-        cached_title = title_cache.get(cache_key)
-        if cached_title:
-            result.title = cached_title
-        elif result.title:
-            title_cache[cache_key] = result.title
     # Only fully processed candidates enter seen. Degraded candidates are kept
     # in a bounded retry queue and therefore cannot disappear silently after a
     # metadata-only or failed extraction.
@@ -10858,13 +10491,6 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
     errors_path = reports_dir / f"social_errors_{date_stamp}.txt"
     coverage_path = reports_dir / f"social_coverage_{date_stamp}.csv"
     access_telemetry_path = reports_dir / f"social_access_telemetry_{date_stamp}.csv"
-    # Internal debug artifact only — deliberately outside reports/, since the
-    # daily workflow uploads the whole reports/ directory as the public
-    # artifact and this trace (candidate-level rejection reasons) is meant
-    # for local/maintainer inspection, not the published report.
-    rejected_signals_path = (
-        project_root / "debug" / f"rejected_signals_{date_stamp}.csv"
-    )
 
     report_started = time.perf_counter()
     html_report = build_html_report(
@@ -10873,7 +10499,6 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
     html_path.write_text(html_report, encoding="utf-8")
     write_csv_report(csv_path, results)
     write_coverage_csv(coverage_path, source_coverage)
-    write_rejected_signals_csv(rejected_signals_path, processing_outcomes)
     errors_path.write_text("\n".join(errors), encoding="utf-8")
     report_seconds = time.perf_counter() - report_started
 
