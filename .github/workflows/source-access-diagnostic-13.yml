@@ -24,8 +24,30 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Result Event Integrity 1.16 (2026-08-30): the production
+      # integration added to scripts/source_access_diagnostic.py (real
+      # classify_source_url()/extract_article_from_html() checks, so a
+      # "pass" here actually predicts what production would do — see
+      # README) made `import social_monitor` a real, load-bearing
+      # dependency of this diagnostic, not just something incidentally
+      # importable. social_monitor.py itself imports requests/bs4/yaml/
+      # dateutil at module level, and this workflow never installed them,
+      # so both "Test diagnostic helpers" and the diagnostic run itself
+      # failed outright with ModuleNotFoundError. Only the four packages
+      # social_monitor.py needs at import time — not pytest, not
+      # playwright (chromium rendering is never invoked by this read-only
+      # diagnostic).
+      - name: Install social_monitor.py import dependencies
+        run: pip install "beautifulsoup4>=4.12,<5" "python-dateutil>=2.9,<3" "PyYAML>=6,<7" "requests>=2.32,<3"
+
+      # Scoped to this package's own test file specifically, not
+      # `unittest discover -s tests` (which swept up the whole monitor's
+      # tests/ directory once this package's tests/ merged into the
+      # existing one — every test_result_event_integrity_*.py and
+      # test_social_monitor.py file failed to import here too, none of
+      # which this diagnostic is responsible for or should be coupled to).
       - name: Test diagnostic helpers
-        run: python -m unittest discover -s tests -v
+        run: python -m unittest tests/test_source_access_diagnostic.py -v
 
       - name: Run read-only availability and extraction diagnostic
         run: |
