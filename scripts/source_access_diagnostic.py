@@ -13,6 +13,7 @@ import json
 import re
 import ssl
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
@@ -55,8 +56,11 @@ REQUEST_TIMEOUT_SECONDS = 10
 MAX_RESPONSE_BYTES = 1_200_000
 MAX_LISTING_TEXT_CHARS = 220_000
 MAX_ARTICLE_PROBES = 4
+MAX_SITEMAP_CHILD_PROBES = 6
 MAX_WORKERS = 3
 RECENCY_DAYS = 120
+RETRYABLE_HTTP_STATUSES = {500, 502, 503, 504}
+RETRY_DELAY_SECONDS = 0.35
 
 COMMON_DISCOVERY_PATHS = (
     "/feed/",
@@ -120,6 +124,7 @@ class FetchResult:
     body: str = ""
     error: str = ""
     elapsed_ms: int | None = None
+    attempts: int = 1
 
 
 @dataclass
@@ -138,6 +143,7 @@ class Diagnostic:
     freshness_evidence: str = ""
     discovery_route: str = "listing"
     discovery_checked: int = 0
+    sitemap_child_probes: int = 0
     rss_or_sitemap_hits: list[str] = field(default_factory=list)
     article_candidates: int = 0
     best_article_url: str = ""
@@ -168,6 +174,7 @@ class Diagnostic:
             "freshness_evidence": self.freshness_evidence,
             "discovery_route": self.discovery_route,
             "discovery_checked": self.discovery_checked,
+            "sitemap_child_probes": self.sitemap_child_probes,
             "rss_or_sitemap_hits": " | ".join(self.rss_or_sitemap_hits),
             "article_candidates": self.article_candidates,
             "best_article_url": self.best_article_url,
@@ -186,30 +193,52 @@ class Diagnostic:
         }
 
 
-def fetch(url: str) -> FetchResult:
+def fetch(url: str, retries: int = 0) -> FetchResult:
+    """Fetch one public document, allowing one bounded transient retry.
+
+    A retry is diagnostic hygiene for a short-lived 5xx/reset, not an attempt
+    to evade anti-bot controls: 401/403/429 are never retried, and callers
+    opt in only for the listing, a child sitemap, or an already-classified
+    article probe.
+    """
+    attempts = max(0, retries) + 1
     started = datetime.now(timezone.utc)
     request = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/html,application/xml;q=0.9,*/*;q=0.5"})
-    try:
-        context = ssl.create_default_context()
-        with urlopen(request, timeout=REQUEST_TIMEOUT_SECONDS, context=context) as response:
-            raw = response.read(MAX_RESPONSE_BYTES)
-            charset = response.headers.get_content_charset() or "utf-8"
-            body = raw.decode(charset, errors="replace")
-            elapsed = int((datetime.now(timezone.utc) - started).total_seconds() * 1000)
-            return FetchResult(
-                url=url,
-                status=getattr(response, "status", 200),
-                final_url=response.geturl(),
-                content_type=response.headers.get("Content-Type", ""),
-                body=body,
-                elapsed_ms=elapsed,
+    last_result: FetchResult | None = None
+    for attempt in range(1, attempts + 1):
+        try:
+            context = ssl.create_default_context()
+            with urlopen(request, timeout=REQUEST_TIMEOUT_SECONDS, context=context) as response:
+                raw = response.read(MAX_RESPONSE_BYTES)
+                charset = response.headers.get_content_charset() or "utf-8"
+                body = raw.decode(charset, errors="replace")
+                elapsed = int((datetime.now(timezone.utc) - started).total_seconds() * 1000)
+                result = FetchResult(
+                    url=url,
+                    status=getattr(response, "status", 200),
+                    final_url=response.geturl(),
+                    content_type=response.headers.get("Content-Type", ""),
+                    body=body,
+                    elapsed_ms=elapsed,
+                    attempts=attempt,
+                )
+                if result.status not in RETRYABLE_HTTP_STATUSES or attempt == attempts:
+                    return result
+                last_result = result
+        except HTTPError as exc:
+            last_result = FetchResult(
+                url=url, status=exc.code, error=f"HTTP {exc.code}: {exc.reason}", attempts=attempt,
             )
-    except HTTPError as exc:
-        return FetchResult(url=url, status=exc.code, error=f"HTTP {exc.code}: {exc.reason}")
-    except (URLError, TimeoutError, ValueError) as exc:
-        return FetchResult(url=url, error=f"{type(exc).__name__}: {exc}")
-    except Exception as exc:  # Defensive: diagnostics must continue for other sources.
-        return FetchResult(url=url, error=f"{type(exc).__name__}: {exc}")
+            if exc.code not in RETRYABLE_HTTP_STATUSES or attempt == attempts:
+                return last_result
+        except (URLError, TimeoutError, ValueError) as exc:
+            last_result = FetchResult(url=url, error=f"{type(exc).__name__}: {exc}", attempts=attempt)
+            if attempt == attempts:
+                return last_result
+        except Exception as exc:  # Defensive: diagnostics must continue for other sources.
+            return FetchResult(url=url, error=f"{type(exc).__name__}: {exc}", attempts=attempt)
+        time.sleep(RETRY_DELAY_SECONDS * attempt)
+    return last_result or FetchResult(url=url, error="unknown fetch failure", attempts=attempts)
 
 
 def parse_html(html: str) -> PageParser:
@@ -325,6 +354,32 @@ def endpoint_document_urls(result: FetchResult) -> list[str]:
     return urls
 
 
+def is_sitemap_index(result: FetchResult) -> bool:
+    return "<sitemapindex" in result.body[:20_000].lower()
+
+
+def sitemap_child_urls(source: dict[str, str], endpoint_results: Iterable[FetchResult]) -> list[str]:
+    """Return a bounded, same-site first layer from a sitemap index only.
+
+    Some CMSes expose `sitemap.xml` merely as an index of article sitemaps.
+    A single child layer keeps the fallback auditable and avoids a crawler.
+    """
+    children: list[str] = []
+    seen: set[str] = set()
+    expected = source["domain"].lower().removeprefix("www.")
+    for result in endpoint_results:
+        if not is_sitemap_index(result):
+            continue
+        for url in endpoint_document_urls(result):
+            if normal_host(url) != expected or url in seen:
+                continue
+            seen.add(url)
+            children.append(url)
+            if len(children) >= MAX_SITEMAP_CHILD_PROBES:
+                return children
+    return children
+
+
 def production_articles_from_endpoints(
     source: dict[str, str], endpoint_results: Iterable[FetchResult],
 ) -> tuple[list[str], int, str]:
@@ -388,7 +443,7 @@ def diagnose(source: dict[str, str]) -> Diagnostic:
         start_url=source["start_url"],
         listing_url=source["listing_url"],
     )
-    listing = fetch(source["listing_url"])
+    listing = fetch(source["listing_url"], retries=1)
     record.start_http_status = listing.status
     record.start_final_url = listing.final_url
     if listing.error:
@@ -419,6 +474,17 @@ def diagnose(source: dict[str, str]) -> Diagnostic:
         endpoint_results.append(discovered)
         if discovered.status and 200 <= discovered.status < 400 and is_feed_or_sitemap(discovered):
             record.rss_or_sitemap_hits.append(discovered.final_url or endpoint)
+
+    # A sitemap index contains no articles itself.  Probe only its first-level
+    # same-site children, so sites using CMS-generated sitemap shards can be
+    # assessed without recursive crawling or any production-side mutation.
+    for child_url in sitemap_child_urls(source, endpoint_results):
+        record.discovery_checked += 1
+        record.sitemap_child_probes += 1
+        child = fetch(child_url, retries=1)
+        endpoint_results.append(child)
+        if child.status and 200 <= child.status < 400 and is_feed_or_sitemap(child):
+            record.rss_or_sitemap_hits.append(child.final_url or child_url)
 
     record.production_checked = True
     try:
@@ -468,7 +534,7 @@ def diagnose(source: dict[str, str]) -> Diagnostic:
 
     best_production_text = -1
     for article_url in candidates[:MAX_ARTICLE_PROBES]:
-        article = fetch(article_url)
+        article = fetch(article_url, retries=1)
         if article.error:
             record.errors.append(article.error)
             continue

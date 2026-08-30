@@ -2,6 +2,8 @@ import importlib.util
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
+from urllib.error import URLError
 
 
 MODULE = Path(__file__).resolve().parents[1] / "scripts" / "source_access_diagnostic.py"
@@ -61,6 +63,52 @@ class SourceAccessDiagnosticTests(unittest.TestCase):
             MODULE_UNDER_TEST.endpoint_document_urls(result),
             ["https://example.by/news/one", "https://example.by/news/two"],
         )
+
+    def test_sitemap_index_uses_one_same_site_child_layer_only(self):
+        source = {"domain": "news.by"}
+        index = MODULE_UNDER_TEST.FetchResult(
+            url="https://news.by/sitemap.xml", content_type="application/xml",
+            body=(
+                "<sitemapindex><sitemap><loc>https://news.by/sitemap/news-1.xml</loc>"
+                "</sitemap><sitemap><loc>https://other.example/sitemap.xml</loc>"
+                "</sitemap></sitemapindex>"
+            ),
+        )
+        self.assertEqual(
+            MODULE_UNDER_TEST.sitemap_child_urls(source, [index]),
+            ["https://news.by/sitemap/news-1.xml"],
+        )
+
+    def test_fetch_retries_a_transient_network_reset_once(self):
+        class Headers:
+            def get_content_charset(self):
+                return "utf-8"
+
+            def get(self, _name, _default=None):
+                return "text/html"
+
+        class Response:
+            status = 200
+            headers = Headers()
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def read(self, _size):
+                return b"<html>ok</html>"
+
+            def geturl(self):
+                return "https://example.by/ok"
+
+        with patch.object(MODULE_UNDER_TEST, "urlopen", side_effect=[URLError("reset"), Response()]) as opened, \
+             patch.object(MODULE_UNDER_TEST.time, "sleep"):
+            result = MODULE_UNDER_TEST.fetch("https://example.by/", retries=1)
+        self.assertEqual(result.status, 200)
+        self.assertEqual(result.attempts, 2)
+        self.assertEqual(opened.call_count, 2)
 
 
 class ProductionIntegrationTests(unittest.TestCase):
@@ -202,6 +250,23 @@ class ProductionIntegrationTests(unittest.TestCase):
             )
             self.assertEqual(result["production_extraction_strategy"], "source_specific")
             self.assertGreater(result["production_text_chars"], 150)
+
+    def test_pvestnik_article_body_is_read_before_sidebar_noise_cleanup(self):
+        html = (
+            '<html><body><div class="theme-layout sidebar-right"><article>'
+            '<h1>Заголовок</h1><div class="entry-content">'
+            '<p>Первый обстоятельный абзац районной публикации описывает конкретную '
+            'социальную проблему, её причины и возможные последствия для жителей города.</p>'
+            '<p>Второй абзац добавляет проверяемые сведения, позиции ответственных служб '
+            'и дальнейшие действия, которых ожидают жители.</p>'
+            '</div></article></div></body></html>'
+        )
+        result = MODULE_UNDER_TEST.real_production_check(
+            {"domain": "pvestnik.by", "name": "Тест", "start_url": "https://www.pvestnik.by/"},
+            "https://www.pvestnik.by/152230-2/", html,
+        )
+        self.assertEqual(result["production_extraction_strategy"], "source_specific")
+        self.assertGreater(result["production_text_chars"], 200)
 
     def test_numeric_day_month_year_url_date_is_recognized(self):
         production = MODULE_UNDER_TEST._production

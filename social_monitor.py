@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-30.social.62-source-access-recovery-1.0"
+MONITOR_BUILD = "2026-08-30.social.63-source-admission-recovery-1.0"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -211,8 +211,9 @@ STRATEGIC_SOURCE_PROFILES: dict[str, dict[str, Any]] = {
         "article_path_allowlist_only": True,
     },
     "news.by": {
-        # Channel schedules and section landings must not consume an article
-        # probe merely because they contain a large amount of visible text.
+        # The browser-facing /news listing is a JavaScript shell.  Its
+        # sitemap exposes the same canonical article shape, while channel
+        # schedules and section landings must not consume an article probe.
         "blocked_path_patterns": (
             r"^/(?:televidenie|videogalereya|teleshou|programma-tv)(?:/|$)",
             r"^/news/[a-z0-9-]+/?$",
@@ -516,6 +517,13 @@ SOURCE_PRECLEAN_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
     # retaining the actual sidebar widget.
     "hoiniki.by": ("main#main.site-main", "#main.site-main", ".site-main"),
     "klich.by": ("main#main.site-main", "#main.site-main", ".site-main"),
+    # A first-level theme wrapper may carry a sidebar layout class.  Read the
+    # actual WordPress article body before global noise removal, just as for
+    # the other affected district sites.
+    "pvestnik.by": (
+        "[itemprop='articleBody']", ".entry-content", ".post-content",
+        ".td-post-content",
+    ),
 }
 
 SOURCE_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
@@ -583,6 +591,10 @@ SOURCE_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
     "nashkraj.by": ("div.contentCol",),
     "hoiniki.by": (".entry-content", "main#main.site-main", ".site-main"),
     "klich.by": (".entry-content", "main#main.site-main", ".site-main"),
+    "pvestnik.by": (
+        "[itemprop='articleBody']", ".entry-content", ".post-content",
+        ".td-post-content", "main article",
+    ),
 }
 
 NOISE_TEXT_PREFIXES = (
