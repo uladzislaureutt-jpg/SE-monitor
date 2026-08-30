@@ -7,7 +7,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: source-access-diagnostic-13
+  group: source-access-diagnostic-14
   cancel-in-progress: false
 
 jobs:
@@ -39,6 +39,10 @@ jobs:
       # diagnostic).
       - name: Install social_monitor.py import dependencies
         run: pip install "beautifulsoup4>=4.12,<5" "python-dateutil>=2.9,<3" "PyYAML>=6,<7" "requests>=2.32,<3"
+
+      - name: Require production helpers
+        run: |
+          python -c "import social_monitor as m; assert callable(m.classify_source_url); assert callable(m.extract_article_from_html); print(m.MONITOR_BUILD)"
 
       # Scoped to this package's own test file specifically, not
       # `unittest discover -s tests` (which swept up the whole monitor's
