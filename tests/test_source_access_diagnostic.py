@@ -36,11 +36,31 @@ class SourceAccessDiagnosticTests(unittest.TestCase):
         self.assertEqual(MODULE_UNDER_TEST.normal_host("https://www.orshanka.by:443/?p=1"), "orshanka.by")
 
     def test_endpoint_urls_are_unique_and_include_feed_and_sitemap(self):
-        source = {"start_url": "https://example.by/news", "listing_url": "https://example.by/news"}
+        source = {
+            "start_url": "https://example.by/news", "listing_url": "https://example.by/news",
+            "feed_url": "https://example.by/custom-feed.xml",
+            "sitemap_url": "https://example.by/custom-sitemap.xml",
+        }
         result = MODULE_UNDER_TEST.endpoint_urls(source)
         self.assertEqual(result[0], "https://example.by/news")
+        self.assertIn("https://example.by/custom-feed.xml", result)
+        self.assertIn("https://example.by/custom-sitemap.xml", result)
         self.assertIn("https://example.by/feed/", result)
         self.assertIn("https://example.by/sitemap.xml", result)
+
+    def test_endpoint_document_urls_reads_xml_links_without_classifying_them(self):
+        result = MODULE_UNDER_TEST.FetchResult(
+            url="https://example.by/feed.xml",
+            content_type="application/xml",
+            body=(
+                "<urlset><url><loc>https://example.by/news/one</loc></url></urlset>"
+                "<feed><entry><link href=\"https://example.by/news/two\"/></entry></feed>"
+            ),
+        )
+        self.assertEqual(
+            MODULE_UNDER_TEST.endpoint_document_urls(result),
+            ["https://example.by/news/one", "https://example.by/news/two"],
+        )
 
 
 class ProductionIntegrationTests(unittest.TestCase):
@@ -142,4 +162,55 @@ class ProductionIntegrationTests(unittest.TestCase):
         self.assertEqual(
             production.classify_source_url("https://www.pvestnik.by/152230-2/", "pvestnik.by"),
             "article",
+        )
+
+    def test_profiles_reject_sections_channels_and_static_pages(self):
+        production = MODULE_UNDER_TEST._production
+        rejected = (
+            ("https://nashkraj.by/news/obshchestvo/", "nashkraj.by"),
+            ("https://golk.by/turizm-i-otdyx/turisticheskie-marshruty", "golk.by"),
+            ("https://www.pvestnik.by/kak-podpisatsya-2/", "pvestnik.by"),
+            ("https://ctv.by/news/politika", "ctv.by"),
+            ("https://news.by/televidenie/belarus-1", "news.by"),
+        )
+        for url, domain in rejected:
+            self.assertNotEqual(production.classify_source_url(url, domain), "article", url)
+
+        accepted = (
+            ("https://nashkraj.by/news/obshchestvo/realnaya-novost/", "nashkraj.by"),
+            ("https://golk.by/realnaya-novost.html", "golk.by"),
+            ("https://ctv.by/news/obshestvo/realnaya-novost", "ctv.by"),
+            ("https://news.by/news/obshchestvo/realnaya-novost", "news.by"),
+        )
+        for url, domain in accepted:
+            self.assertEqual(production.classify_source_url(url, domain), "article", url)
+
+    def test_wordpress_sidebar_layout_uses_preclean_selector(self):
+        html = (
+            "<html><body><div id=\"primary\" class=\"primary_default_sidebar\">"
+            "<main id=\"main\" class=\"site-main\"><header><h1>Заголовок</h1></header>"
+            "<div class=\"entry-content\">"
+            "<p>Первый подробный абзац статьи описывает проблему и содержит достаточно "
+            "содержательного текста для реальной проверки извлечения.</p>"
+            "<p>Второй абзац добавляет факты, обстоятельства и последствия для жителей района.</p>"
+            "</div></main><aside>Шумовой блок</aside></div></body></html>"
+        )
+        for domain in ("hoiniki.by", "klich.by"):
+            result = MODULE_UNDER_TEST.real_production_check(
+                {"domain": domain, "name": "Тест", "start_url": f"https://www.{domain}/"},
+                f"https://www.{domain}/?p=123456", html,
+            )
+            self.assertEqual(result["production_extraction_strategy"], "source_specific")
+            self.assertGreater(result["production_text_chars"], 150)
+
+    def test_numeric_day_month_year_url_date_is_recognized(self):
+        production = MODULE_UNDER_TEST._production
+        parsed = production.extract_date_from_url(
+            "https://zorkanews.by/28082026/realnaya-novost/"
+        )
+        self.assertEqual(parsed.date().isoformat(), "2026-08-28")
+        self.assertIsNone(
+            production.extract_date_from_url(
+                "https://sputnik.by/1110335033/vlasti.html"
+            )
         )

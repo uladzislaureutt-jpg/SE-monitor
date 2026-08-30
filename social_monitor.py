@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-30.social.61-source-access-integrity-1.1"
+MONITOR_BUILD = "2026-08-30.social.62-source-access-recovery-1.0"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -176,11 +176,48 @@ STRATEGIC_SOURCE_PROFILES: dict[str, dict[str, Any]] = {
         "blocked_path_patterns": (
             r"^/20\d{2}/(?:0[1-9]|1[0-2])(?:/|$)",
             r"^/(?:author|category|tag|page)(?:/|$)",
+            # Permanent navigation pages can have a long, article-like slug
+            # and used to be selected before actual news from the homepage.
+            r"^/(?:kak-podpisatsya-2|polatski-vesnik-2|redakciya|istoriya-gazety|"
+            r"reklama|kontakty|dokumenty|ssylki)(?:/|$)",
         ),
         "article_path_patterns": (
             r"^/\d+(?:-\d+)?/?$",
             r"^/[a-z0-9]+(?:-[a-z0-9]+){2,}/?$",
         ),
+        "article_path_allowlist_only": True,
+    },
+    "nashkraj.by": {
+        # Real stories have three path segments: /news/<rubric>/<slug>/.
+        # Rubric pages such as /news/obshchestvo/ are listings, not articles.
+        "blocked_path_patterns": (r"^/news/[a-z0-9-]+/?$",),
+        "article_path_patterns": (r"^/news/[a-z0-9-]+/[a-z0-9-]+/?$",),
+        "article_path_allowlist_only": True,
+    },
+    "golk.by": {
+        # Static tourist/reference routes have a full page of text but are not
+        # newsroom publications.  Actual news use one root-level .html slug.
+        "blocked_path_patterns": (
+            r"^/(?:turizm-i-otdyx|podpiska|reklama|informaciya|vopros-otvet|"
+            r"kontakty|o-nas)(?:/|$)",
+        ),
+        "article_path_patterns": (r"^/[^/]+\.html$",),
+        "article_path_allowlist_only": True,
+    },
+    "ctv.by": {
+        # /news/<rubric> is a section landing; an article has its own slug.
+        "blocked_path_patterns": (r"^/news/[a-z0-9-]+/?$",),
+        "article_path_patterns": (r"^/news/[a-z0-9-]+/[a-z0-9-]+/?$",),
+        "article_path_allowlist_only": True,
+    },
+    "news.by": {
+        # Channel schedules and section landings must not consume an article
+        # probe merely because they contain a large amount of visible text.
+        "blocked_path_patterns": (
+            r"^/(?:televidenie|videogalereya|teleshou|programma-tv)(?:/|$)",
+            r"^/news/[a-z0-9-]+/?$",
+        ),
+        "article_path_patterns": (r"^/news/[a-z0-9-]+/[a-z0-9-]+/?$",),
         "article_path_allowlist_only": True,
     },
     "nashaniva.com": {
@@ -473,6 +510,12 @@ SOURCE_PRECLEAN_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
         ".edgtf-post-text-main", ".amp-wp-article-content",
         ".amp-wp-content",
     ),
+    # Both WordPress themes expose a valid article body inside #main.site-main,
+    # but its parent has a layout class containing "sidebar".  Pre-cleaning
+    # the bounded main container avoids the global sidebar noise rule without
+    # retaining the actual sidebar widget.
+    "hoiniki.by": ("main#main.site-main", "#main.site-main", ".site-main"),
+    "klich.by": ("main#main.site-main", "#main.site-main", ".site-main"),
 }
 
 SOURCE_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
@@ -537,6 +580,9 @@ SOURCE_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
         ".article_text", ".article-text", ".news_text", ".news-text",
         "[itemprop='articleBody']", "main article",
     ),
+    "nashkraj.by": ("div.contentCol",),
+    "hoiniki.by": (".entry-content", "main#main.site-main", ".site-main"),
+    "klich.by": (".entry-content", "main#main.site-main", ".site-main"),
 }
 
 NOISE_TEXT_PREFIXES = (
@@ -4181,18 +4227,23 @@ def extract_date_from_url(url: str) -> dt.datetime | None:
     patterns = (
         r"(?<!\d)(20\d{2})[/-](0?[1-9]|1[0-2])[/-](0?[1-9]|[12]\d|3[01])(?!\d)",
         r"(?<!\d)(20\d{2})(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(?!\d)",
+        # A number of Belarusian district sites use a DDMMYYYY directory as
+        # the publication date, e.g. /28082026/<slug>/.  Restrict the match
+        # to exactly eight digits so arbitrary numeric article IDs stay dates
+        # only when their calendar components are valid.
+        r"(?<!\d)(0?[1-9]|[12]\d|3[01])(0[1-9]|1[0-2])(20\d{2})(?!\d)",
     )
     for pattern in patterns:
         match = re.search(pattern, path)
         if not match:
             continue
         try:
-            return dt.datetime(
-                int(match.group(1)),
-                int(match.group(2)),
-                int(match.group(3)),
-                tzinfo=UTC,
-            )
+            groups = match.groups()
+            if len(groups) == 3 and groups[0].startswith("20"):
+                year, month, day = groups
+            else:
+                day, month, year = groups
+            return dt.datetime(int(year), int(month), int(day), tzinfo=UTC)
         except ValueError:
             continue
     return None

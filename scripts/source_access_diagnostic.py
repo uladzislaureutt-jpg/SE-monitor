@@ -135,6 +135,8 @@ class Diagnostic:
     listing_text_chars: int = 0
     newest_date: str = ""
     newest_date_age_days: int | None = None
+    freshness_evidence: str = ""
+    discovery_route: str = "listing"
     discovery_checked: int = 0
     rss_or_sitemap_hits: list[str] = field(default_factory=list)
     article_candidates: int = 0
@@ -163,6 +165,8 @@ class Diagnostic:
             "listing_text_chars": self.listing_text_chars,
             "newest_date": self.newest_date,
             "newest_date_age_days": self.newest_date_age_days,
+            "freshness_evidence": self.freshness_evidence,
+            "discovery_route": self.discovery_route,
             "discovery_checked": self.discovery_checked,
             "rss_or_sitemap_hits": " | ".join(self.rss_or_sitemap_hits),
             "article_candidates": self.article_candidates,
@@ -284,6 +288,10 @@ def newest_listing_date(text: str) -> date | None:
 def endpoint_urls(source: dict[str, str]) -> list[str]:
     base = f"{urlparse(source['start_url']).scheme}://{urlparse(source['start_url']).netloc}"
     urls = [source["listing_url"]]
+    urls.extend(
+        value.strip() for key in ("feed_url", "sitemap_url")
+        if (value := source.get(key, "")).strip()
+    )
     urls.extend(urljoin(base, path) for path in COMMON_DISCOVERY_PATHS)
     return list(dict.fromkeys(urls))
 
@@ -291,6 +299,47 @@ def endpoint_urls(source: dict[str, str]) -> list[str]:
 def is_feed_or_sitemap(result: FetchResult) -> bool:
     value = (result.content_type + " " + result.body[:1000]).lower()
     return "xml" in value or "<rss" in value or "<feed" in value or "<urlset" in value or "<sitemapindex" in value
+
+
+def endpoint_document_urls(result: FetchResult) -> list[str]:
+    """Return links stated by an RSS/Atom/sitemap document, without classifying them.
+
+    The production classifier remains the sole authority on whether any of
+    these links is an article.  This helper merely makes a permitted feed or
+    sitemap a recovery route when the browser-facing listing is blocked.
+    """
+    if not is_feed_or_sitemap(result):
+        return []
+    values: list[str] = []
+    values.extend(re.findall(r"<loc\b[^>]*>\s*(.*?)\s*</loc>", result.body, flags=re.I | re.S))
+    values.extend(re.findall(r"<link\b[^>]*>\s*(https?://.*?)\s*</link>", result.body, flags=re.I | re.S))
+    values.extend(re.findall(r"<link\b[^>]*\bhref=[\"']([^\"']+)[\"']", result.body, flags=re.I))
+    urls: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        url = clean_url(unescape(re.sub(r"<[^>]+>", "", value).strip()))
+        if not url.startswith(("http://", "https://")) or url in seen:
+            continue
+        seen.add(url)
+        urls.append(url)
+    return urls
+
+
+def production_articles_from_endpoints(
+    source: dict[str, str], endpoint_results: Iterable[FetchResult],
+) -> tuple[list[str], int, str]:
+    """Use accessible RSS/sitemaps as a legal discovery fallback."""
+    raw_urls: list[str] = []
+    route = ""
+    for result in endpoint_results:
+        document_urls = endpoint_document_urls(result)
+        if not document_urls:
+            continue
+        route = result.final_url or result.url
+        raw_urls.extend(document_urls)
+    if not raw_urls:
+        return [], 0, ""
+    return (*production_article_urls(source, source["start_url"], [(url, "") for url in raw_urls]), route)
 
 
 def real_production_check(
@@ -319,11 +368,15 @@ def real_production_check(
         return {
             "production_extraction_strategy": extracted.extraction_strategy or "empty",
             "production_text_chars": len(extracted.text),
+            "production_published_at": extracted.published_at,
+            "production_date_source": extracted.date_source,
         }
     except Exception as exc:  # Defensive: an extractor crash must not abort the run.
         return {
             "production_extraction_strategy": f"error: {type(exc).__name__}: {exc}",
             "production_text_chars": 0,
+            "production_published_at": "",
+            "production_date_source": "",
         }
 
 
@@ -340,42 +393,49 @@ def diagnose(source: dict[str, str]) -> Diagnostic:
     record.start_final_url = listing.final_url
     if listing.error:
         record.errors.append(listing.error)
-    if listing.status in {401, 403, 429}:
-        record.status = "blocked"
-        record.note = "Доступ ограничен HTTP-статусом; не обходить ограничение, проверить легальный маршрут."
-        return record
-    if listing.status is None or not (200 <= listing.status < 400):
-        record.status = "collector_error"
-        record.note = "Стартовая лента не получена."
-        return record
+    listing_blocked = listing.status in {401, 403, 429}
+    listing_usable = bool(listing.status and 200 <= listing.status < 400)
+    if listing_usable:
+        lowered = listing.body.lower()
+        listing_blocked = any(marker in lowered for marker in BLOCK_MARKERS) and len(listing.body) < 120_000
+        listing_usable = not listing_blocked
 
-    lowered = listing.body.lower()
-    if any(marker in lowered for marker in BLOCK_MARKERS) and len(listing.body) < 120_000:
-        record.status = "blocked"
-        record.note = "Получена страница антибот-защиты или ограничения доступа."
-        return record
+    parsed_listing = parse_html(listing.body) if listing_usable else PageParser()
+    if listing_usable:
+        listing_text = " ".join(parsed_listing.text)[:MAX_LISTING_TEXT_CHARS]
+        record.listing_text_chars = len(listing_text)
+        recent = newest_listing_date(listing_text)
+        if recent:
+            record.newest_date = recent.isoformat()
+            record.newest_date_age_days = (date.today() - recent).days
+            record.freshness_evidence = "listing_text"
 
-    parsed_listing = parse_html(listing.body)
-    listing_text = " ".join(parsed_listing.text)[:MAX_LISTING_TEXT_CHARS]
-    record.listing_text_chars = len(listing_text)
-    recent = newest_listing_date(listing_text)
-    if recent:
-        record.newest_date = recent.isoformat()
-        record.newest_date_age_days = (date.today() - recent).days
-
+    endpoint_results: list[FetchResult] = []
     for endpoint in endpoint_urls(source):
         if endpoint == source["listing_url"]:
             continue
         record.discovery_checked += 1
         discovered = fetch(endpoint)
+        endpoint_results.append(discovered)
         if discovered.status and 200 <= discovered.status < 400 and is_feed_or_sitemap(discovered):
             record.rss_or_sitemap_hits.append(discovered.final_url or endpoint)
 
     record.production_checked = True
     try:
-        candidates, candidates_seen = production_article_urls(
-            source, listing.final_url or source["listing_url"], parsed_listing.links,
-        )
+        candidates: list[str] = []
+        candidates_seen = 0
+        if listing_usable:
+            candidates, candidates_seen = production_article_urls(
+                source, listing.final_url or source["listing_url"], parsed_listing.links,
+            )
+        if not candidates:
+            fallback_candidates, fallback_seen, fallback_route = production_articles_from_endpoints(
+                source, endpoint_results,
+            )
+            if fallback_candidates:
+                candidates = fallback_candidates
+                candidates_seen = max(candidates_seen, fallback_seen)
+                record.discovery_route = f"rss_or_sitemap:{fallback_route}"
     except Exception as exc:
         record.status = "collector_error"
         record.errors.append(f"production classifier: {type(exc).__name__}: {exc}")
@@ -386,14 +446,24 @@ def diagnose(source: dict[str, str]) -> Diagnostic:
     record.production_articles_recognized = len(candidates)
     record.article_candidates = len(candidates)
     if not candidates:
-        record.status = "discovery_not_recognized" if candidates_seen else "homepage_only"
-        record.note = (
-            "Ссылки на странице найдены, но production classify_source_url() "
-            "ни одну не признал статьёй — нужна проверка URL-паттерна до "
-            "включения в config/sources.csv."
-            if candidates_seen else
-            "Лента доступна, но на ней не найдено ссылок того же домена."
-        )
+        if listing_blocked:
+            record.status = "blocked"
+            record.note = (
+                "Лента ограничена антибот-защитой; разрешённые RSS/sitemap "
+                "маршруты не дали production-распознанной статьи."
+            )
+        elif not listing_usable:
+            record.status = "collector_error"
+            record.note = "Стартовая лента не получена, а RSS/sitemap не дали production-распознанной статьи."
+        else:
+            record.status = "discovery_not_recognized" if candidates_seen else "homepage_only"
+            record.note = (
+                "Ссылки на странице найдены, но production classify_source_url() "
+                "ни одну не признал статьёй — нужна проверка URL-паттерна до "
+                "включения в config/sources.csv."
+                if candidates_seen else
+                "Лента доступна, но на ней не найдено ссылок того же домена."
+            )
         return record
 
     best_production_text = -1
@@ -421,6 +491,20 @@ def diagnose(source: dict[str, str]) -> Diagnostic:
             record.production_extraction_strategy = str(production_result["production_extraction_strategy"])
             record.production_text_chars = production_text
 
+            if not record.newest_date:
+                published_at = str(production_result.get("production_published_at", ""))
+                published = _production.parse_datetime(published_at) if published_at else None
+                if published:
+                    record.newest_date = published.date().isoformat()
+                    record.newest_date_age_days = (date.today() - published.date()).days
+                    record.freshness_evidence = f"article_{production_result.get('production_date_source') or 'metadata'}"
+                else:
+                    url_date = _production.extract_date_from_url(record.best_article_url)
+                    if url_date:
+                        record.newest_date = url_date.date().isoformat()
+                        record.newest_date_age_days = (date.today() - url_date.date()).days
+                        record.freshness_evidence = "article_url"
+
     if record.production_article_probes == 0:
         record.status = "collector_error"
         record.note = "Production распознал статьи, но ни одну из первых диагностических проб не удалось скачать."
@@ -433,8 +517,14 @@ def diagnose(source: dict[str, str]) -> Diagnostic:
         )
     elif record.newest_date_age_days is not None and record.newest_date_age_days <= RECENCY_DAYS:
         record.status = "pass_recent"
+        route = " через RSS/sitemap" if record.discovery_route != "listing" else ""
+        freshness = (
+            "Лента свежая"
+            if record.freshness_evidence == "listing_text"
+            else "Свежесть подтверждена датой выбранной публикации"
+        )
         record.note = (
-            "Лента свежая; production-классификатор и production-экстрактор "
+            f"{freshness}{route}; production-классификатор и production-экстрактор "
             f"подтвердили статью ({record.production_extraction_strategy})."
         )
     else:
