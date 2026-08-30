@@ -1,0 +1,44 @@
+name: Source access diagnostic (14 candidates)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: source-access-diagnostic-13
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Test diagnostic helpers
+        run: python -m unittest discover -s tests -v
+
+      - name: Run read-only availability and extraction diagnostic
+        run: |
+          python scripts/source_access_diagnostic.py \
+            --candidates config/source_access_diagnostic_candidates.csv \
+            --out-dir reports \
+            --workers 3
+
+      - name: Upload diagnostic reports
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: source-access-diagnostic-${{ github.run_number }}
+          path: reports/
+          retention-days: 14
+          if-no-files-found: warn
