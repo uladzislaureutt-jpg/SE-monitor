@@ -1164,8 +1164,23 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
         r"неман", r"нёман", r"западн[а-яёіў]*\s+двин", r"заходн[а-яёіў]*\s+дзвін",
         r"сож", r"буг",
     )),
-    ("waste", "мусор/санитарное состояние", (r"мусор", r"смец", r"свалк", r"звалк", r"санитар", r"антысанітар")),
-    ("greenery", "озеленение/покос", (r"трав", r"покос", r"косил", r"дерев", r"дрэў", r"(?<![а-яёіўa-z])парк(?:е|а|у|ом|и|ах)?(?![а-яёіўa-z])", r"сквер")),
+    # "санитар" was previously bare and matched any word with that root
+    # (e.g. "санитарно-эпидемиологическая служба", "санитарные нормы"),
+    # mistagging unrelated billing/procurement stories as waste. Narrowed
+    # to the antisanitary-condition sense and explicit "sanitary condition"
+    # phrasing, in both languages. See report-29: a laundry-pricing story
+    # was mistagged "waste" purely because it mentioned a sanitary-
+    # epidemiological inspection service.
+    ("waste", "мусор/санитарное состояние", (
+        r"мусор", r"смец", r"свалк", r"звалк",
+        r"антисанитар", r"антысанітар",
+        r"санитарн[а-яёіў]*\s+состояни", r"санітарн[а-яёіў]*\s+стан",
+    )),
+    # "трав" was bare and matched "травма" ("трав" + "ма"), mistagging
+    # injury stories as greenery/mowing. Negative lookahead excludes the
+    # "-ма/-мы/-му..." trauma-family continuation while still matching
+    # "трава/травы/травой" etc.
+    ("greenery", "озеленение/покос", (r"трав(?!м)", r"покос", r"косил", r"дерев", r"дрэў", r"(?<![а-яёіўa-z])парк(?:е|а|у|ом|и|ах)?(?![а-яёіўa-z])", r"сквер")),
     ("lighting", "уличное освещение", (r"освещ", r"асвятл", r"фонар")),
     ("housing", "жилой дом/двор", (r"жкх", r"коммунальн.*(?:плат|услуг|служб)", r"камунальн.*(?:плац|паслуг|служб)", r"подъезд", r"пад'езд", r"подвал", r"падвал", r"лифт", r"ліфт", r"крыша", r"дах", r"двор", r"двар")),
     ("healthcare", "медицина", (r"поликлин", r"паліклін", r"больниц", r"бальніц", r"врач", r"урач", r"медицин", r"медыцын")),
@@ -1245,7 +1260,12 @@ EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     )),
     ("absence_shortage", "отсутствие/нехватка", (r"не\s+хватает", r"не\s+хапае", r"нехват", r"дефицит", r"адсутн", r"отсутств", r"закрыл[исая]*", r"закры[тл]", r"нет\s+(?:магазин|врач|автобус|освещ)", r"няма\s+(?:крам|ўрач|аўтобус|асвятл)")),
     ("safety", "опасность/безопасность", (r"опасн", r"небезпеч", r"небяспеч", r"угроз", r"пагроз", r"травм", r"траўм")),
-    ("work_conditions", "условия труда", (r"жар[аыу]", r"спек", r"температур", r"тэмператур", r"услови.*труд", r"ўмов.*прац")),
+    # "спек" was bare and matched "спекуляция/спекулянт" ("спек"+"ул...")
+    # and "спектакль/спектр" ("спек"+"т..."), mistagging price-speculation
+    # or cultural-event stories as heat-related work conditions. Negative
+    # lookahead excludes those continuations while still matching
+    # "спека/спекотный" (heat, a regional RU/BE term).
+    ("work_conditions", "условия труда", (r"жар[аыу]", r"спек(?!ул|т)", r"температур", r"тэмператур", r"услови.*труд", r"ўмов.*прац")),
     ("service_quality", "качество услуги", (r"плох.*качеств", r"дрэнн.*якасц", r"некачествен", r"няякасн", r"плох.*связ", r"не\s+работает", r"не\s+працуе")),
 )
 
@@ -5584,12 +5604,26 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "positive_public_infrastructure_opening": tuple(re.compile(value) for value in (
         r"(?:открыва[а-яёіў]*|откро[а-яёіў]*|начнет\s+функциониров)[а-яёіў]*"
         r".{0,90}(?:подземк[а-яёіў]*|подземн[а-яёіў]*\s+переход)",
+        # Belarusian: "адкрывае/адкрые/пачне функцыянаваць" + "падземка/
+        # падземны пераход" — different roots from the Russian forms above.
+        r"(?:адкрыва[а-яёіў]*|адкрые[а-яёіў]*|пачне\s+функцыянава[а-яёіў]*)"
+        r".{0,90}(?:падземк[а-яёіў]*|падземн[а-яёіў]*\s+перахо[а-яёіў]*)",
     )),
     "aggregate_credit_debt_statistic": tuple(re.compile(value) for value in (
         r"просроченн[а-яёіў]*\s+задолженност[а-яёіў]*.{0,90}"
         r"(?:госсектор|государственн[а-яёіў]*\s+сектор|кредит)",
         r"(?:госсектор|государственн[а-яёіў]*\s+сектор).{0,90}"
         r"просроченн[а-яёіў]*\s+задолженност[а-яёіў]*",
+        # Belarusian-language mirrors use different roots, not just different
+        # endings ("пратэрмінаваны" != "просроченный", "запазычанасць" !=
+        # "задолженность", "дзяржсектар" != "госсектор"), so the [а-яёіў]
+        # suffix class above cannot bridge them. See report-29 leak: the
+        # same Pozirk story passed as /be/news/201827 while /ru/news/201825
+        # was correctly rejected.
+        r"пратэрмінаван[а-яёіў]*\s+запазычанасц[а-яёіў]*.{0,90}"
+        r"(?:дзяржсектар[а-яёіў]*|дзяржаўн[а-яёіў]*\s+сектар[а-яёіў]*|крэдыт[а-яёіў]*)",
+        r"(?:дзяржсектар[а-яёіў]*|дзяржаўн[а-яёіў]*\s+сектар[а-яёіў]*).{0,90}"
+        r"пратэрмінаван[а-яёіў]*\s+запазычанасц[а-яёіў]*",
     )),
     "personal_foreign_profile": tuple(re.compile(value) for value in (
         r"сам[а-яёіў]*\s+красив[а-яёіў]*\s+стран[а-яёіў]*\s+в\s+мире.*где\s+я\s+побывал",
