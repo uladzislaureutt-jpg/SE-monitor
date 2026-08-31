@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-30.social.69-result-integrity-restoration-soft-admission-1.0"
+MONITOR_BUILD = "2026-08-30.social.70-result-event-integrity-1.16"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -529,6 +529,17 @@ SOURCE_PRECLEAN_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
         "[itemprop='articleBody']", ".entry-content", ".post-content",
         ".td-post-content",
     ),
+    # Result Event Integrity 1.14/1.15: the CONTENT_NOISE_PROTECTED_TAGS
+    # root-cause fix (html/body/main/article never wholesale-removed by
+    # noise selectors) already handles vkurier.by's real page structure
+    # (<body class="...sidebar-right">), so this entry is not strictly load
+    # -bearing for the live site today. Kept as defense-in-depth: it also
+    # covers article markup shapes the root-cause fix alone does not (e.g.
+    # paragraphs directly inside <article> with no nested .entry-content
+    # wrapper, or content inside a bare <main> with no <article> at all) —
+    # see test_result_event_integrity_23_report_23.py, which specifically
+    # regression-tests both of those shapes.
+    "vkurier.by": ("article", "main"),
 }
 
 SOURCE_CONTENT_SELECTORS: dict[str, tuple[str, ...]] = {
@@ -1590,24 +1601,51 @@ def same_site(url: str, domain: str) -> bool:
     return host == domain or host.endswith("." + domain) or domain.endswith("." + host)
 
 
+# Domains where a bare numeric route is a known duplicate/redirect risk
+# against an already-admitted localized form (e.g. nashaniva.com serves
+# canonical articles at /ru/<id> and /be_latn/<id>/, and its bare /<id>
+# route was deliberately left "unknown" pending diagnosis of its
+# extraction/duplication behavior — see
+# test_architecture_core32a22_nasha_niva_comments_guard_covers_all_locales).
+# The general numeric-id article rule below must not override that
+# considered decision for these specific domains.
+NUMERIC_ARTICLE_ID_EXCLUDED_DOMAINS: frozenset[str] = frozenset({"nashaniva.com"})
+
+
 def is_probable_article_url(url: str, domain: str) -> bool:
     if not same_site(url, domain):
         return False
     parsed = urllib.parse.urlsplit(url)
     path = parsed.path.lower()
-    if domain.lower().removeprefix("www.") == "vkurier.by" and re.fullmatch(r"/\d{5,8}/?", path):
+    segments = [segment for segment in path.split("/") if segment]
+    # Result Event Integrity 1.9: some outlets (vkurier.by is the diagnosed
+    # case: /238683, /238672, ...) publish articles directly under the
+    # domain root as a bare numeric CMS id, shorter than the length-8 floor
+    # below that was tuned for slug-style paths. This rule is deliberately
+    # general — bounded to 5-9 digits, domain-agnostic — rather than a
+    # per-domain special case, specifically so a *future* source using the
+    # same short-numeric-id scheme is recognised immediately instead of
+    # needing its own multi-round diagnosis (as vkurier.by did). A prior
+    # revision of this fix narrowed it back down to a vkurier.by-only
+    # hardcoded check, which would have silently reintroduced exactly that
+    # problem for any of the newly diagnosed candidate sources sharing the
+    # same URL shape.
+    if (
+        len(segments) == 1
+        and segments[0].isdigit()
+        and 5 <= len(segments[0]) <= 9
+        and not any(part in path for part in BLOCKED_PATH_PARTS)
+        and domain.lower().removeprefix("www.") not in NUMERIC_ARTICLE_ID_EXCLUDED_DOMAINS
+    ):
         return True
     if len(path.strip("/")) < 8:
         return False
     if any(part in path for part in BLOCKED_PATH_PARTS):
         return False
-    if domain.lower().removeprefix("www.") == "nashaniva.com" and re.fullmatch(r"/\d+/?", path):
-        return False
     if re.search(r"\.(jpg|jpeg|png|gif|svg|webp|pdf|mp3|mp4|zip)$", path):
         return False
     if path.endswith(ARTICLE_EXTENSIONS):
         return True
-    segments = [segment for segment in path.split("/") if segment]
     if len(segments) >= 2 or bool(re.search(r"/20\d{2}/", path)):
         return True
     # WordPress and several Belarusian media use a single long slug directly
