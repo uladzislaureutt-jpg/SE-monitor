@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-30.social.70-result-event-integrity-1.16"
+MONITOR_BUILD = "2026-08-31.social.72-relevance-transport-dedupe-1.0"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -1121,6 +1121,13 @@ EVENT_LOCALITY_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 
 
 EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    # Must precede ``greenery``: in reports about rolling stock the word
+    # «парк» denotes a fleet, not an urban park.
+    ("rail_platform_wagons", "вагоны-платформы БЖД", (
+        r"вагон[а-яёіў]*.{0,45}платформ",
+        r"платформ[а-яёіў]*.{0,45}вагон",
+        r"бжд.{0,80}(?:дефицит|нехват|вагон)",
+    )),
     ("food_product", "пищевая продукция", (
         r"пирож", r"десерт", r"кондитер", r"пищев.*продукц",
         r"харчов.*прадукц",
@@ -1225,7 +1232,7 @@ EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
         r"неисправ",
         r"няспраў", r"аварийн.*состоя", r"дрэнн.*стан",
     )),
-    ("absence_shortage", "отсутствие/нехватка", (r"не\s+хватает", r"не\s+хапае", r"отсутств", r"адсутн", r"закрыл[исая]*", r"закры[тл]", r"нет\s+(?:магазин|врач|автобус|освещ)", r"няма\s+(?:крам|ўрач|аўтобус|асвятл)")),
+    ("absence_shortage", "отсутствие/нехватка", (r"не\s+хватает", r"не\s+хапае", r"нехват", r"дефицит", r"адсутн", r"отсутств", r"закрыл[исая]*", r"закры[тл]", r"нет\s+(?:магазин|врач|автобус|освещ)", r"няма\s+(?:крам|ўрач|аўтобус|асвятл)")),
     ("safety", "опасность/безопасность", (r"опасн", r"небезпеч", r"небяспеч", r"угроз", r"пагроз", r"травм", r"траўм")),
     ("work_conditions", "условия труда", (r"жар[аыу]", r"спек", r"температур", r"тэмператур", r"услови.*труд", r"ўмов.*прац")),
     ("service_quality", "качество услуги", (r"плох.*качеств", r"дрэнн.*якасц", r"некачествен", r"няякасн", r"плох.*связ", r"не\s+работает", r"не\s+працуе")),
@@ -1428,6 +1435,14 @@ def infer_event_fingerprint(
     # connect to the fuller regional reports, while a single pathogen remains
     # locality-bound and cannot collapse unrelated recalls.
     combined_event_text = " ".join((title_text, summary_text, opening_text))
+    # The shortage of BZD platform wagons is a nationwide transport-market
+    # event even where a rewrite does not spell out a locality.  This narrow
+    # normalisation is intentionally not applied to ordinary train stories.
+    if (
+        object_key == "rail_platform_wagons"
+        and re.search(r"(?:\bбжд\b|белорусск[а-яёіў]*\s+железн[а-яёіў]*\s+дорог)", combined_event_text)
+    ):
+        event_scope = "беларусь"
     if (
         object_key == "food_product"
         and problem_key == "contamination"
@@ -1669,6 +1684,7 @@ class HttpObservation:
     outcome: str = "failed"
     failure_class: str = ""
     seconds: float = 0.0
+    detail: str = ""
 
 
 @dataclass(frozen=True)
@@ -1682,6 +1698,7 @@ class EndpointTelemetry:
     seconds: float = 0.0
     candidates: int = 0
     probe_mode: str = "normal"
+    detail: str = ""
 
 
 def classify_http_failure(status_code: int) -> str:
@@ -1754,6 +1771,7 @@ class HttpClient:
     def _record_observation(
         self, url: str, status_code: int, attempts: int,
         outcome: str, failure_class: str = "", seconds: float = 0.0,
+        detail: str = "",
     ) -> None:
         observation = HttpObservation(
             url=canonicalize_url(url),
@@ -1762,6 +1780,7 @@ class HttpClient:
             outcome=outcome,
             failure_class=failure_class,
             seconds=max(0.0, float(seconds or 0.0)),
+            detail=normalize_space(detail)[:240],
         )
         self._observations[canonicalize_url(url)] = observation
         self._observation_log.append(observation)
@@ -1818,6 +1837,10 @@ class HttpClient:
         self._record_observation(
             url, last_status, attempts, "failed", last_failure_class or "unknown",
             time.perf_counter() - started,
+            (
+                f"{type(last_error).__name__}: {last_error}"
+                if last_error else ""
+            ),
         )
         if last_error:
             LOG.debug("GET failed %s: %s", url, last_error)
@@ -3980,6 +4003,7 @@ def collect_source_candidates(
                     seconds=item.seconds,
                     candidates=len(items) if item.url == endpoint_key else 0,
                     probe_mode=probe_mode,
+                    detail=item.detail,
                 ))
         else:
             endpoint_observations.append(EndpointTelemetry(
@@ -4068,6 +4092,7 @@ def collect_source_candidates(
                 failure_class=item.failure_class,
                 attempts=item.attempts,
                 seconds=item.seconds,
+                detail=item.detail,
             ))
 
         feed_candidates: list[Candidate] = []
@@ -4833,6 +4858,9 @@ def extract_article_from_html(
     return ArticleExtraction(
         title=title,
         text=text,
+        # Debug must retain the amount of HTML that production received.
+        # This distinguishes a blank/blocked response from selector failure.
+        html_length=len(html_content),
         published_at=published.isoformat() if published else "",
         date_source=date_source,
         metadata_summary=metadata_summary,
@@ -5510,6 +5538,23 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"почему\s+нам.*интересн[а-яёіў]*\s+чуж[а-яёіў]*.*(?:жизн|конфликт))",
         r"головн[а-яёіў]*\s+бол[а-яёіў]*.*(?:магнитн|геомагнитн)[а-яёіў]*\s+бур",
     )),
+    # Consumer/lifestyle explainers can contain vocabulary such as
+    # «дефицит», «школа» or «работа», but do not document a public failure.
+    "lifestyle_advice_or_ranking": tuple(re.compile(value) for value in (
+        r"(?:что\s+давать|что\s+положить).*перекус[а-яёіў]*.*школ",
+        r"скрыт[а-яёіў]*\s+симптом[а-яёіў]*\s+дефицит[а-яёіў]*\s+магни",
+        r"жир\s+при\s+похудени[а-яёіў]*.*(?:мышц|куда\s+он\s+уход)",
+        r"топ[- ]?\d+\s+ваканси[а-яёіў]*",
+    )),
+    "positive_local_update": tuple(re.compile(value) for value in (
+        r"когда\s+щомысл[а-яёіў]*\s+примет.*дожинк",
+        r"(?:готов[а-яёіў]*|подготовк[а-яёіў]*).*дожинк",
+        r"в\s+ходе\s+строительств[а-яёіў]*.*(?:вл[- ]?330|березовск[а-яёіў]*\s+грэс)",
+    )),
+    "personal_foreign_profile": tuple(re.compile(value) for value in (
+        r"сам[а-яёіў]*\s+красив[а-яёіў]*\s+стран[а-яёіў]*\s+в\s+мире.*где\s+я\s+побывал",
+        r"(?:отпуск|отдых).*чили.*(?:it|айти|работ)",
+    )),
     "benefit_or_application_explainer": tuple(re.compile(value) for value in (
         r"^(?:когда\s+и\s+куда|куда\s+и\s+когда)\s+обращат[а-яёіў]*\s+за\s+пособ",
         r"^кто\s+.*(?:может|сможет|имеет\s+право).*(?:улучшит[а-яёіў]*\s+жиль|"
@@ -5547,6 +5592,10 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:социальн[а-яёіў]*\s+пансионат|центр[а-яёіў]*\s+социальн[а-яёіў]*\s+реабилитац)",
         r"(?:начал[а-яёіў]*\s+действоват|действуют).*нов[а-яёіў]*\s+правил[а-яёіў]*.*"
         r"(?:направлени[а-яёіў]*\s+в\s+соцучреждени|социальн[а-яёіў]*\s+пансионат)",
+    )),
+    "routine_status_explainer": tuple(re.compile(value) for value in (
+        r"не\s+работаете\s+после\s+увольнени[а-яёіў]*.*(?:баз[а-яёіў]*\s+)?тунеядц",
+        r"как\s+изменит[а-яёіў]*\s+коммуналк[а-яёіў]*.*сдач[а-яёіў]*\s+квартир[а-яёіў]*.*тунеядц",
     )),
     "career_explainer": tuple(re.compile(value) for value in (
         r"^кто\s+такие\s+программист[а-яёіў]*\s+1с\s+и\s+почему\s+они\s+нужны",
@@ -5635,6 +5684,9 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"стало\s+известно.*сколько\s+денег\s+выделено",
         r"готовит[а-яёіў]*\s+к\s+[«\"]?дажынк",
         r"точн[а-яёіў]*\s+дат[а-яёіў]*\s+открыти[а-яёіў]*",
+        r"ограничени[а-яёіў]*\s+на\s+посещен[а-яёіў]*\s+лес",
+        r"планов[а-яёіў]*\s+заседани[а-яёіў]*\s+комисси[а-яёіў]*\s+"
+        r"по\s+противодействи[а-яёіў]*\s+коррупци",
         r"рассказал[а-яёіў]*.*как.*расселя[а-яёіў]*\s+студент",
         r"студент[а-яёіў]*\s+ждут\s+в\s+общежити",
         r"платн[а-яёіў]*\s+парков[а-яёіў]*.*"
@@ -5653,6 +5705,7 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:путь|дорог|магистрал|объект)[а-яёіў]*.*(?:соединит|свяжет|злучыць)",
     )),
     "positive_feature_or_profile": tuple(re.compile(value) for value in (
+        r"дал[а-яёіў]*\s+вторую\s+жизн[а-яёіў]*.*библиотек",
         r"появил[а-яёіў]*.*(?:для\s+обмена|буккроссинг|книг[а-яёіў]*)",
         r"(?:приносит|прын[оё]с)[а-яёіў]*\s+на\s+урок[а-яёіў]*.*"
         r"(?:экспонат|животн|зме[яі])",
@@ -5680,6 +5733,8 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"водител[а-яёіў]*\s+спорят.*справедливост[а-яёіў]*\s+наказан",
     )),
     "single_incident": tuple(re.compile(value) for value in (
+        r"пассажир\s+получил[а-яёіў]*\s+травм[а-яёіў]*\s+позвоночник[а-яёіў]*.*"
+        r"суд\s+взыскал",
         r"получил[а-яёіў]*\s+травм[а-яёіў]*.*(?:фестивал|шоу|трюк)",
         r"создал[а-яёіў]*.*аварийн[а-яёіў]*.*проучит",
         r"(?:обнаружил[а-яёіў]*|нашли)\s+тел[а-яёіў]*.*(?:пропавш|альпинист)",
@@ -5778,7 +5833,9 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     )),
     "multi_story_digest": tuple(re.compile(value) for value in (
         r"^(?:что\s+)?сегодня\s+по\s+новостям",
-        r"^(?:главн[а-яёіў]*|важн[а-яёіў]*)\s+новост[а-яёіў]*\s+(?:дня|вечера|утра)",
+        r"^(?:главн[а-яёіў]*|важн[а-яёіў]*)\s+новост[а-яёіў]*\s+(?:дня|вечера|утра|"
+        r"понедельник[а-яёіў]*|вторник[а-яёіў]*|сред[а-яёіў]*|четверг[а-яёіў]*|"
+        r"пятниц[а-яёіў]*|суббот[а-яёіў]*|воскресень[а-яёіў]*)",
         r"вечерн[а-яёіў]*\s+выпуск",
         r"^какие\s+новост[а-яёіў]*\s+прин[её]с\s+сегодняшн[а-яёіў]*\s+день",
     )),
@@ -5959,6 +6016,20 @@ BOUND_PUBLIC_ISSUE_PATTERNS: dict[
             r"(?:проблем|жалоб|претензи)",
         )),
     ),
+    # A concrete queue complaint about access to outpatient care is a
+    # public-health signal even when the article starts with a long service
+    # explanation and the body-level category evidence arrives after the
+    # bounded lead. Keep this deliberately narrow: both a care setting and
+    # either a resident complaint or an abnormally long queue are required.
+    "outpatient_access_complaint": (
+        tuple(re.compile(value) for value in (
+            r"(?:поликлиник|больниц|амбулатор|гинеколог|врач|медкомисси)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:жител|пациент|граждан)[а-яёіў]*.{0,80}(?:пожаловал|жалоб|не\s+мож(?:ет|ут)\s+попасть)",
+            r"(?:длинн|многочасов|огромн)[а-яёіў]*\s+очеред",
+        )),
+    ),
 }
 
 
@@ -6066,6 +6137,18 @@ def result_integrity_genre_rejection(
         return "Evidence Binding: тема и проблема связаны только глубоко в тексте"
     if matches("multi_story_digest"):
         return "Result Integrity: многосюжетная сводка без самостоятельного события"
+    if matches("lifestyle_advice_or_ranking") and not (
+        resident_explicit or lead_findings or persistence or special_public_interest
+    ):
+        return "Editorial Intent: бытовой совет или рейтинг без подтверждённой общественной проблемы"
+    if matches("positive_local_update", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence or special_public_interest
+    ):
+        return "Editorial Intent: позитивное инфраструктурное обновление без проблемы"
+    if matches("personal_foreign_profile", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence or special_public_interest
+    ):
+        return "Editorial Intent: личный зарубежный профиль без общественной проблемы"
     if matches("hypothetical_derivative") and not actual_public_evidence:
         return "Result Integrity: гипотетическая или сгенерированная иллюстрация события"
     explicit_domestic_market_link = bool(re.search(
@@ -6105,6 +6188,10 @@ def result_integrity_genre_rejection(
         resident_explicit or persistence or bound_regulatory_discussion
     ):
         return "Editorial Intent: нейтральное разъяснение новых правил"
+    if matches("routine_status_explainer", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence
+    ):
+        return "Editorial Intent: справочное разъяснение статуса без подтверждённой проблемы"
     if matches("career_explainer", include_lead=True) and not (
         resident_explicit or lead_findings or persistence
     ):
@@ -6617,6 +6704,7 @@ def evaluate_relevance(
         "employment_contraction": "Работа, зарплаты и доходы",
         "inactive_population_statistic": "Работа, зарплаты и доходы",
         "telecom_service_complaint": "Связь, интернет и телевидение",
+        "outpatient_access_complaint": "Здравоохранение",
     }
     bound_profile_labels = {
         "consumer_redress": "подтверждённый спор о защите прав потребителя",
@@ -6630,6 +6718,7 @@ def evaluate_relevance(
         "employment_contraction": "сокращение занятости или рабочих мест",
         "inactive_population_statistic": "статистика граждан, не занятых в экономике",
         "telecom_service_complaint": "подтверждённая жалоба на услугу связи",
+        "outpatient_access_complaint": "подтверждённая жалоба на доступ к амбулаторной помощи",
     }
     for profile in sorted(bounded_issue_profiles):
         category = bound_profile_categories.get(profile)
@@ -8402,6 +8491,7 @@ def process_candidate_detailed(
         trace.transport_status = extracted.transport_status
         trace.extraction_strategy = extracted.extraction_strategy
         trace.text_length = len(text)
+        trace.html_length = extracted.html_length
         trace.metadata_only = extracted.extraction_strategy == "metadata_description"
         trace.extraction_failed = not bool(text)
         trace.transport_circuit_skipped = extracted.transport_circuit_skipped
@@ -8998,6 +9088,18 @@ def _looks_like_same_event(left: ArticleResult, right: ArticleResult) -> bool:
     if strong_semantic_match:
         return True
 
+    # This named signature represents one reported national shortage of BZD
+    # platform wagons.  Syndicated versions were classified into different
+    # broad categories (road/transport/deficit), so the normal same-category
+    # guard would leave three cards for the same event.  The signature is
+    # narrower than a generic shortage and has already passed scope and
+    # analysis/development guards above.
+    if (
+        left.event_signature == right.event_signature
+        == "беларусь|rail_platform_wagons|absence_shortage"
+    ):
+        return True
+
     left_title = set(_event_tokens(left.title))
     right_title = set(_event_tokens(right.title))
     same_category = left.category == right.category
@@ -9528,6 +9630,29 @@ def build_source_coverage(
     ]
 
 
+def source_access_alerts(source_coverage: list[dict[str, Any]]) -> list[str]:
+    """Expose material source blind zones in the normal report as warnings.
+
+    Source-level transport failures used to exist only in the coverage CSV and
+    debug telemetry.  They are not processing exceptions, but they materially
+    reduce the report's completeness and must be visible to an operator.
+    """
+    alerts: list[str] = []
+    for row in source_coverage:
+        status = str(row.get("access_status", ""))
+        if status not in {"transport_blocked", "unexpected_zero"}:
+            continue
+        source = str(row.get("source", "источник"))
+        country = str(row.get("country", ""))
+        reason = str(row.get("access_status_reason", ""))
+        alerts.append(
+            "Предупреждение покрытия: "
+            f"{country} / {source}: {status}; {reason}. "
+            "Техническая причина — в social_access_telemetry CSV."
+        )
+    return alerts
+
+
 def write_coverage_csv(
     path: Path,
     source_coverage: list[dict[str, Any]],
@@ -9817,6 +9942,7 @@ def write_access_telemetry_csv(
                     "seconds": round(observation.seconds, 3),
                     "candidates": observation.candidates,
                     "probe_mode": observation.probe_mode,
+                    "detail": observation.detail,
                 })
 
         ordered_outcomes = sorted(
@@ -9869,6 +9995,7 @@ def write_access_telemetry_csv(
                     "seconds": round(observation.seconds, 3),
                     "transport": trace.transport,
                     "final_stage": trace.final_stage,
+                    "detail": observation.detail,
                 })
 
 
@@ -10638,6 +10765,10 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
         settings,
         recovery,
     )
+    # A failed source is a coverage warning rather than a fatal run error.
+    # Add it before both the HTML and error artefacts are written so the
+    # operator does not have to infer an outage from an empty candidate count.
+    errors.extend(source_access_alerts(source_coverage))
     postprocess_seconds = time.perf_counter() - postprocess_started
 
 

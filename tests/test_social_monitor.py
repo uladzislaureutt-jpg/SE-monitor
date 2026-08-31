@@ -778,6 +778,10 @@ def test_config_contains_53_enabled_sources_without_stale_vitebsk_duplicate():
     assert fallback_by_name["Наша Ніва"] == "https://t.me/nashaniva"
     assert fallback_by_name["Позірк"] == "https://t.me/pozirkonline"
     assert fallback_by_name["Zerkalo.io"] == "https://t.me/zerkalo_io"
+    locality_by_name = {item.name: item.locality for item in loaded}
+    assert locality_by_name["Лунинецкие новости"] == (
+        "Лунинец;Микашевичи;Лунинецкий район"
+    )
 
 
 def test_undated_sitemap_is_allowed_after_warmup(monkeypatch):
@@ -3867,6 +3871,7 @@ def test_architecture_core1_process_candidate_detailed_keeps_editorial_result(mo
             extraction_strategy="generic_html",
             transport="requests",
             transport_status="ok",
+            html_length=1234,
         ),
     )
     result, trace = social_monitor.process_candidate_detailed(
@@ -3880,6 +3885,7 @@ def test_architecture_core1_process_candidate_detailed_keeps_editorial_result(mo
     assert trace.relevance_passed is True
     assert trace.transport == "requests"
     assert trace.extraction_strategy == "generic_html"
+    assert trace.html_length == 1234
 
 
 def test_result_integrity_rejection_reason_is_exposed_in_trace(monkeypatch):

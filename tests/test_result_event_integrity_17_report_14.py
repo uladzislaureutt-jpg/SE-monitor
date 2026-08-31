@@ -184,6 +184,19 @@ def test_result_integrity_17_corrects_six_confirmed_categories():
     assert communal.relevant and communal.category == "ЖКХ и состояние жилья"
 
 
+def test_result_integrity_keeps_outpatient_queue_complaint_when_body_evidence_is_late():
+    decision_result = decision(
+        "«Квест: пройди медкомиссию»: жительница Молодечно пожаловалась на длинные очереди к гинекологу — в больнице ответили",
+        " ".join([
+            "Больница опубликовала общую справку о работе учреждения."
+            for _ in range(8)
+        ]) + " Пациентка пожаловалась, что попасть к гинекологу невозможно из-за длинной очереди.",
+        "Молодечно",
+    )
+    assert decision_result.relevant, decision_result.reason
+    assert decision_result.category == "Здравоохранение"
+
+
 def test_event_integrity_17_consolidates_seven_report_14_event_groups():
     rows = [
         article("A", "Кипр разрешил ВНЖ с просроченными паспортами", "Кипр выдает вид на жительство беларусам с просроченными паспортами.", "https://a/1", signature="cyprus-a"),
