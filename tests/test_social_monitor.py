@@ -766,11 +766,11 @@ def test_public_telegram_preview_is_parsed(monkeypatch):
     assert "освещения" in items[0].inline_text
 
 
-def test_config_contains_45_enabled_sources_without_stale_vitebsk_duplicate():
+def test_config_contains_53_enabled_sources_without_stale_vitebsk_duplicate():
     loaded = social_monitor.load_sources(
         social_monitor.Path(__file__).resolve().parents[1] / "config" / "sources.csv"
     )
-    assert len(loaded) == 45
+    assert len(loaded) == 53
     assert sum(item.media_type == "telegram" for item in loaded) == 12
     assert all(item.name != "Свободный Витебск" for item in loaded)
     assert sum(item.start_url == "https://t.me/vitebsk_info" for item in loaded) == 1
