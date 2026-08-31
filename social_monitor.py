@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-30.social.63-source-admission-recovery-1.0"
+MONITOR_BUILD = "2026-08-30.social.69-result-integrity-restoration-soft-admission-1.0"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -121,6 +121,11 @@ STRATEGIC_SOURCE_PROFILES: dict[str, dict[str, Any]] = {
         "protected": False,
         "transport_order": ("requests", "amp"),
         "amp_suffix": "/amp/",
+    },
+    "vkurier.by": {
+        "protected": True,
+        "transport_order": ("requests", "chromium"),
+        "prefer_largest_container": True,
     },
     "flagshtok.info": {
         "protected": False,
@@ -748,6 +753,7 @@ class CandidateProcessingTelemetry:
     transport_status: str = ""
     extraction_strategy: str = ""
     text_length: int = 0
+    html_length: int = 0
     metadata_only: bool = False
     extraction_failed: bool = False
     relevance_passed: bool = False
@@ -920,6 +926,7 @@ class SourceProcessingMetrics:
 class ArticleExtraction:
     title: str
     text: str
+    html_length: int = 0
     published_at: str = ""
     date_source: str = ""
     metadata_summary: str = ""
@@ -1402,6 +1409,8 @@ def infer_event_fingerprint(
     event_scope = locality.casefold() if locality else (
         f"region:{region.casefold()}" if region else ""
     )
+    if not event_scope and re.search(r"\b(?:в|по)\s+беларус[а-яёіў]*\b", " ".join((title_text, summary_text, opening_text))):
+        event_scope = "беларусь"
     # A rare pair of microbiological findings is a stronger event anchor than
     # an omitted locality in a short Telegram rewrite.  Normalising this one
     # narrow family to a national scope allows the next-day short retelling to
@@ -1586,9 +1595,13 @@ def is_probable_article_url(url: str, domain: str) -> bool:
         return False
     parsed = urllib.parse.urlsplit(url)
     path = parsed.path.lower()
+    if domain.lower().removeprefix("www.") == "vkurier.by" and re.fullmatch(r"/\d{5,8}/?", path):
+        return True
     if len(path.strip("/")) < 8:
         return False
     if any(part in path for part in BLOCKED_PATH_PARTS):
+        return False
+    if domain.lower().removeprefix("www.") == "nashaniva.com" and re.fullmatch(r"/\d+/?", path):
         return False
     if re.search(r"\.(jpg|jpeg|png|gif|svg|webp|pdf|mp3|mp4|zip)$", path):
         return False
@@ -5043,7 +5056,6 @@ def extract_article(
     if (
         not response
         and "chromium" in transport_order
-        and candidate.source.adapter == "belsat_article"
     ):
         decision = recovery.transport_decision(candidate.source, "chromium") if recovery else "normal"
         if decision == "skip":
@@ -5150,7 +5162,6 @@ def extract_article(
     chromium_threshold = int(profile.get("chromium_threshold", 250))
     if (
         "chromium" in transport_order
-        and candidate.source.adapter == "belsat_article"
         and len(extracted.text) < chromium_threshold
     ):
         decision = recovery.transport_decision(candidate.source, "chromium") if recovery else "normal"
@@ -5190,6 +5201,22 @@ def extract_article(
 
 def contains_any(text: str, terms: Iterable[str]) -> bool:
     return bool(find_terms(text, terms))
+
+
+def economic_direction_signal(text: str) -> bool | None:
+    """False = clearly favourable economic outcome; True = adverse outcome."""
+    value = normalized_search_text(text)
+    if not value:
+        return None
+    if re.search(r"(?:реальн[а-яёіў]*\s+доход[а-яёіў]*.*сниз|не\s+хвата[а-яёіў]*\s+денег|безработ(?:иц|н)[а-яёіў]*.*(?:вырос|увелич)|тариф[а-яёіў]*.*вырос|цен[а-яёіў]*\s+вырос.*сильнее|цен[а-яёіў]*.*(?:выше|сильнее).*зарплат)", value):
+        return True
+    if re.search(r"(?:покупательн[а-яёіў]*\s+способност[а-яёіў]*.*(?:выше|увелич|вырос)|рост\s+цен.*(?:ниже|меньше).*рост[а-яёіў]*\s+зарплат|реальн[а-яёіў]*\s+доход[а-яёіў]*.*(?:подскоч|вырос)|безработиц[а-яёіў]*.*(?:рекордн[а-яёіў]*\s+минимум|сниз))", value):
+        return False
+    return None
+
+
+def has_unreversed_negative_outcome(text: str) -> bool:
+    return economic_direction_signal(text) is True
 
 
 def term_present(text: str, term: str) -> bool:
@@ -5930,6 +5957,8 @@ def result_integrity_genre_rejection(
     """
     folded_title = normalized_search_text(title)
     folded_lead = normalized_search_text(lead)
+    if economic_direction_signal(" ".join((title, lead))) is False:
+        return "Result Integrity: положительная динамика доходов без подтверждённой проблемы"
     concrete_title_problem = bool(re.search(
         r"(?:жалоб|возмущ|не\s+работ|не\s+могут|игнорир|разбит|"
         r"луж[а-яёіў]*|гряз|мусор|очеред|задолж|просроч|тарак|"
@@ -6054,7 +6083,7 @@ def result_integrity_genre_rejection(
         resident_explicit or persistence or critical_public_interest
     ):
         return "Result Integrity: обычное правоохранительное сообщение без социальной проблемы"
-    if matches("positive_income_comparison", include_lead=True) and not (
+    if matches("positive_income_comparison", include_lead=True) and economic_direction_signal(" ".join((title, lead))) is not True and not (
         resident_explicit or lead_findings or persistence
     ):
         return "Result Integrity: положительная динамика доходов без подтверждённой проблемы"
@@ -9121,6 +9150,32 @@ def prune_state(state: dict[str, Any], retain_days: int) -> None:
             stale.append(url)
     for url in stale:
         seen.pop(url, None)
+    title_cache = state.setdefault("title_cache", {})
+    for url in list(title_cache):
+        if url not in seen:
+            title_cache.pop(url, None)
+
+
+def write_rejected_signals_csv(
+    path: Path,
+    outcomes: dict[str, tuple[Candidate, CandidateProcessingTelemetry]],
+) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for candidate, trace in outcomes.values():
+        relevant_rejection = trace.prefilter_status == "strong" and trace.final_stage == "relevance_rejected"
+        extraction_failure = trace.final_stage == "degraded_queued" and trace.degraded_reason == "extraction_failed"
+        if not (relevant_rejection or extraction_failure):
+            continue
+        reason = trace.rejection_reason or (
+            "html fetched, no article text extracted" if extraction_failure else ""
+        )
+        rows.append({"url": candidate.url, "source": candidate.source.name, "title": candidate.title,
+                     "prefilter_status": trace.prefilter_status, "final_stage": trace.final_stage,
+                     "reason": reason, "html_length": trace.html_length, "text_length": trace.text_length})
+    with path.open("w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["url", "source", "title", "prefilter_status", "final_stage", "reason", "html_length", "text_length"])
+        writer.writeheader(); writer.writerows(rows)
 
 
 def build_country_coverage(
@@ -10564,6 +10619,7 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
     errors_path = reports_dir / f"social_errors_{date_stamp}.txt"
     coverage_path = reports_dir / f"social_coverage_{date_stamp}.csv"
     access_telemetry_path = reports_dir / f"social_access_telemetry_{date_stamp}.csv"
+    debug_path = project_root / "debug" / f"rejected_signals_{date_stamp}.csv"
 
     report_started = time.perf_counter()
     html_report = build_html_report(
@@ -10572,6 +10628,7 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
     html_path.write_text(html_report, encoding="utf-8")
     write_csv_report(csv_path, results)
     write_coverage_csv(coverage_path, source_coverage)
+    write_rejected_signals_csv(debug_path, processing_outcomes)
     errors_path.write_text("\n".join(errors), encoding="utf-8")
     report_seconds = time.perf_counter() - report_started
 
