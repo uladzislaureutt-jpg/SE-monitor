@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-31.social.72-relevance-transport-dedupe-1.0"
+MONITOR_BUILD = "2026-08-31.social.73-telemetry-partial-loss-1.0"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -1713,6 +1713,21 @@ def classify_http_failure(status_code: int) -> str:
     return "unknown"
 
 
+def request_exception_detail(error: Exception) -> str:
+    """Return a compact, actionable and secret-free transport diagnosis.
+
+    ``requests`` nests the operating-system cause at the end of a long error
+    chain.  Keeping its beginning hid the actual errno in run 27.  Prefer the
+    final errno fragment; otherwise preserve the end of the message, where
+    urllib3 normally places the root cause.
+    """
+    message = normalize_space(str(error))
+    errno_matches = re.findall(r"\[Errno\s+[^\]]+\][^)]{0,140}", message)
+    if errno_matches:
+        return f"{type(error).__name__}: {errno_matches[-1]}"
+    return f"{type(error).__name__}: {message[-300:]}"
+
+
 class HttpClient:
     BROWSER_HEADER_DOMAINS = {
         "belsat.eu", "reform.news", "pozirk.online",
@@ -1780,7 +1795,7 @@ class HttpClient:
             outcome=outcome,
             failure_class=failure_class,
             seconds=max(0.0, float(seconds or 0.0)),
-            detail=normalize_space(detail)[:240],
+            detail=normalize_space(detail)[:360],
         )
         self._observations[canonicalize_url(url)] = observation
         self._observation_log.append(observation)
@@ -1837,10 +1852,7 @@ class HttpClient:
         self._record_observation(
             url, last_status, attempts, "failed", last_failure_class or "unknown",
             time.perf_counter() - started,
-            (
-                f"{type(last_error).__name__}: {last_error}"
-                if last_error else ""
-            ),
+            request_exception_detail(last_error) if last_error else "",
         )
         if last_error:
             LOG.debug("GET failed %s: %s", url, last_error)
@@ -5546,6 +5558,12 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"жир\s+при\s+похудени[а-яёіў]*.*(?:мышц|куда\s+он\s+уход)",
         r"топ[- ]?\d+\s+ваканси[а-яёіў]*",
     )),
+    "educational_simulation": tuple(re.compile(value) for value in (
+        r"(?:учат|обучают).{0,55}(?:работать|пользоваться).{0,70}"
+        r"(?:умн[а-яёіў]*\s+)?сч[её]тчик",
+        r"учебн[а-яёіў]*\s+(?:стенд|центр|пространств).{0,100}"
+        r"(?:моделир|имитац).{0,70}(?:нештатн|аварийн)",
+    )),
     "positive_local_update": tuple(re.compile(value) for value in (
         r"когда\s+щомысл[а-яёіў]*\s+примет.*дожинк",
         r"(?:готов[а-яёіў]*|подготовк[а-яёіў]*).*дожинк",
@@ -6141,6 +6159,10 @@ def result_integrity_genre_rejection(
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
         return "Editorial Intent: бытовой совет или рейтинг без подтверждённой общественной проблемы"
+    if matches("educational_simulation", include_lead=True) and not (
+        resident_explicit or persistence or special_public_interest
+    ):
+        return "Editorial Intent: учебная симуляция или инструкция без реального сбоя услуги"
     if matches("positive_local_update", include_lead=True) and not (
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
@@ -9565,6 +9587,20 @@ def build_source_coverage(
             row["access_status"] = "transport_blocked"
             row["access_status_reason"] = "all attempted access paths failed or were circuit-skipped"
         elif (
+            # Do not alarm on one transient miss.  A warning starts at three
+            # failed pages and 20% of the attempted material: run 27 lost
+            # 11/35 article fetches from «Аршанская газета» while discovery
+            # itself remained healthy.
+            processed >= 3
+            and int(row["fetch_failed"]) >= 3
+            and int(row["fetch_failed"]) * 5 >= processed
+        ):
+            row["access_status"] = "partial_transport_loss"
+            row["access_status_reason"] = (
+                f"{int(row['fetch_failed'])} of {processed} attempted article "
+                "fetches failed"
+            )
+        elif (
             processed > 0
             and int(row["extraction_full"]) == 0
             and extraction_loss > 0
@@ -9595,7 +9631,7 @@ def build_source_coverage(
         if (
             row["access_status"] in {
                 "transport_blocked", "extraction_blind",
-                "protected_recovery", "unexpected_zero",
+                "partial_transport_loss", "protected_recovery", "unexpected_zero",
                 "inactive_or_stale",
             }
         ):
@@ -9640,7 +9676,9 @@ def source_access_alerts(source_coverage: list[dict[str, Any]]) -> list[str]:
     alerts: list[str] = []
     for row in source_coverage:
         status = str(row.get("access_status", ""))
-        if status not in {"transport_blocked", "unexpected_zero"}:
+        if status not in {
+            "transport_blocked", "partial_transport_loss", "unexpected_zero",
+        }:
             continue
         source = str(row.get("source", "источник"))
         country = str(row.get("country", ""))
