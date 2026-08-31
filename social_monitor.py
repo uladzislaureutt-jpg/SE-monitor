@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-31.social.73-telemetry-partial-loss-1.0"
+MONITOR_BUILD = "2026-08-31.social.74-result-event-integrity-1.0"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -1128,6 +1128,14 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
         r"платформ[а-яёіў]*.{0,45}вагон",
         r"бжд.{0,80}(?:дефицит|нехват|вагон)",
     )),
+    # A local school's published appearance restrictions may generate a
+    # substantive public dispute.  It is kept as a named event so a short
+    # Telegram retelling and a fuller article do not become duplicate cards.
+    ("school_appearance_rules", "требования к внешнему виду школьников", (
+        r"школ[а-яёіў]*.{0,90}(?:внешн[а-яёіў]*\s+вид|прическ|волос|макияж)",
+        r"(?:внешн[а-яёіў]*\s+вид|прическ|волос|макияж).{0,90}"
+        r"(?:ученик|школьник|школ)",
+    )),
     ("food_product", "пищевая продукция", (
         r"пирож", r"десерт", r"кондитер", r"пищев.*продукц",
         r"харчов.*прадукц",
@@ -1179,6 +1187,9 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
 
 
 EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
+    ("public_resonance", "общественный резонанс", (
+        r"(?:активн[а-яёіў]*\s+)?обсуждени", r"возмущ", r"массов[а-яёіў]*\s+критик",
+    )),
     ("contamination", "микробиологическое загрязнение", (
         r"кишечн[а-яёіў]*\s+палоч", r"стафилокок", r"s\.?\s*aureus",
         r"колиформ", r"микробиологическ[а-яёіў]*\s+наруш",
@@ -1412,7 +1423,7 @@ def infer_event_fingerprint(
         {
             "station_storage": 2, "communal_billing": 2,
             "food_product": 2, "parking": 1, "water_supply": 1,
-            "lighting": 1,
+            "lighting": 1, "school_appearance_rules": 2,
         },
     )
     problem_key, problem_label = _best_pattern_label(
@@ -1421,6 +1432,7 @@ def infer_event_fingerprint(
         {
             "contamination": 5, "billing_overcharge": 3,
             "bullying": 3, "animal_welfare": 3, "hiring_shortage": 2,
+            "public_resonance": 2,
         },
     )
     signature = ""
@@ -5569,6 +5581,16 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:готов[а-яёіў]*|подготовк[а-яёіў]*).*дожинк",
         r"в\s+ходе\s+строительств[а-яёіў]*.*(?:вл[- ]?330|березовск[а-яёіў]*\s+грэс)",
     )),
+    "positive_public_infrastructure_opening": tuple(re.compile(value) for value in (
+        r"(?:открыва[а-яёіў]*|откро[а-яёіў]*|начнет\s+функциониров)[а-яёіў]*"
+        r".{0,90}(?:подземк[а-яёіў]*|подземн[а-яёіў]*\s+переход)",
+    )),
+    "aggregate_credit_debt_statistic": tuple(re.compile(value) for value in (
+        r"просроченн[а-яёіў]*\s+задолженност[а-яёіў]*.{0,90}"
+        r"(?:госсектор|государственн[а-яёіў]*\s+сектор|кредит)",
+        r"(?:госсектор|государственн[а-яёіў]*\s+сектор).{0,90}"
+        r"просроченн[а-яёіў]*\s+задолженност[а-яёіў]*",
+    )),
     "personal_foreign_profile": tuple(re.compile(value) for value in (
         r"сам[а-яёіў]*\s+красив[а-яёіў]*\s+стран[а-яёіў]*\s+в\s+мире.*где\s+я\s+побывал",
         r"(?:отпуск|отдых).*чили.*(?:it|айти|работ)",
@@ -6167,6 +6189,14 @@ def result_integrity_genre_rejection(
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
         return "Editorial Intent: позитивное инфраструктурное обновление без проблемы"
+    if matches("positive_public_infrastructure_opening", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence or special_public_interest
+    ):
+        return "Editorial Intent: открытие инфраструктурного объекта без жалобы или нарушения"
+    if matches("aggregate_credit_debt_statistic", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence or special_public_interest
+    ):
+        return "Result Integrity: агрегированная кредитная статистика без влияния на жителей"
     if matches("personal_foreign_profile", include_lead=True) and not (
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
@@ -9119,6 +9149,16 @@ def _looks_like_same_event(left: ArticleResult, right: ArticleResult) -> bool:
     if (
         left.event_signature == right.event_signature
         == "беларусь|rail_platform_wagons|absence_shortage"
+    ):
+        return True
+
+    # One specific school issued appearance restrictions, and the same public
+    # reaction was reported both as a short social post and as a full article.
+    # The exact event signature is narrow enough to keep independent school
+    # disputes separate while presenting this one resonance as one card.
+    if (
+        left.event_signature == right.event_signature
+        == "барановичи|school_appearance_rules|public_resonance"
     ):
         return True
 
