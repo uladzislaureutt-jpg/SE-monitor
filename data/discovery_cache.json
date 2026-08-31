@@ -78,6 +78,15 @@
       "https://flagshtok.info/sitemap.xml"
     ]
   },
+  "golk.by": {
+    "checked_at": "2026-08-31T07:48:45.755363+00:00",
+    "feeds": [
+      "https://golk.by/feed"
+    ],
+    "sitemaps": [
+      "https://golk.by/sitemap.xml"
+    ]
+  },
   "gs.by": {
     "checked_at": "2026-08-22T08:41:16.000245+00:00",
     "feeds": [
@@ -89,6 +98,11 @@
       "https://www.gs.by/sitemap-news-ru.xml",
       "https://www.gs.by/sitemap-ru.xml"
     ]
+  },
+  "hoiniki.by": {
+    "checked_at": "2026-08-31T07:51:44.098772+00:00",
+    "feeds": [],
+    "sitemaps": []
   },
   "hpravy.org": {
     "checked_at": "2026-08-22T08:41:23.137066+00:00",
@@ -112,11 +126,23 @@
       "https://hrodna.life/sitemap_index.xml"
     ]
   },
+  "klich.by": {
+    "checked_at": "2026-08-31T07:45:01.517281+00:00",
+    "feeds": [],
+    "sitemaps": []
+  },
   "kraj.by": {
     "checked_at": "2026-08-22T08:41:49.659284+00:00",
     "feeds": [],
     "sitemaps": [
       "https://kraj.by/sitemap.xml"
+    ]
+  },
+  "lnc.by": {
+    "checked_at": "2026-08-31T07:45:19.868508+00:00",
+    "feeds": [],
+    "sitemaps": [
+      "https://lnc.by/sitemap.xml"
     ]
   },
   "m-media.storage.googleapis.com": {
@@ -128,7 +154,7 @@
     "sitemaps": []
   },
   "magilev.by": {
-    "checked_at": "2026-08-28T07:44:48.651737+00:00",
+    "checked_at": "2026-08-31T07:44:40.662374+00:00",
     "feeds": [],
     "sitemaps": []
   },
@@ -184,11 +210,30 @@
     ],
     "sitemaps": []
   },
+  "orshanka.by": {
+    "checked_at": "2026-08-31T07:51:41.716363+00:00",
+    "feeds": [],
+    "sitemaps": [
+      "https://www.orshanka.by/sitemap.xml"
+    ]
+  },
   "pristalica.by": {
     "checked_at": "2026-08-22T08:42:04.432717+00:00",
     "feeds": [],
     "sitemaps": [
       "https://pristalica.by/sitemap_index.xml"
+    ]
+  },
+  "pvestnik.by": {
+    "checked_at": "2026-08-31T07:45:02.455900+00:00",
+    "feeds": [
+      "https://www.pvestnik.by/comments/feed/",
+      "https://www.pvestnik.by/feed/"
+    ],
+    "sitemaps": [
+      "http://www.pvestnik.by/index.php?xml_sitemap=params=",
+      "https://pvestnik.by/sitemap.xml",
+      "https://www.pvestnik.by/sitemap.xml"
     ]
   },
   "slutsk-gorod.by": {
@@ -218,6 +263,18 @@
     "feeds": [],
     "sitemaps": [
       "https://smolevichi-24.by/sitemap_index.xml"
+    ]
+  },
+  "sputnik.by": {
+    "checked_at": "2026-08-31T07:45:07.286180+00:00",
+    "feeds": [
+      "https://sputnik.by/export/rss2/archive/index.xml"
+    ],
+    "sitemaps": [
+      "https://sputnik.by/sitemap.xml",
+      "https://sputnik.by/sitemap_archive.xml",
+      "https://sputnik.by/sitemap_article_index.xml",
+      "https://sputnik.by/sitemap_list_index.xml"
     ]
   },
   "vgr.by": {
@@ -265,5 +322,12 @@
       "https://news.zerkalo.io/rss/life.rss"
     ],
     "sitemaps": []
+  },
+  "zorkanews.by": {
+    "checked_at": "2026-08-31T07:45:09.284999+00:00",
+    "feeds": [],
+    "sitemaps": [
+      "https://zorkanews.by/sitemap_index.xml"
+    ]
   }
 }
