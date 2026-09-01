@@ -272,3 +272,30 @@ def test_housing_still_fires_on_genuine_yard_complaint():
         "Во дворе давно не убирались, подъезд требует ремонта.",
     )
     assert fingerprint.object_key == "housing"
+
+
+def test_bullying_no_longer_fires_on_otravlenie_real_text():
+    # Confirmed live in run 31 (2026-09-01): the same food-poisoning story
+    # fixed for event_object in the previous patch still got
+    # event_problem="bullying" via a second, independent bare pattern
+    # ("травл[а-яёіў]*") in a different dictionary that this session's
+    # earlier audit hadn't covered -- "отравление" contains "травл" too.
+    fingerprint = social_monitor.infer_event_fingerprint(
+        "Почти 400 человек отравились на празднике в Турции",
+        "",
+        "В местные больницы обратились 367 граждан, которые отравились "
+        "после употребления курицы с рисом на мероприятии, сказано в "
+        "сообщении медиков после отравления.",
+    )
+    assert fingerprint.problem_key != "bullying"
+
+
+def test_bullying_still_fires_on_genuine_harassment_reports():
+    for text in (
+        "Одноклассники годами травили девочку из-за лишнего веса",
+        "В школе началась травля ученика с инвалидностью",
+        "Мальчика затравленным чувствовал себя весь класс",
+        "Учитель годами травит одного и того же ученика придирками",
+    ):
+        fingerprint = social_monitor.infer_event_fingerprint(text, "", text)
+        assert fingerprint.problem_key == "bullying", text
