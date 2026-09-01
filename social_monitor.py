@@ -5686,6 +5686,24 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         # one-off proper-noun story, left untranslated as low-value.
         r"(?:гатоўнасц[а-яёіў]*|падрыхтоўк[а-яёіў]*).*дажын[а-яёіў]*",
     )),
+    # New group added on editorial decision after report-33 (2026-09-01):
+    # residents fixing/organizing something themselves, framed as a
+    # feel-good "look what we did without waiting for help" story, with no
+    # complaint about who *should* have done it. Confirmed real case: "Не
+    # чакаюць дапамогі, а робяць самі: жыхары Крупца аднавілі стары
+    # калодзеж і навялі парадак у аграгарадку" (Gomel Today, be). No
+    # Russian-language confirmed example yet — the Russian branch below is
+    # a mechanical, NOT native-speaker-reviewed translation, deliberately
+    # narrow (pinned to "сдела-/делаю" as the payoff verb) rather than
+    # loosely matching any "сами <verb>", specifically so it does NOT catch
+    # a legitimate escalation-complaint story like "не дожидаясь помощи,
+    # жители сами подали иск в суд" — under-matching real Russian instances
+    # of this genre is an acceptable cost until a real example calibrates
+    # it; over-matching and hiding a real complaint would not be.
+    "positive_self_organized_initiative": tuple(re.compile(value) for value in (
+        r"не\s+чака[а-яёіў]*\s+дапамог[а-яёіў]*.*(?:робяц|зраб)[а-яёіў]*\s+сам",
+        r"не\s+дожида[а-яёіў]*(?:сь)?\s+помощ[а-яёіў]*.*(?:делаю|сдела)[а-яёіў]*\s+сам",
+    )),
     "positive_public_infrastructure_opening": tuple(re.compile(value) for value in (
         r"(?:открыва[а-яёіў]*|откро[а-яёіў]*|начнет\s+функциониров)[а-яёіў]*"
         r".{0,90}(?:подземк[а-яёіў]*|подземн[а-яёіў]*\s+переход)",
@@ -5729,6 +5747,18 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"^хто\s+.*можа.*(?:палепшыц[а-яёіў]*\s+жыллёв[а-яёіў]*|дапамог|ільгот)",
         r"(?:каму\s+належыц[а-яёіў]*|як\s+атрыма[а-яёіў]*|"
         r"парадак\s+прызначэнн[а-яёіў]*).*(?:дапамог|ільгот)",
+        # "Новое в законодательстве о пособиях/льготах..." is a distinct,
+        # recurring regional-press title framing not covered by the three
+        # branches above (all require a "when/where to apply" / "who can
+        # get it" / "who's entitled, how to get it" framing specifically).
+        # Confirmed real case (report-33, 2026-09-01): "Новое в
+        # законодательстве о пособиях по уходу" — a procedural update piece,
+        # excluded on editorial decision even though it tangentially
+        # mentioned a staffing shortage.
+        r"^(?:что\s+)?нов[а-яёіў]*\s+в\s+законодательств[а-яёіў]*.*"
+        r"(?:пособ|льгот|господдерж)",
+        r"^(?:што\s+)?нов[а-яёіў]*\s+ў\s+заканадаўств[а-яёіў]*.*"
+        r"(?:дапамог|ільгот)",
     )),
     "scheduled_service_notice": tuple(re.compile(value) for value in (
         r"^на\s+каких\s+(?:улиц|адрес)[а-яёіў]*.*не\s+будет\s+"
@@ -6338,6 +6368,10 @@ def result_integrity_genre_rejection(
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
         return "Editorial Intent: позитивное инфраструктурное обновление без проблемы"
+    if matches("positive_self_organized_initiative", include_lead=True) and not (
+        resident_explicit or lead_findings or persistence or special_public_interest
+    ):
+        return "Editorial Intent: жители самостоятельно решили вопрос без жалобы"
     if matches("positive_public_infrastructure_opening", include_lead=True) and not (
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
