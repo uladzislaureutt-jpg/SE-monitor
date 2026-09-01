@@ -1154,7 +1154,11 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
         r"асфальт", r"тротуар", r"тратуар", r"разметк", r"размец",
     )),
     ("station_storage", "камеры хранения на вокзале", (r"камер.*хранен", r"камера.*хранен", r"ячейк.*хранен", r"ячэйк.*захоў")),
-    ("public_transport", "общественный транспорт", (r"автобус", r"аўтобус", r"маршрут", r"остановк", r"прыпынк", r"вокзал", r"поезд", r"цягнік")),
+    # "остановк" was bare and matched "приостановка" (temporary suspension
+    # of a licence/enterprise/operations — a different domain entirely).
+    # Anchored to word-start; "прыпынк" (be) is a distinct root with no
+    # equivalent collision so left as-is.
+    ("public_transport", "общественный транспорт", (r"автобус", r"аўтобус", r"маршрут", r"(?<![а-яёіўa-z])остановк", r"прыпынк", r"вокзал", r"поезд", r"цягнік")),
     ("water_supply", "водоснабжение", (r"водоснаб", r"водопровод", r"питьев.*вод", r"пітн.*вад", r"горяч.*вод", r"гарач.*вад")),
     ("natural_water", "река/озеро/берег", (
         r"(?<![а-яёіўa-z])рек(?:а|е|и|у|ой|ах|ами)(?![а-яёіўa-z])",
@@ -1176,13 +1180,46 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
         r"антисанитар", r"антысанітар",
         r"санитарн[а-яёіў]*\s+состояни", r"санітарн[а-яёіў]*\s+стан",
     )),
-    # "трав" was bare and matched "травма" ("трав" + "ма"), mistagging
-    # injury stories as greenery/mowing. Negative lookahead excludes the
-    # "-ма/-мы/-му..." trauma-family continuation while still matching
-    # "трава/травы/травой" etc.
-    ("greenery", "озеленение/покос", (r"трав(?!м)", r"покос", r"косил", r"дерев", r"дрэў", r"(?<![а-яёіўa-z])парк(?:е|а|у|ом|и|ах)?(?![а-яёіўa-z])", r"сквер")),
+    # "трав(?!м)" (first patch, update75) excluded "травма" but missed the
+    # more common false-friend shape: "трав" preceded by a prefix letter, as
+    # in "отравились/отравление" (poisoned) and "затравили/натравить"
+    # (hounded/incited) — confirmed live in run 30, where a food-poisoning
+    # story ("400 человек отравились...") was mistagged event_object=
+    # "greenery" purely because "трав" is a substring of "отравились". A
+    # negative lookahead alone cannot catch this because the problem is on
+    # the LEFT side of the match, not the right. Anchored with the same
+    # word-start idiom already used for "парк" below, so it only fires when
+    # "трав" begins a word (трава/травы/травяной/травинка), not when it's
+    # glued onto a prefix (о-, за-, на-, вы-, из-...).
+    #
+    # "косил" needed the mirror-image fix: bare it matched "закосил" (draft-
+    # dodging slang) and "перекосил-" (skewed/warped, unrelated). But unlike
+    # "трав", it has legitimate PREFIXED forms that must keep matching —
+    # "покосил/скосил/выкосил" are still perfective forms of mowing. So
+    # instead of a blanket word-start anchor, only "по/вы/с" are allowed
+    # immediately before "косил"; any other prefix (за-, пере-...) is
+    # excluded via the same word-start idiom applied to the whole group.
+    #
+    # "дерев" was bare and matched "одеревенела" (went numb/stiff with
+    # shock, a common figurative expression unrelated to trees).
+    (
+        "greenery",
+        "озеленение/покос",
+        (
+            r"(?<![а-яёіўa-z])трав(?!м)[а-яёіў]*",
+            r"покос",
+            r"(?<![а-яёіўa-z])(?:по|вы|с)?косил",
+            r"(?<![а-яёіўa-z])дерев",
+            r"дрэў",
+            r"(?<![а-яёіўa-z])парк(?:е|а|у|ом|и|ах)?(?![а-яёіўa-z])",
+            r"сквер",
+        ),
+    ),
     ("lighting", "уличное освещение", (r"освещ", r"асвятл", r"фонар")),
-    ("housing", "жилой дом/двор", (r"жкх", r"коммунальн.*(?:плат|услуг|служб)", r"камунальн.*(?:плац|паслуг|служб)", r"подъезд", r"пад'езд", r"подвал", r"падвал", r"лифт", r"ліфт", r"крыша", r"дах", r"двор", r"двар")),
+    # "двор" was bare and matched "дворец/дворцовый" (palace) — thematically
+    # a different kind of building. Excludes that continuation while still
+    # matching "двор/двора/дворе/дворик/дворовый" etc.
+    ("housing", "жилой дом/двор", (r"жкх", r"коммунальн.*(?:плат|услуг|служб)", r"камунальн.*(?:плац|паслуг|служб)", r"подъезд", r"пад'езд", r"подвал", r"падвал", r"лифт", r"ліфт", r"крыша", r"дах", r"двор(?!ец|ц)", r"двар")),
     ("healthcare", "медицина", (r"поликлин", r"паліклін", r"больниц", r"бальніц", r"врач", r"урач", r"медицин", r"медыцын")),
     ("retail", "магазин/торговля", (r"магазин", r"крама", r"торгов", r"гандл")),
     ("consumer_goods", "непродовольственные потребительские товары", (
@@ -1245,7 +1282,21 @@ EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
         r"(?<![а-яёіўa-z0-9])чарг(?:а|і|у|ой|ою|ам|амі|ах)(?![а-яёіўa-z0-9])",
         r"задерж", r"затрым", r"долго\s+ждат", r"доўга\s+чака",
     )),
-    ("pollution", "загрязнение", (r"загряз", r"забрудж", r"сток", r"сцёк", r"нечистот", r"брудн.*вод")),
+    # "сток" was bare and matched "восток" (east), "исток" (origin/source,
+    # incl. the common figurative "у истоков"), and "листок" — most
+    # concerningly "больничный листок" (sick-leave note), a phrase very
+    # likely to occur in exactly this monitor's domain. Anchored to
+    # word-start, with an explicit allowance for the "водо-" compound
+    # ("водосток" = downspout/gutter) since that IS still on-topic.
+    (
+        "pollution",
+        "загрязнение",
+        (
+            r"загряз", r"забрудж",
+            r"(?<![а-яёіўa-z])(?:водо)?сток",
+            r"сцёк", r"нечистот", r"брудн.*вод",
+        ),
+    ),
     ("access_restriction", "ограничение доступа", (r"перекры.*доступ", r"закрыл.*доступ", r"запрет", r"забарон", r"не\s+пуска", r"захват.*берег", r"захап.*бераг", r"огородил.*берег", r"перакры.*доступ")),
     ("maintenance", "неудовлетворительное содержание", (r"не\s+кос", r"нескош", r"непокош", r"не\s+скош", r"не\s+убира", r"не\s+прыбіра", r"зарос", r"зарас", r"мусор", r"смец", r"не\s+ремонт", r"не\s+рамант")),
     ("damage", "повреждение/плохое состояние", (
