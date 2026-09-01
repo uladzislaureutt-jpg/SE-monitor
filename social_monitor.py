@@ -1251,8 +1251,18 @@ EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
         r"списал[а-яёіў]*.*на\s+жильц", r"лишн[а-яёіў]*\s+сумм[а-яёіў]*.*жиров",
         r"вернул[а-яёіў]*.*(?:рубл|жильц|проживающ)",
     )),
+    # "травл[а-яёіў]*" was bare and matched "отравление/отравления"
+    # (poisoning) — confirmed live in run 31, where the same food-poisoning
+    # story (fixed for event_object in the previous patch) still got
+    # event_problem="bullying" via this second, independent pattern in a
+    # different dictionary. "(?<!о)" excludes the "о"-prefixed poisoning
+    # forms ("отравил/потравил") while keeping "затравленный" (за-, "а"
+    # precedes) intact. Widened to "трав(?:л|и[лт])" while at it: the old
+    # bare "травл" never matched the common past-tense "травили/травит"
+    # forms at all (missing coverage, not a false positive) since Russian
+    # conjugation doesn't put "л" directly after "в" there.
     ("bullying", "травля/насилие в образовательной среде", (
-        r"буллинг", r"травл[а-яёіў]*", r"избивал[а-яёіў]*\s+толп",
+        r"буллинг", r"(?<!о)трав(?:л|и[лт])[а-яёіў]*", r"избивал[а-яёіў]*\s+толп",
         r"оскорбля[а-яёіў]*.*сверстник",
     )),
     ("hiring_shortage", "невозможность найма работников", (
