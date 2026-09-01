@@ -163,3 +163,112 @@ def test_work_conditions_still_fires_on_genuine_heat_complaint():
         "условия труда работники называют невыносимыми.",
     )
     assert fingerprint.problem_key == "work_conditions"
+
+
+def test_greenery_object_no_longer_fires_on_otravilis_real_text():
+    # The exact real-world production text from report-30 (2026-08-31):
+    # a food-poisoning story in Turkey was mistagged event_object=
+    # "greenery" purely because "трав" is a substring of "отравились".
+    # This is the case that slipped through the first "трав(?!м)" patch,
+    # since that lookahead only guards what follows the match, not what
+    # precedes it.
+    fingerprint = social_monitor.infer_event_fingerprint(
+        "Почти 400 человек отравились на празднике в Турции",
+        "",
+        "Санитарные службы изъяли образцы пищи, начата проверка для "
+        "выяснения обстоятельств и причин произошедшего. Около 400 "
+        "человек, которые принимали участие в торжественном мероприятии "
+        "в Турецкой провинции Бурса, обратились к врачам с жалобами на "
+        "отравление. \"В местные больницы обратились 367 граждан, "
+        "которые отравились после употребления курицы с рисом на "
+        "мероприятии\".",
+    )
+    assert fingerprint.object_key != "greenery"
+
+
+def test_greenery_object_still_fires_on_prefixed_mowing_forms():
+    # "покосил/скосил/выкосил" are legitimate perfective forms of mowing
+    # and must keep matching even after anchoring "косил" against
+    # "закосил" (draft-dodging slang, unrelated).
+    for verb in ("покосил", "скосил", "выкосил"):
+        fingerprint = social_monitor.infer_event_fingerprint(
+            f"Коммунальники наконец {verb} газон, заросший месяц назад",
+            "",
+            "Жалобы на заросший участок поступали от местных жителей.",
+        )
+        assert fingerprint.object_key == "greenery", verb
+
+
+def test_greenery_object_no_longer_fires_on_draft_dodging_slang():
+    fingerprint = social_monitor.infer_event_fingerprint(
+        "Студент рассказал, как закосил от армии по состоянию здоровья",
+        "",
+        "История о том, как молодой человек избежал срочной службы.",
+    )
+    assert fingerprint.object_key != "greenery"
+
+
+def test_greenery_object_no_longer_fires_on_odereveneli_from_shock():
+    fingerprint = social_monitor.infer_event_fingerprint(
+        "Женщина одеревенела от испуга, услышав новость о сыне",
+        "",
+        "Свидетели рассказали, что она несколько минут не могла "
+        "пошевелиться от шока.",
+    )
+    assert fingerprint.object_key != "greenery"
+
+
+def test_public_transport_no_longer_fires_on_suspended_license():
+    fingerprint = social_monitor.infer_event_fingerprint(
+        "Суд вынес решение о приостановке лицензии предприятия",
+        "",
+        "Приостановка деятельности связана с нарушениями при производстве.",
+    )
+    assert fingerprint.object_key != "public_transport"
+
+
+def test_public_transport_still_fires_on_genuine_stop_complaint():
+    fingerprint = social_monitor.infer_event_fingerprint(
+        "Жители жалуются на отсутствие автобусной остановки у школы",
+        "",
+        "Ближайшая остановка находится в километре, детям приходится "
+        "идти вдоль трассы.",
+    )
+    assert fingerprint.object_key == "public_transport"
+
+
+def test_pollution_no_longer_fires_on_vostok_istok_listok():
+    for text in (
+        "Новостройка на востоке города обрастает инфраструктурой",
+        "У истоков этого общественного движения стояли местные жители",
+        "Ей выписали больничный листок на две недели",
+    ):
+        fingerprint = social_monitor.infer_event_fingerprint(text, "", text)
+        assert fingerprint.problem_key != "pollution", text
+
+
+def test_pollution_still_fires_on_drain_and_downspout():
+    for text in (
+        "Во дворе много недель не могут прочистить сток дождевой воды",
+        "Жильцы жалуются, что водосток на крыше давно не чистили",
+    ):
+        fingerprint = social_monitor.infer_event_fingerprint(text, "", text)
+        assert fingerprint.problem_key == "pollution", text
+
+
+def test_housing_no_longer_fires_on_dvorets_kultury():
+    fingerprint = social_monitor.infer_event_fingerprint(
+        "Во Дворце культуры прошел концерт ко дню города",
+        "",
+        "Мероприятие собрало несколько сотен зрителей.",
+    )
+    assert fingerprint.object_key != "housing"
+
+
+def test_housing_still_fires_on_genuine_yard_complaint():
+    fingerprint = social_monitor.infer_event_fingerprint(
+        "Жители жалуются на состояние двора и подъезда",
+        "",
+        "Во дворе давно не убирались, подъезд требует ремонта.",
+    )
+    assert fingerprint.object_key == "housing"
