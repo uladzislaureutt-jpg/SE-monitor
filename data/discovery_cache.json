@@ -127,9 +127,14 @@
     ]
   },
   "klich.by": {
-    "checked_at": "2026-08-31T07:45:01.517281+00:00",
-    "feeds": [],
-    "sitemaps": []
+    "checked_at": "2026-09-01T07:45:14.081724+00:00",
+    "feeds": [
+      "https://www.klich.by/?feed=comments-rss2",
+      "https://www.klich.by/?feed=rss2"
+    ],
+    "sitemaps": [
+      "http://www.klich.by/index.php?xml_sitemap=params="
+    ]
   },
   "kraj.by": {
     "checked_at": "2026-08-22T08:41:49.659284+00:00",
@@ -154,7 +159,7 @@
     "sitemaps": []
   },
   "magilev.by": {
-    "checked_at": "2026-08-31T07:44:40.662374+00:00",
+    "checked_at": "2026-09-01T07:44:50.221179+00:00",
     "feeds": [],
     "sitemaps": []
   },
