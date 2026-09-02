@@ -5912,6 +5912,12 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:обсудил|обсуждал|вопрос[а-яёіў]*)",
         r"(?:направил|накірава)[а-яёіў]*.*(?:обсудит|абмяркоўва)[а-яёіў]*.*"
         r"(?:сотрудничеств|супрац)[а-яёіў]*",
+        # Belarusian (native-speaker reviewed). A simpler, more general
+        # personnel-appointment framing than the diplomatic-specific first
+        # RU branch above; the ambassador/attache wording wasn't given a
+        # BE equivalent and is left as-is.
+        r"прызначан[а-яёіў]*\s+нов[а-яёіў]*\s+(?:дырэктарам|кіраўніком)",
+        r"зацверджан[а-яёіў]*\s+на\s+пасадзе",
     )),
     "preventive_service_expansion": tuple(re.compile(value) for value in (
         r"смогут\s+проверит[а-яёіў]*\s+риск[а-яёіў]*.*(?:диспансеризац|скрининг)",
@@ -5919,6 +5925,12 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:провер|обследован|выяв)",
         r"(?:нов[а-яёіў]*|расширен[а-яёіў]*).*"
         r"(?:диспансеризац|скрининг|профилактическ[а-яёіў]*\s+обследован)",
+        # Belarusian (native-speaker reviewed). A broader framing (expanding
+        # free-service eligibility generally) than the medical-screening-
+        # specific RU branches above.
+        r"пашыр[а-яёіў]*\s+пералік[а-яёіў]*\s+бясплатн[а-яёіў]*\s+паслуг",
+        r"дадад[а-яёіў]*\s+нов[а-яёіў]*\s+катэгоры[а-яёіў]*\s+грамадзян[а-яёіў]*.*"
+        r"(?:належыц[а-яёіў]*\s+дапамог|дапамог)",
     )),
     "private_document_story": tuple(re.compile(value) for value in (
         r"(?:выбросил|потерял|уничтожил)[а-яёіў]*\s+"
@@ -5926,11 +5938,20 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:гражданств|восстанов|не\s+хватает)",
         r"(?:польск|иностранн)[а-яёіў]*\s+гражданств[а-яёіў]*.*"
         r"(?:свидетельств|паспорт|документ)",
+        # Belarusian (native-speaker reviewed). A broader "found an old
+        # document/letter" human-interest framing than the citizenship-
+        # paperwork-specific RU branches above.
+        r"знайшл[а-яёіў]*\s+стар[а-яёіў]*\s+(?:ліст|дакумент)",
+        r"выпадкова\s+выявіл[а-яёіў]*\s+архіўн[а-яёіў]*\s+знаходк[а-яёіў]*",
     )),
     "editorial_meta_or_denial": tuple(re.compile(value) for value in (
         r"журналист[а-яёіў]*\s+привыкл[а-яёіў]*.*(?:редакц|обраща|письм)",
         r"(?:в\s+письм|материал|истори)[а-яёіў]*.*"
         r"нет\s+ни\s+одн[а-яёіў]*\s+жалоб",
+        # Belarusian (native-speaker reviewed).
+        r"рэдакцы[а-яёіў]*\s+ўдакладня[а-яёіў]*",
+        r"інфармацы[а-яёіў]*\s+не\s+адпавядае\s+рэчаіснасц[а-яёіў]*",
+        r"гэта\s+няпраўда",
     )),
     "aesthetic_or_symbolic_opinion": tuple(re.compile(value) for value in (
         r"(?:так\s+много|засиль[а-яёіў]*|велик[а-яёіў]*\s+кольк[а-яёіў]*)\s+"
@@ -5938,6 +5959,11 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"так\s+шмат\s+(?:львоў|скульптур|сімвал|выяв[а-яёіў]*)",
         r"(?:раздража|не\s+нравит)[а-яёіў]*.*"
         r"(?:символик|изображени|скульптур|оформлени)",
+        # Belarusian (native-speaker reviewed). Simpler "looks ugly"
+        # framing rather than the "irritated by symbolism" framing of the
+        # third RU branch above.
+        r"выгляда[а-яёіў]*\s+(?:непрыгожа|неэстэтычна)",
+        r"гэта\s+проста\s+непрыгожа",
     )),
     "instructional": tuple(re.compile(value) for value in (
         r"^(?:как(?:\s+правильно)?|почему|что\s+такое|можно\s+ли|"
@@ -5945,6 +5971,13 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"шесть\s+способов)(?:\s|$)",
         r"^где(?:\s|$).*(?:поесть|купить|заказать)",
         r"^не\s+спешите(?:\s|$).*(?:поликлиник|больниц|врач)",
+        # Belarusian (native-speaker reviewed). A different sub-shape of
+        # the same genre (explicit "instruction/guide/masterclass"
+        # framing) rather than a translation of the title-start patterns
+        # above.
+        r"інструкцы[а-яёіў]*,?\s+як",
+        r"пакрокав[а-яёіў]*\s+кіраўніцтв[а-яёіў]*",
+        r"майстар[- ]?клас",
     )),
     "routine_announcement": tuple(re.compile(value) for value in (
         r"министерств[а-яёіў]*\s+образован[а-яёіў]*.*запуска[а-яёіў]*\s+эксперимент",
@@ -6013,6 +6046,12 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"на\s+очереди.*(?:подключени|размещени|оформлени)",
         r"(?:в\s+лихи[а-яёіў]*\s+девяност|в\s+90[-–—]?[а-яёіў]*).*дефицит",
         r"реб[её]нок\s+жалует[а-яёіў]*.*не\s+понимает.*(?:урок|школ)",
+        # New general pattern (both RU and BE added together; no existing
+        # RU branch above covers this framing): an explicit authorial
+        # disclaimer that something isn't literally a problem, just a
+        # figure of speech. Both directions added since neither existed.
+        r"в\s+переносном\s+смысле", r"образно\s+говор[а-яёіў]*",
+        r"[уў]\s+пераносным\s+сэнсе", r"вобразна\s+кажучы",
     )),
     "routine_enforcement_incident": tuple(re.compile(value) for value in (
         r"водител[а-яёіў]*.*(?:поплатил|лишил)[а-яёіў]*.*(?:прав|рубл|штраф)",
@@ -6037,6 +6076,14 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"самолет[а-яёіў]*.*экстренн[а-яёіў]*\s+сел[а-яёіў]*.*пассажир",
         r"(?:пассажир|человек)[а-яёіў]*.*(?:умер|скончал)[а-яёіў]*.*"
         r"(?:самолет|борт|рейс)",
+        # New general pattern (both RU and BE added together; no existing
+        # RU branch above covers this framing): an explicit "this is a
+        # one-off, officials called it an exception" disclaimer, distinct
+        # from the specific narrow incident types listed above.
+        r"единичн[а-яёіў]*\s+(?:случ[а-яёіў]*|редкост[а-яёіў]*)",
+        r"власт[а-яёіў]*\s+заявил[а-яёіў]*,?\s+что\s+это\s+исключени[а-яёіў]*",
+        r"адзінкав[а-яёіў]*\s+(?:выпадак|рэдкасц[а-яёіў]*)",
+        r"улад[а-яёіў]*\s+заявіл[а-яёіў]*,?\s+што\s+гэта\s+выключэнн[а-яёіў]*",
     )),
     "private_lifestyle": tuple(re.compile(value) for value in (
         r"соседк[а-яёіў]*.*бикини",
