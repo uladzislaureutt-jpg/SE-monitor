@@ -100,9 +100,14 @@
     ]
   },
   "hoiniki.by": {
-    "checked_at": "2026-08-31T07:51:44.098772+00:00",
-    "feeds": [],
-    "sitemaps": []
+    "checked_at": "2026-09-02T07:45:06.706967+00:00",
+    "feeds": [
+      "https://www.hoiniki.by/?feed=comments-rss2",
+      "https://www.hoiniki.by/?feed=rss2"
+    ],
+    "sitemaps": [
+      "http://www.hoiniki.by/index.php?xml_sitemap=params="
+    ]
   },
   "hpravy.org": {
     "checked_at": "2026-08-22T08:41:23.137066+00:00",
