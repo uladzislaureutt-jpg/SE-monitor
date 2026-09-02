@@ -1201,7 +1201,17 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     # excluded via the same word-start idiom applied to the whole group.
     #
     # "дерев" was bare and matched "одеревенела" (went numb/stiff with
-    # shock, a common figurative expression unrelated to trees).
+    # shock, a common figurative expression unrelated to trees), fixed via
+    # the word-start anchor below. But that anchor alone doesn't stop
+    # "деревня/деревне/деревень" (village) — a different, very common word
+    # sharing the same root, word-initial, which the anchor can't
+    # distinguish. Confirmed live in report-35 (2026-09-01): "Стрельба в
+    # голландской деревне" (shooting in a Dutch VILLAGE) was mistagged
+    # event_object="greenery" purely from "деревне". Added (?!н|ень) to
+    # cover the regular declension (деревня/деревне/деревню/деревней) and
+    # the irregular genitive plural (деревень) separately, since it
+    # inserts a fleeting vowel and doesn't share the "н directly after
+    # дерев" shape of the other forms.
     (
         "greenery",
         "озеленение/покос",
@@ -1209,7 +1219,7 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
             r"(?<![а-яёіўa-z])трав(?!м)[а-яёіў]*",
             r"покос",
             r"(?<![а-яёіўa-z])(?:по|вы|с)?косил",
-            r"(?<![а-яёіўa-z])дерев",
+            r"(?<![а-яёіўa-z])дерев(?!н|ень)",
             r"дрэў",
             r"(?<![а-яёіўa-z])парк(?:е|а|у|ом|и|ах)?(?![а-яёіўa-z])",
             r"сквер",
@@ -1287,11 +1297,26 @@ EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     )),
     ("outage", "отключение/перебои", (r"отключ", r"адключ", r"перебо", r"перабо", r"пропал[аио]?\s+(?:вода|свет|интернет|связ)", r"нет\s+(?:воды|света|интернета|связи)", r"няма\s+(?:вады|святла|інтэрнэту|сувязі)")),
     ("nonpayment", "невыплата/списание", (r"невыплат", r"не\s+выплат", r"не\s+заплат", r"не\s+выплац", r"списал", r"списан", r"навяз.*услуг", r"платн.*без\s+соглас")),
-    ("queue_delay", "очередь/задержка", (
-        r"(?<![а-яёіўa-z0-9])очеред(?:ь|и|ей|ью|ям|ями|ях)(?![а-яёіўa-z0-9])",
-        r"(?<![а-яёіўa-z0-9])чарг(?:а|і|у|ой|ою|ам|амі|ах)(?![а-яёіўa-z0-9])",
-        r"задерж", r"затрым", r"долго\s+ждат", r"доўга\s+чака",
-    )),
+    (
+        "queue_delay",
+        "очередь/задержка",
+        (
+            r"(?<![а-яёіўa-z0-9])очеред(?:ь|и|ей|ью|ям|ями|ях)(?![а-яёіўa-z0-9])",
+            r"(?<![а-яёіўa-z0-9])чарг(?:а|і|у|ой|ою|ам|амі|ах)(?![а-яёіўa-z0-9])",
+            # "задерж"/"затрым" were bare and matched the VERB "задержали/
+            # затрымалі" (detained a person — a law-enforcement action),
+            # not just the NOUN "задержка/затрымка" (a delay). Confirmed
+            # live in report-35 (2026-09-01): a shooting/manhunt story was
+            # mistagged event_problem="queue/delay" purely because police
+            # "задержали несколько человек" (detained several people).
+            # Narrowed to the noun stem, which is unambiguous; this is a
+            # deliberate under-match (a genuine "власти задержали выплату"
+            # phrasing using the verb for a payment delay would now be
+            # missed too) rather than risk mislabeling a detention story.
+            r"задержк[а-яёіў]*", r"затрымк[а-яёіў]*",
+            r"долго\s+ждат", r"доўга\s+чака",
+        ),
+    ),
     # "сток" was bare and matched "восток" (east), "исток" (origin/source,
     # incl. the common figurative "у истоков"), and "листок" — most
     # concerningly "больничный листок" (sick-leave note), a phrase very
@@ -5815,10 +5840,17 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "routine_status_explainer": tuple(re.compile(value) for value in (
         r"не\s+работаете\s+после\s+увольнени[а-яёіў]*.*(?:баз[а-яёіў]*\s+)?тунеядц",
         r"как\s+изменит[а-яёіў]*\s+коммуналк[а-яёіў]*.*сдач[а-яёіў]*\s+квартир[а-яёіў]*.*тунеядц",
+        # Belarusian (native-speaker reviewed).
+        r"не\s+працу[а-яёіў]*\s+пасля\s+звальнен[а-яёіў]*.*(?:баз[а-яёіў]*\s+)?дармаед",
+        r"як\s+змен[а-яёіў]*\s+камунальн[а-яёіў]*\s+плацяж[а-яёіў]*.*"
+        r"здач[а-яёіў]*\s+кватэр[а-яёіў]*\s+ў\s+наём.*дармаед",
     )),
     "career_explainer": tuple(re.compile(value) for value in (
         r"^кто\s+такие\s+программист[а-яёіў]*\s+1с\s+и\s+почему\s+они\s+нужны",
         r"^професси[а-яёіў]*\s+программист[а-яёіў]*\s+1с.*(?:чем\s+занима|почему\s+нуж)",
+        # Belarusian (native-speaker reviewed).
+        r"^хто\s+так[а-яёіў]*\s+праграміст[а-яёіў]*\s+1с\s+і\s+чаму\s+яны\s+патрэбн[а-яёіў]*",
+        r"^прафес[а-яёіў]*\s+праграміст[а-яёіў]*\s+1с.*(?:чым\s+займа|чаму\s+патрэбн)",
     )),
     "foreign_residency_facilitation": tuple(re.compile(value) for value in (
         r"кипр[а-яёіў]*.*(?:разрешил|начал\s+выдават)[а-яёіў]*.*"
@@ -5831,6 +5863,14 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"будет\s+только\s+ужесточат",
         r"(?:правительств|премьер)[а-яёіў]*.*(?:будет|намерен)[а-яёіў]*.*"
         r"ужесточ[а-яёіў]*\s+(?:контрол|борьб)[а-яёіў]*.*импорт",
+        # Belarusian (native-speaker reviewed). The [уў] alternation on
+        # "узмацн-" covers both sandhi forms since the RU structure's ".*"
+        # gap means the immediately-preceding word (and therefore which
+        # form applies) isn't fixed.
+        r"барацьб[а-яёіў]*\s+з\s+няякасн[а-яёіў]*\s+імпарт[а-яёіў]*.*"
+        r"толькі\s+ўзмацня[а-яёіў]*",
+        r"(?:урад|прэм['’]ер[- ]?міністр)[а-яёіў]*.*(?:будзе|мае\s+намер)[а-яёіў]*.*"
+        r"[уў]змацн[а-яёіў]*\s+(?:кантрол|барацьб)[а-яёіў]*.*імпарт",
     )),
     "routine_law_enforcement_procedure": tuple(re.compile(value) for value in (
         r"следч[а-яёіў]*\s+комитет[а-яёіў]*\s+начал[а-яёіў]*\s+спецпроизводств",
@@ -5840,6 +5880,12 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"рост\s+(?:потребительск[а-яёіў]*\s+)?цен.*(?:ниже|меньше).*рост[а-яёіў]*\s+зарплат",
         r"покупательн[а-яёіў]*\s+способност[а-яёіў]*.*(?:увеличил|вырос|стала\s+выше)",
         r"зарплат[а-яёіў]*\s+(?:росл|вырос)[а-яёіў]*\s+(?:быстрее|выше).*инфляц",
+        # Belarusian (native-speaker reviewed).
+        r"рост\s+цэн.*(?:ніжэйш[а-яёіў]*|менш[а-яёіў]*)\s+за\s+рост[а-яёіў]*\s+"
+        r"заработн[а-яёіў]*\s+плат[а-яёіў]*",
+        r"купляльн[а-яёіў]*\s+здольнасц[а-яёіў]*.*(?:павялічыл[а-яёіў]*|вырасл[а-яёіў]*)",
+        r"заработн[а-яёіў]*\s+плат[а-яёіў]*\s+"
+        r"(?:расл[а-яёіў]*\s+хутчэй\s+за|апярэджвал[а-яёіў]*)\s+інфляцы[а-яёіў]*",
     )),
     "cultural_or_migration_commentary": tuple(re.compile(value) for value in (
         r"как\s+себя\s+вести\s+в\s+беларус[а-яёіў]*",
@@ -5852,6 +5898,10 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:тлени|загорани|пожар)",
         r"пострадавш[а-яёіў]*\s+нет.*(?:риск|угроз)[а-яёіў]*\s+"
         r"(?:загорани|пожар)[а-яёіў]*\s+(?:нет|отсутств)",
+        # Belarusian (native-speaker reviewed).
+        r"самастойна\s+ліквідавал[а-яёіў]*.*(?:тленн[а-яёіў]*|[уў]згаранн[а-яёіў]*|пажар)",
+        r"пацярпел[а-яёіў]*\s+няма.*(?:рызык[а-яёіў]*|пагроз[а-яёіў]*)\s+"
+        r"[уў]згаранн[а-яёіў]*\s+(?:няма|не\s+заста)",
     )),
     "protocol_or_personnel": tuple(re.compile(value) for value in (
         r"(?:аккредитовал|назначил|представил)[а-яёіў]*\s+нов[а-яёіў]*\s+"
@@ -5912,6 +5962,22 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:расшир|увелич|появ|планиру|довест).*машино-мест",
         r"(?:увелич|довест)[а-яёіў]*.*(?:количеств|числ)[а-яёіў]*.*"
         r"машино-мест",
+        # Belarusian (native-speaker reviewed). "ограничения на
+        # посещение леса" is a near-duplicate of the "запрет" branch above
+        # and wasn't given separately; left uncovered.
+        r"міністэрства\s+адукацы[а-яёіў]*.*запуска[а-яёіў]*\s+эксперымент",
+        r"забарон[а-яёіў]*\s+на\s+наведванн[а-яёіў]*\s+лес[а-яёіў]*",
+        r"сітуацы[а-яёіў]*\s+ў\s+лясах.*забарон",
+        r"стал[а-яёіў]*\s+вядом[а-яёіў]*.*колькі\s+грошай\s+выдзелен[а-яёіў]*",
+        r"рыхту[а-яёіў]*\s+да\s+[«\"]?дажын[а-яёіў]*",
+        r"дакладн[а-яёіў]*\s+дат[а-яёіў]*\s+адкрыцц[а-яёіў]*",
+        r"планав[а-яёіў]*\s+пасяджэнн[а-яёіў]*\s+камісі[а-яёіў]*\s+"
+        r"па\s+супрацьдзеянн[а-яёіў]*\s+карупцы",
+        r"расказал[а-яёіў]*.*як.*рассяля[а-яёіў]*\s+студэнт",
+        r"студэнт[а-яёіў]*\s+чака[а-яёіў]*\s+у\s+інтэрнаце",
+        r"платн[а-яёіў]*\s+паркоўк[а-яёіў]*.*"
+        r"(?:пашыра[а-яёіў]*|павялічва[а-яёіў]*|павялічац[а-яёіў]*).*"
+        r"колькасц[а-яёіў]*\s+машына[- ]?месц[а-яёіў]*",
     )),
     "routine_transport_or_construction": tuple(re.compile(value) for value in (
         r"(?:на\s+выходн[а-яёіў]*|до\s+\d{1,2}[:.]\d{2}).*"
@@ -5922,6 +5988,15 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:закрыл|ремонт)[а-яёіў]*",
         r"(?:строят|строится|возводят|вядзецца\s+будаўніцтв)[а-яёіў]*.*"
         r"(?:путь|дорог|магистрал|объект)[а-яёіў]*.*(?:соединит|свяжет|злучыць)",
+        # Belarusian (native-speaker reviewed).
+        r"(?:у\s+выхадныя|да\s+\d{1,2}[:.]\d{2}).*перакрыл[а-яёіў]*\s+рух",
+        r"перакрыл[а-яёіў]*\s+(?:рух|транспартн[а-яёіў]*\s+развязк[а-яёіў]*|"
+        r"дарог[а-яёіў]*).*на\s+час\s+рамонт[а-яёіў]*",
+        r"(?:нов[а-яёіў]*\s+асфальт|святлафор[а-яёіў]*).*"
+        r"(?:закрыл[а-яёіў]*|рамонт[а-яёіў]*)",
+        r"(?:буду[а-яёіў]*|узводз[а-яёіў]*)[а-яёіў]*.*"
+        r"(?:шлях|дарог|магістрал|аб['’]ект)[а-яёіў]*.*"
+        r"(?:злуч[а-яёіў]*|звяж[а-яёіў]*)",
     )),
     "positive_feature_or_profile": tuple(re.compile(value) for value in (
         r"дал[а-яёіў]*\s+вторую\s+жизн[а-яёіў]*.*библиотек",
@@ -6001,6 +6076,16 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"обязательно\s+ли)(?:\s|$)",
         r"(?:разбираем|разобрались|рекомендац[а-яёіў]*|"
         r"как\s+подобрать|как\s+оформить|что\s+нужно\s+знать)",
+        # Belarusian (native-speaker reviewed). Well-guarded at the
+        # dispatch site (6 override conditions: resident_explicit,
+        # lead_findings, persistence, concrete_title_problem,
+        # bound_regulatory_discussion, critical_public_interest), so a
+        # genuine complaint headline starting with "Як..." is not at real
+        # risk of being swallowed by this broad title-start pattern.
+        r"^(?:каму|як|ці\s+можна|ці\s+могуць|ці\s+будуць|што\s+змогуць|"
+        r"ці\s+абавязкова)(?:\s|$)",
+        r"(?:разбіра[а-яёіў]*|разабрал[а-яёіў]*|рэкамендацы[а-яёіў]*|"
+        r"як\s+падабра[а-яёіў]*|як\s+аформ[а-яёіў]*|што\s+трэба\s+ведац[а-яёіў]*)",
     )),
     "reporting_channel": tuple(re.compile(value) for value in (
         r"горяч[а-яёіў]*\s+лини[а-яёіў]*",
@@ -6009,6 +6094,10 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "preventive_program": tuple(re.compile(value) for value in (
         r"будут\s+проводить.*скрининг",
         r"нов[а-яёіў]*\s+(?:скрининг|диспансеризац|профилактическ[а-яёіў]*\s+план)",
+        # Belarusian (native-speaker reviewed).
+        r"будуц[а-яёіў]*\s+праводзіц[а-яёіў]*.*скрынінг",
+        r"нов[а-яёіў]*\s+(?:скрынінг|дыспансерызацы[а-яёіў]*|"
+        r"план[а-яёіў]*\s+прафілактычн[а-яёіў]*\s+мерапрыемств[а-яёіў]*)",
     )),
     "travel_or_profile": tuple(re.compile(value) for value in (
         r"(?:открыли|отправил[а-яёіў]*|поехал[а-яёіў]*)\s+для\s+путешеств",
