@@ -130,7 +130,6 @@ EVENT_PROBLEM_BASELINE: set[tuple[str, str]] = {
     ("outage", "отключ"), ("outage", "адключ"),
     ("outage", "перебо"), ("outage", "перабо"),
     ("nonpayment", "невыплат"), ("nonpayment", "списал"), ("nonpayment", "списан"),
-    ("queue_delay", "задерж"), ("queue_delay", "затрым"),
     ("pollution", "загряз"), ("pollution", "забрудж"), ("pollution", "сцёк"),
     ("pollution", "нечистот"), ("pollution", "брудн.*вод"),
     ("access_restriction", "запрет"), ("access_restriction", "забарон"),
