@@ -1,0 +1,27 @@
+{
+  "package": "SE-monitor-update-semantic-cascade-blind-eval-1.0",
+  "build": "2026-09-03.semantic-cascade-blind-eval.1.0",
+  "install_target": "repository_root",
+  "operation": "additive_overlay",
+  "production_integration": false,
+  "adds": [
+    ".github/workflows/social-semantic-cascade-blind-eval.yml",
+    "ml/semantic_cascade_experiment/",
+    "data/ml/blind_gold_2026_09_03/",
+    "tests/test_semantic_cascade_experiment.py",
+    "INSTALL-SEMANTIC-CASCADE-1.0.md"
+  ],
+  "must_not_modify": [
+    "social_monitor.py",
+    "main.py",
+    "config/",
+    "data/state.json",
+    "data/discovery_cache.json",
+    ".github/workflows/daily-social-monitor.yml",
+    "secrets",
+    "delivery"
+  ],
+  "manual_workflow": "S-monitor semantic cascade blind evaluation (manual, isolated)",
+  "expected_artifact": "s-monitor-semantic-cascade-blind-eval-results",
+  "rollback": "Delete only the added paths listed in adds."
+}
