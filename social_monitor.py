@@ -991,6 +991,7 @@ class ArticleResult:
     event_echo_anchor: str = ""
     event_echo_sources: str = ""
     related_coverage: tuple[tuple[str, str], ...] = ()
+    category_bonus_only: bool = False
 
 
 def utc_now() -> dt.datetime:
@@ -1351,7 +1352,25 @@ EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     # or cultural-event stories as heat-related work conditions. Negative
     # lookahead excludes those continuations while still matching
     # "спека/спекотный" (heat, a regional RU/BE term).
-    ("work_conditions", "условия труда", (r"жар[аыу]", r"спек(?!ул|т)", r"температур", r"тэмператур", r"услови.*труд", r"ўмов.*прац")),
+    # "спек(?!ул|т)" (first patch) excluded "спекуляция/спектакль/спектр"
+    # but missed "инспекция/инспекции/инспекций" (a very common word in
+    # exactly this monitor's domain — regulatory checks, enforcement raids)
+    # since that continues with "ц" not "ул"/"т". Confirmed live in
+    # report-38 (2026-09-03): an illegal-fishing enforcement story was
+    # mistagged event_problem="work_conditions" purely via "инспекции".
+    # Also: "услови.*труд"/"ўмов.*прац" matched "труд"/"прац" glued onto
+    # "со-"/"су-" ("сотрудник[ов]", "супрацоўніцтва" = colleague/staff,
+    # cooperation — sharing the labor root but meaning something else).
+    # Confirmed live: "комфортные условия для... сотрудников" (new
+    # courthouse building story) mistagged the same way.
+    (
+        "work_conditions",
+        "условия труда",
+        (
+            r"жар[аыу]", r"спек(?!ул|т|ц)", r"температур", r"тэмператур",
+            r"услови.*(?<!со)труд", r"ўмов.*(?<!су)прац",
+        ),
+    ),
     ("service_quality", "качество услуги", (r"плох.*качеств", r"дрэнн.*якасц", r"некачествен", r"няякасн", r"плох.*связ", r"не\s+работает", r"не\s+працуе")),
 )
 
@@ -5500,6 +5519,17 @@ class RelevanceDecision:
     evidence_indices: tuple[int, ...] = ()
     matched_terms: tuple[str, ...] = ()
     reason: str = ""
+    # True when `category` won with zero direct keyword hits of its own
+    # (subcategory would be empty) and its weight came entirely from one of
+    # the ~24 disambiguation bonus channels (e.g. domestic_business_loss_
+    # signal, bullying_signal...) that add/subtract category_weights
+    # directly rather than through the keyword lists that populate
+    # subcategory. Added after the report-34/35 "работник" bug, where this
+    # exact shape (nonzero category weight, empty subcategory) was the only
+    # tell that a fire-rescue story had been miscategorized as "Работа,
+    # зарплаты и доходы" -- see CATEGORY_BONUS_ONLY in the docs/tests for
+    # how to audit these when a category assignment looks wrong.
+    category_bonus_only: bool = False
 
 
 RELEVANCE_PRECISION_TERMS: dict[str, tuple[str, ...]] = {
@@ -8587,6 +8617,7 @@ def evaluate_relevance(
         evidence_indices=tuple(evidence),
         matched_terms=tuple(display_term(term) for term in unique_values(matched_terms)[:12]),
         reason="",
+        category_bonus_only=not primary_hits and category_weights[primary_category] > 0,
     )
 
 
@@ -9004,6 +9035,7 @@ def process_candidate_detailed(
         event_object=trace.event_object,
         event_problem=trace.event_problem,
         event_signature=trace.event_signature,
+        category_bonus_only=decision.category_bonus_only,
     )
     trace.final_stage = "included"
     return finish(result)
@@ -10586,6 +10618,7 @@ def write_csv_report(path: Path, results: list[ArticleResult]) -> None:
         "event_region", "event_locality", "event_object", "event_problem",
         "event_signature", "event_echo", "event_echo_anchor",
         "event_echo_sources", "also_covered_by", "also_covered_urls",
+        "category_bonus_only",
     ]
     with path.open("w", encoding="utf-8-sig", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -10625,6 +10658,7 @@ def write_csv_report(path: Path, results: list[ArticleResult]) -> None:
                 "also_covered_urls": " | ".join(
                     url for _source_name, url in result.related_coverage
                 ),
+                "category_bonus_only": result.category_bonus_only,
             })
 
 
