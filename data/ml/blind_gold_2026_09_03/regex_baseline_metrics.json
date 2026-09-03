@@ -1,0 +1,43 @@
+{
+  "dataset_id": "se-monitor-blind-gold-2026-09-03-final-v1",
+  "unit": "event",
+  "rows": 240,
+  "label_counts": {
+    "KEEP": 68,
+    "REJECT": 172
+  },
+  "confusion_matrix": {
+    "tn": 108,
+    "fp": 64,
+    "fn": 12,
+    "tp": 56
+  },
+  "accuracy": 0.6833333333333333,
+  "balanced_accuracy": 0.725718194254446,
+  "keep_precision": 0.4666666666666667,
+  "keep_recall": 0.8235294117647058,
+  "keep_f1": 0.5957446808510638,
+  "regex_keep_false_inclusion_rate": {
+    "rate": 0.5333333333333333,
+    "ci95_low": 0.4444278926967431,
+    "ci95_high": 0.6201708295420101
+  },
+  "regex_reject_false_exclusion_rate": {
+    "rate": 0.1,
+    "ci95_low": 0.058133592026010775,
+    "ci95_high": 0.166681741108952
+  },
+  "weighted_corpus_estimate": {
+    "eligible_events": 565,
+    "estimated_tp": 141.86666666666667,
+    "estimated_fp": 162.13333333333333,
+    "estimated_fn": 26.1,
+    "estimated_tn": 234.9,
+    "accuracy": 0.6668436578171091,
+    "balanced_accuracy": 0.7181250039466321,
+    "keep_precision": 0.4666666666666667,
+    "keep_recall": 0.8446120261956738,
+    "keep_f1": 0.6011723991807331,
+    "note": "Inverse-stratum estimate; not an exact census."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "dataset_id": "se-monitor-blind-gold-2026-09-03-final-v1",
+  "created_at": "2026-09-03T21:36:52+00:00",
+  "locked": true,
+  "primary_rows": 240,
+  "final_labels": {
+    "KEEP": 68,
+    "REJECT": 172
+  },
+  "adjudicated_rows": 7,
+  "adjudication_labels": {
+    "KEEP": 7
+  },
+  "model_safe_rows": 239,
+  "legacy_overlap_quarantined": 1,
+  "model_input_limitations": {
+    "rows_without_excerpt": 120,
+    "policy": "Title-only evaluation is comparable across all rows; full-text rescue evaluation requires archived rejected text."
+  },
+  "input_sha256": {
+    "se-monitor-blind-gold-2026-09-03-v1-labels.csv": "a60138b514cd4dcd5caeb1c435b046e4a624ff1e141ed98113c1bd0a2de16c46",
+    "se-monitor-blind-gold-2026-09-03-v1-labels.json": "085f8038e12329efe08597c0e3cd3d2056f9fd45eb4776a125e47f3574a6404b",
+    "se-monitor-borderline-adjudication-2026-09-03-v1-labels.csv": "ee84aff7a97e61c4a04aefeae3fbc97bf65a026a106eb37666fef94fa7d5b3da",
+    "se-monitor-borderline-adjudication-2026-09-03-v1-labels.json": "319912406a4ebdc41a2e841a3cb8379974e1d0f15afa6e2b7d2578dc41f9e8de"
+  }
+}
