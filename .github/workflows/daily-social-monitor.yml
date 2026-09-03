@@ -137,13 +137,31 @@ jobs:
           retention-days: 7
           if-no-files-found: warn
 
+      - name: Archive raw classification history
+        if: ${{ success() && inputs.dry_run != true }}
+        run: |
+          set -e
+          mkdir -p data/ml/raw_history/articles data/ml/raw_history/rejected
+          # Prefixed with the run number (not just the report date) because
+          # multiple runs can land on the same calendar date — e.g. manual
+          # re-runs or same-day dry-run validation passes — and would
+          # otherwise silently overwrite each other's archived copy.
+          for f in reports/social_articles_*.csv; do
+            [ -e "$f" ] || continue
+            cp "$f" "data/ml/raw_history/articles/run-${GITHUB_RUN_NUMBER}_$(basename "$f")"
+          done
+          for f in debug/rejected_signals_*.csv; do
+            [ -e "$f" ] || continue
+            cp "$f" "data/ml/raw_history/rejected/run-${GITHUB_RUN_NUMBER}_$(basename "$f")"
+          done
+
       - name: Save monitoring state
         if: ${{ success() && inputs.dry_run != true }}
         run: |
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/state.json data/discovery_cache.json
+          git add data/state.json data/discovery_cache.json data/ml/raw_history/
           if git diff --cached --quiet; then
             echo "State has not changed."
             exit 0
