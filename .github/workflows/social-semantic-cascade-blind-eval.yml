@@ -1,0 +1,111 @@
+name: S-monitor semantic cascade blind evaluation (manual, isolated)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s-monitor-semantic-cascade-blind-eval
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      HF_HOME: /tmp/huggingface
+      TOKENIZERS_PARALLELISM: "false"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_CACHE_DIR: "1"
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Initialize diagnostics
+        run: mkdir -p semantic-cascade-results && python --version > semantic-cascade-results/environment.txt
+
+      - name: Validate frozen data and leakage boundary
+        run: >-
+          python ml/semantic_cascade_experiment/validate_inputs.py
+          --legacy-data data/ml/event_safe_v1
+          --gold-data data/ml/blind_gold_2026_09_03
+
+      - name: Run cascade self-test
+        run: python tests/test_semantic_cascade_experiment.py
+
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r ml/semantic_cascade_experiment/requirements.txt
+
+      - name: Evaluate TF-IDF cascade
+        continue-on-error: true
+        run: >-
+          python ml/semantic_cascade_experiment/run_candidate.py
+          --candidate tfidf
+          --slug tfidf_word_char
+          --legacy-data data/ml/event_safe_v1
+          --gold data/ml/blind_gold_2026_09_03/model_test_event_safe_239.csv
+          --output semantic-cascade-results
+          --seed 20260903
+          --action-precision 0.90
+
+      - name: Evaluate compact SetFit cascade
+        continue-on-error: true
+        run: >-
+          python ml/semantic_cascade_experiment/run_candidate.py
+          --candidate setfit
+          --slug rubert_tiny2
+          --legacy-data data/ml/event_safe_v1
+          --gold data/ml/blind_gold_2026_09_03/model_test_event_safe_239.csv
+          --output semantic-cascade-results
+          --model-id cointegrated/rubert-tiny2
+          --seed 20260903
+          --batch-size 16
+          --num-iterations 3
+          --body-epochs 1
+          --max-length 256
+          --action-precision 0.90
+
+      - name: Evaluate multilingual E5-small cascade
+        continue-on-error: true
+        run: >-
+          python ml/semantic_cascade_experiment/run_candidate.py
+          --candidate setfit
+          --slug multilingual_e5_small
+          --legacy-data data/ml/event_safe_v1
+          --gold data/ml/blind_gold_2026_09_03/model_test_event_safe_239.csv
+          --output semantic-cascade-results
+          --model-id intfloat/multilingual-e5-small
+          --model-revision 0e60b8d9d2166d80387f86e3b48ec9ced55f4d15
+          --seed 20260903
+          --batch-size 8
+          --num-iterations 3
+          --body-epochs 1
+          --max-length 256
+          --action-precision 0.90
+
+      - name: Compare completed candidates
+        if: always()
+        run: python ml/semantic_cascade_experiment/compare_results.py --results semantic-cascade-results
+
+      - name: Record environment
+        if: always()
+        run: python -m pip freeze > semantic-cascade-results/pip-freeze.txt || true
+
+      - name: Upload one diagnostics package
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: s-monitor-semantic-cascade-blind-eval-results
+          path: |
+            semantic-cascade-results/*.json
+            semantic-cascade-results/*.csv
+            semantic-cascade-results/*.txt
+          if-no-files-found: error
+          retention-days: 14
