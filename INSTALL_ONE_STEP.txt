@@ -1,19 +1,16 @@
-S-monitor SetFit large experiment 2.0 — установка и запуск
+S-monitor update76 — установка поверх SE-monitor-main (7)
 
-1. Откройте папку S-monitor-setfit-large-experiment-2.0 из этого архива.
-2. Загрузите ЕЁ СОДЕРЖИМОЕ в корень репозитория, сохраняя структуру папок.
-   Саму внешнюю папку S-monitor-setfit-large-experiment-2.0 не загружайте.
-3. Существующие рабочие файлы social_monitor.py, main.py, config/ и
-   .github/workflows/daily-social-monitor.yml не заменяйте.
-4. Если папка .github не перетаскивается через сайт GitHub, создайте файл
-   .github/workflows/social-setfit-large-experiment.yml вручную и вставьте в
-   него содержимое одноимённого файла из пакета.
-5. Сделайте один commit.
-6. Откройте Actions -> S-monitor SetFit large experiment (manual, isolated) ->
-   Run workflow -> Run workflow.
-7. Не запускайте одновременно компактный и большой SetFit-пилоты.
-8. После завершения скачайте artifact
-   s-monitor-setfit-large-experiment-results и передайте ZIP для анализа.
+1. Распакуйте архив.
+2. Скопируйте СОДЕРЖИМОЕ папки SE-monitor-update76-guarded-recall в корень
+   действующего репозитория, сохраняя структуру каталогов и заменяя файлы.
+3. Не заменяйте data/state.json, data/discovery_cache.json и содержимое
+   data/ml/raw_history/articles или data/ml/raw_history/rejected: их нет в
+   пакете.
+4. Сверьте файлы командой: sha256sum -c MANIFEST.sha256
+5. Выполните: python -m pytest -q
+6. Сделайте один commit и сначала запустите Daily social monitor с dry_run.
 
-Секреты не нужны. Рабочий мониторинг и отправка email не изменяются.
-Максимальный лимит одного ручного job: 75 минут. Расписания у эксперимента нет.
+Ожидаемый build в логе и HTML-отчёте:
+2026-09-03.social.76-guarded-recall-report39-1.0
+
+Условия архивирования update75 сохраняются.

@@ -28,7 +28,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-08-31.social.74-result-event-integrity-1.0"
+MONITOR_BUILD = "2026-09-03.social.76-guarded-recall-report39-1.0"
 ARCHITECTURE_CORE_VERSION = "3.5"
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
@@ -6418,6 +6418,323 @@ BOUND_PUBLIC_ISSUE_PATTERNS: dict[
 }
 
 
+# Recall Guard 1.0.  These profiles cover public-interest evidence which is
+# semantically complete but is often expressed across two or three short
+# sentences instead of by the monitor's ordinary same-sentence keyword pair.
+# Unlike a whitelist, every profile requires three independent anchors inside
+# the bounded lead: a domain, a concrete harm/failure and evidence of breadth
+# or public accountability.  This lets the profiles restore missed stories
+# without lowering the global score or weakening any genre exclusion.
+PROTECTED_PUBLIC_ISSUE_PATTERNS: dict[
+    str,
+    tuple[
+        tuple[re.Pattern[str], ...],
+        tuple[re.Pattern[str], ...],
+        tuple[re.Pattern[str], ...],
+    ],
+] = {
+    "essential_utility_persistence": (
+        tuple(re.compile(value) for value in (
+            r"(?:питьев[а-яёіў]*\s+вод|водоснабж|водопровод|вод[а-яёіў]*\s+из\s+кран)",
+            r"(?:пітн[а-яёіў]*\s+вад|водазабеспяч|вадаправод|вад[а-яёіў]*\s+з\s+кран)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:грязн|ржав|мутн|непригодн)[а-яёіў]*\s+вод",
+            r"вод[а-яёіў]*.*(?:нет|отсутств|непригодн|невозможн[а-яёіў]*\s+пить)",
+            r"(?:брудн|іржав|мутн|непрыдатн)[а-яёіў]*\s+вад",
+            r"вад[а-яёіў]*.*(?:няма|адсутн|непрыдатн)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:жител|сельчан|люд)[а-яёіў]*.*(?:лет|год|жалоб|обращ|ждут|не\s+могут)",
+            r"(?:несколько|много)\s+лет|десятилет|многочисленн[а-яёіў]*\s+обращ",
+            r"(?:жыхар|вясков)[а-яёіў]*.*(?:гад|скарг|зварот|чака)",
+        )),
+    ),
+    "housing_repair_disruption": (
+        tuple(re.compile(value) for value in (
+            r"(?:капитальн[а-яёіў]*\s+ремонт|капремонт|отремонтированн[а-яёіў]*\s+подъезд|"
+            r"временн[а-яёіў]*\s+жиль|ремонт[а-яёіў]*\s+подъезд)",
+            r"(?:капітальн[а-яёіў]*\s+рамонт|адрамантаван[а-яёіў]*\s+пад'езд|"
+            r"часов[а-яёіў]*\s+жылл)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:вынужден|должн)[а-яёіў]*\s+(?:временно\s+)?(?:переех|пересел)",
+            r"(?:вод[а-яёіў]*\s+(?:теч|льется)|протеч|затаплива|плох[а-яёіў]*\s+состояни)",
+            r"(?:вымушан|павінн)[а-яёіў]*\s+(?:пераех|перасял)|(?:цеч|працеч|затапл)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:жител|жилец|жильц|семь)[а-яёіў]*|(?:несколько|много)\s+квартир",
+            r"(?:жыхар|жылец|сям'я)[а-яёіў]*",
+        )),
+    ),
+    "road_safety_collective_demand": (
+        tuple(re.compile(value) for value in (
+            r"(?:светофор|опасн[а-яёіў]*\s+перекрест|пешеходн[а-яёіў]*\s+переход)",
+            r"(?:святлафор|небяспечн[а-яёіў]*\s+скрыжаван|пешаходн[а-яёіў]*\s+пераход)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:не\s+работ|нет|отсутств|не\s+установ)[а-яёіў]*.*светофор",
+            r"(?:авари|дтп|опасн|риску)[а-яёіў]*.*(?:перекрест|переход|дорог)",
+            r"(?:не\s+прац|няма|адсутн)[а-яёіў]*.*святлафор|(?:авары|небяспечн)[а-яёіў]*",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:жител|горожан|родител)[а-яёіў]*.*(?:жалоб|треб|прос|обращ|возмущ)",
+            r"(?:массов|многочисленн|неоднократн)[а-яёіў]*\s+(?:жалоб|обращ)",
+            r"(?:жыхар|гараджан|бацьк)[а-яёіў]*.*(?:скарг|патраб|прос|зварот)",
+        )),
+    ),
+    "employment_access_barrier": (
+        tuple(re.compile(value) for value in (
+            r"(?:поиск[а-яёіў]*\s+работ|найти\s+работ|трудоустрой|прием[а-яёіў]*\s+на\s+работ|ваканси)",
+            r"(?:пошук[а-яёіў]*\s+прац|знайсці\s+прац|працаўладкаван|вакансі)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:дискриминац|отказ[а-яёіў]*\s+из-за\s+(?:пол|возраст)|низк[а-яёіў]*\s+зарплат|"
+            r"плох[а-яёіў]*\s+услови[а-яёіў]*\s+труд|не\s+могут\s+найти)",
+            r"(?:дыскрымінац|адмов[а-яёіў]*\s+з-за|нізк[а-яёіў]*\s+зароб|дрэнн[а-яёіў]*\s+ўмов)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:женщин|соискател|работник|люд)[а-яёіў]*.*(?:рассказ|жалоб|сталкива|говор)",
+            r"(?:несколько|многие|разн[а-яёіў]*)\s+(?:женщин|соискател|работник)",
+            r"(?:жанчын|суіскал|работнік|людз)[а-яёіў]*.*(?:распав|скарг|сутыка)",
+        )),
+    ),
+    "education_service_mismatch": (
+        tuple(re.compile(value) for value in (
+            r"(?:колледж|училищ|университет|обучени|специальност|професси)",
+            r"(?:каледж|вучылішч|універсітэт|навучан|спецыяльнасц|прафесі)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:обещал|рекламировал)[а-яёіў]*\s+одн[а-яёіў]*.*(?:учат|оказал|программ)[а-яёіў]*\s+друг",
+            r"(?:професси|специальност|программ)[а-яёіў]*.*(?:заменил|изменил|не\s+соответств)",
+            r"(?:абяцал|рэкламава)[а-яёіў]*\s+адн[а-яёіў]*.*(?:вуч|аказал|праграм)[а-яёіў]*\s+інш",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:студент|учащ|родител)[а-яёіў]*.*(?:жалоб|возмущ|рассказ|оплат)",
+            r"(?:студэнт|навучэн|бацьк)[а-яёіў]*.*(?:скарг|абур|распав|аплац)",
+        )),
+    ),
+    "education_material_quality": (
+        tuple(re.compile(value) for value in (
+            r"(?:школьн[а-яёіў]*\s+учебник|учебн[а-яёіў]*\s+пособ)",
+            r"(?:школьн[а-яёіў]*\s+падручнік|вучэбн[а-яёіў]*\s+дапаможнік)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:изношен|поврежден|порван|вырван|испорчен)[а-яёіў]*.*(?:учебник|страниц|обложк)",
+            r"(?:зношан|пашкоджан|парван|вырван|сапсаван)[а-яёіў]*.*(?:падручнік|старонк|вокладк)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:родител|школьник|ученик|дет)[а-яёіў]*.*(?:получил|выдал|показал|возмущ)",
+            r"(?:бацьк|школьнік|вучн|дзяц)[а-яёіў]*.*(?:атрыма|выдал|паказа|абур)",
+        )),
+    ),
+    "telecom_contract_degradation": (
+        tuple(re.compile(value) for value in (
+            r"(?:мобильн[а-яёіў]*\s+оператор|оператор[а-яёіў]*\s+связ|мтс|а1|life:|"
+            r"безлимитн[а-яёіў]*\s+тариф|тарифн[а-яёіў]*\s+план)",
+            r"(?:мабільн[а-яёіў]*\s+аператар|аператар[а-яёіў]*\s+сувяз|безлімітн[а-яёіў]*\s+тарыф)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:ограничил|снизил|урезал)[а-яёіў]*.*скорост",
+            r"(?:ввел|установил)[а-яёіў]*\s+лимит[а-яёіў]*.*скорост",
+            r"скорост[а-яёіў]*.*(?:огранич|снизил|ниже|паден)",
+            r"(?:скрыт|неочевидн|не\s+предупредил)[а-яёіў]*.*услови",
+            r"(?:абмежава|знізі|ліміт)[а-яёіў]*.*хуткасц",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:абонент|пользовател|клиент)[а-яёіў]*.*(?:жалоб|возмущ|узнал|не\s+предупред)",
+            r"(?:изменил|ввел|увел)[а-яёіў]*\s+(?:услови|ограничени)|для\s+абонент",
+            r"(?:абанент|карыстальнік|кліент)[а-яёіў]*.*(?:скарг|абур|даведа)",
+        )),
+    ),
+    "vulnerable_financial_access": (
+        tuple(re.compile(value) for value in (
+            r"(?:банк[а-яёіў]*\s+(?:карт|приложен|услуг)|банковск[а-яёіў]*\s+(?:карт|приложен|счет)|"
+            r"беларусбанк|интернет-банк)",
+            r"(?:банк[а-яёіў]*\s+(?:карт|прыкладан|паслуг)|банкаўск[а-яёіў]*\s+(?:карт|рахунак))",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:не\s+могут|нельзя|потерял|лишил|закрыл|ограничил)[а-яёіў]*.*(?:доступ|управля|пользова)",
+            r"(?:няма\s+доступ|не\s+могуць|нельга|пазбавіл|абмежава)[а-яёіў]*.*(?:карт|рахунк|кірава)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:опекун|ухажива|пожил|инвалид|недееспособн|подопечн)[а-яёіў]*",
+            r"(?:апякун|дагляда|пажыл|інвалід|недзеяздольн|падапечн)[а-яёіў]*",
+        )),
+    ),
+    "mass_consumer_non_delivery": (
+        tuple(re.compile(value) for value in (
+            r"(?:кухн|мебел|заказ[а-яёіў]*\s+(?:товар|издел|услуг)|договор[а-яёіў]*\s+на\s+изготовлен)",
+            r"(?:кухн|мэбл|заказ[а-яёіў]*\s+(?:тавар|выраб|паслуг)|дамов[а-яёіў]*\s+на\s+выраб)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:заплатил|внес|оформил)[а-яёіў]*.*(?:не\s+получил|без\s+(?:мебел|товар|заказ))",
+            r"(?:не\s+получил|не\s+изготовил|не\s+поставил)[а-яёіў]*.*(?:мебел|товар|заказ)",
+            r"кредит[а-яёіў]*.*(?:платить|выплачивать).*?(?:мебел|товар)[а-яёіў]*.*(?:нет|не\s+получил)",
+            r"(?:заплаці|унёс|аформі)[а-яёіў]*.*(?:не\s+атрыма|без\s+(?:мэбл|тавар|заказ))",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:более|свыше|звыш)\s+\d+\s+(?:человек|клиент|заказчик|пострадавш)",
+            r"\b\d{2,}\s+(?:человек|клиент|заказчик|пострадавш)",
+            r"(?:много|десятк|сотн)[а-яёіў]*\s+(?:истори|клиент|заказчик|пострадавш)",
+            r"(?:клиенты|заказчики|пострадавшие)[а-яёіў]*.*(?:чат|групп|жалоб|заявлен)",
+            r"(?:кліенты|заказчыкі|пацярпелыя)[а-яёіў]*.*(?:чат|груп|скарг|заяв)",
+        )),
+    ),
+    "contested_mandatory_public_rule": (
+        tuple(re.compile(value) for value in (
+            r"(?:обязательн[а-яёіў]*\s+(?:скрининг|обследован|досмотр|осмотр)|"
+            r"досмотр[а-яёіў]*\s+(?:ученик|школьник)|нов[а-яёіў]*\s+правил[а-яёіў]*)",
+            r"(?:абавязков[а-яёіў]*\s+(?:скрынінг|абследаван|агляд)|нов[а-яёіў]*\s+правіл[а-яёіў]*)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"обязательн[а-яёіў]*\s+(?:скрининг|обследован|досмотр|осмотр)",
+            r"досмотр[а-яёіў]*\s+(?:ученик|школьник|дет)",
+            r"(?:вмешательств|нарушени[а-яёіў]*\s+прав|принуд|без\s+согласи|неравн[а-яёіў]*\s+услов)",
+            r"(?:умяшальніцтв|парушэнн[а-яёіў]*\s+прав|прымус|без\s+згод|няроўн[а-яёіў]*\s+ўмов)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:массов|общественн)[а-яёіў]*\s+(?:критик|возмущ|реакци|обсужден)",
+            r"(?:родител|женщин|пользовател|граждан)[а-яёіў]*.*(?:критик|возмущ|обсужд|против)",
+            r"(?:бацьк|жанчын|карыстальнік|грамадзян)[а-яёіў]*.*(?:крытык|абур|абмяркоў|супраць)",
+        )),
+    ),
+    "memorial_change_opposition": (
+        tuple(re.compile(value) for value in (
+            r"(?:танк[а-яёіў]*[-\s]?памятник|мемориал|памятник[а-яёіў]*\s+(?:войн|вов)|воинск[а-яёіў]*\s+памятник)",
+            r"(?:танк[а-яёіў]*[-\s]?помнік|мемарыял|помнік[а-яёіў]*\s+вайны)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:убрал|демонтировал|перенес|перенёс|снес|ликвидировал)[а-яёіў]*",
+            r"(?:прыбрал|дэмантава|перанёс|знёс|ліквідава)[а-яёіў]*",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:жител|горожан)[а-яёіў]*.*(?:против|возража|протест|не\s+соглас)",
+            r"(?:общественн[а-яёіў]*\s+обсужден|массов[а-яёіў]*\s+критик)",
+            r"(?:жыхар|гараджан)[а-яёіў]*.*(?:супраць|пярэч|пратэст|не\s+згодн)",
+        )),
+    ),
+    "subsistence_income_testimony": (
+        tuple(re.compile(value) for value in (
+            r"(?:пенси|пенсионер|доход[а-яёіў]*\s+пожил)",
+            r"(?:пенсі|пенсіянер|даход[а-яёіў]*\s+пажыл)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:пытаюсь|приходится|тяжело)\s+выж|не\s+хватает\s+(?:на|денег)|"
+            r"после\s+оплат[а-яёіў]*.*(?:остается|не\s+остается|лекарств)",
+            r"(?:не\s+заметил|не\s+получил)[а-яёіў]*\s+(?:рост|прибавк|повышени)",
+            r"(?:спрабую|даводзіцца|цяжка)\s+выж|не\s+хапае\s+(?:на|грош)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:пенсионеры|опрошенн[а-яёіў]*\s+пенсионер|одни\s+.*другие)",
+            r"(?:рассказал|спросил|опросил)[а-яёіў]*.*пенсионер",
+            r"(?:пенсіянеры|апытан[а-яёіў]*\s+пенсіянер|адны\s+.*іншыя)",
+        )),
+    ),
+    "early_career_support_gap": (
+        tuple(re.compile(value) for value in (
+            r"(?:молод[а-яёіў]*\s+специалист|бюджетн[а-яёіў]*\s+работник|обязательн[а-яёіў]*\s+отработк|распределени)",
+            r"(?:малад[а-яёіў]*\s+спецыяліст|бюджэтн[а-яёіў]*\s+работнік|абавязков[а-яёіў]*\s+адпрацоўк|размеркаван)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:компенсаци|возмещени)[а-яёіў]*.*(?:общежит|жиль)|(?:общежит|жиль)[а-яёіў]*.*(?:компенсаци|возмещени)",
+            r"(?:кампенсац|пакрыцц)[а-яёіў]*.*(?:інтэрнат|жылл)|(?:інтэрнат|жылл)[а-яёіў]*.*(?:кампенсац|пакрыцц)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:не\s+всем|не\s+получат|не\s+положен|лиш[а-яёіў]*|только\s+част)",
+            r"(?:не\s+ўсім|не\s+атрыма|не\s+належ|пазбаў|толькі\s+част)",
+        )),
+    ),
+    "student_housing_conditions": (
+        tuple(re.compile(value) for value in (
+            r"(?:студенческ[а-яёіў]*\s+общежит|общежити[а-яёіў]*\s+(?:студент|вуз)|комнат[а-яёіў]*\s+в\s+общежит)",
+            r"студент[а-яёіў]*.*общежит",
+            r"(?:студэнцк[а-яёіў]*\s+інтэрнат|інтэрнат[а-яёіў]*\s+(?:студэнт|вуза))",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:тарак|плесен|антисанитар|гряз|изношен|разбит|плох[а-яёіў]*\s+услов)",
+            r"(?:прусак|цвіль|антысанітар|бруд|зношан|разбіт|дрэнн[а-яёіў]*\s+ўмов)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:студент|жильц)[а-яёіў]*.*(?:показал|сравнил|жалоб|возмущ)",
+            r"(?:миллион|тысяч[а-яёіў]*).*?(?:просмотр|комментари)|видео[а-яёіў]*.*(?:завирус|обсужда)",
+            r"(?:студэнт|жыхар)[а-яёіў]*.*(?:паказа|параўна|скарг|абур)",
+        )),
+    ),
+    "collective_waste_site_remedy_gap": (
+        tuple(re.compile(value) for value in (
+            r"(?:мусорн[а-яёіў]*\s+контейнер|контейнерн[а-яёіў]*\s+площадк|площадк[а-яёіў]*\s+для\s+мусор)",
+            r"(?:смеццев[а-яёіў]*\s+кантэйнер|кантэйнерн[а-яёіў]*\s+пляцоўк)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:нет|нужн|просят|требуют)[а-яёіў]*.*(?:крыш|навес|крыт[а-яёіў]*\s+площадк)",
+            r"(?:займет|понадобится)[а-яёіў]*\s+(?:десятилет|десятки\s+лет)",
+            r"(?:няма|патрэбн|просяць|патрабуюць)[а-яёіў]*.*(?:дах|навес)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:жител|горожан)[а-яёіў]*.*(?:жал|прос|треб|обращ)",
+            r"(?:жыхар|гараджан)[а-яёіў]*.*(?:скарг|прос|патраб|зварот)",
+        )),
+    ),
+}
+
+
+AUTHORITY_APPEAL_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
+    re.compile(value)
+    for value in (
+        r"(?:обратил|обращал|написал|попросил|просит)[а-яёіў]*.*(?:лукашенко|президент|"
+        r"администраци[а-яёіў]*\s+президент|глав[а-яёіў]*\s+государств)",
+        r"(?:обращени|письм|просьб)[а-яёіў]*.*(?:лукашенко|президент|глав[а-яёіў]*\s+государств)",
+        r"(?:звярну|напіса|папрасі)[а-яёіў]*.*(?:лукашэнк|прэзідэнт|кіраўнік[а-яёіў]*\s+дзяржав)",
+    )
+)
+
+UNRESOLVED_PUBLIC_FAILURE_PATTERNS: tuple[re.Pattern[str], ...] = tuple(
+    re.compile(value)
+    for value in (
+        r"(?:не\s+отремонтир|не\s+решил|не\s+устранил|не\s+добил|без\s+результат)",
+        r"(?:разбит|аварийн|грязн|отсутств|нет\s+(?:вод|свет|дорог|отоплен)|не\s+работ)",
+        r"(?:несколько|много)\s+лет|годами|неоднократн|многочисленн[а-яёіў]*\s+(?:ответ|обращ)",
+        r"(?:не\s+адрамантава|не\s+вырашы|не\s+ліквідава|без\s+вынік)",
+        r"(?:разбіт|аварый|брудн|адсутн|няма\s+(?:вад|святл|дарог)|не\s+прац)",
+    )
+)
+
+
+def protected_public_issue_profiles(text: str) -> set[str]:
+    """Return high-precision profiles with domain, harm and breadth anchors."""
+    folded = normalized_search_text(text)
+    return {
+        name
+        for name, (context_patterns, harm_patterns, breadth_patterns)
+        in PROTECTED_PUBLIC_ISSUE_PATTERNS.items()
+        if any(pattern.search(folded) for pattern in context_patterns)
+        and any(pattern.search(folded) for pattern in harm_patterns)
+        and any(pattern.search(folded) for pattern in breadth_patterns)
+    }
+
+
+def authority_appeal_categories(
+    text: str,
+    categories: dict[str, list[str]],
+) -> set[str]:
+    """Return locally evidenced social categories in an unresolved appeal.
+
+    A political name is not a political story when it is merely the addressee
+    of a resident's appeal about a concrete service or infrastructure failure.
+    The exception remains narrow because appeal, unresolved harm and a normal
+    monitor category must all occur in the first bounded block.
+    """
+    folded = normalized_search_text(text)
+    if not any(pattern.search(folded) for pattern in AUTHORITY_APPEAL_PATTERNS):
+        return set()
+    if not any(
+        pattern.search(folded) for pattern in UNRESOLVED_PUBLIC_FAILURE_PATTERNS
+    ):
+        return set()
+    return set(category_hits(text, categories))
+
+
 def bound_public_issue_profiles(text: str) -> set[str]:
     """Return evidence profiles fully supported inside one bounded lead."""
     folded = normalized_search_text(text)
@@ -6731,6 +7048,11 @@ def evaluate_relevance(
     preliminary_context = " ".join([title, *body[:10]])
     bounded_issue_text = " ".join([title, *body[:6]])
     bounded_issue_profiles = bound_public_issue_profiles(bounded_issue_text)
+    protected_issue_profiles = protected_public_issue_profiles(bounded_issue_text)
+    appeal_categories = authority_appeal_categories(
+        bounded_issue_text,
+        categories,
+    )
     preliminary_belarus_hits = find_terms(
         preliminary_context, topic.get("belarus_context_terms", [])
     )
@@ -6760,6 +7082,8 @@ def evaluate_relevance(
         domestic_illegal_recruitment
         or domestic_business_loss_signal
         or politics_service_exception
+        or appeal_categories
+        or protected_issue_profiles
         or "consultation_accountability" in bounded_issue_profiles
         or "financial_service_access" in bounded_issue_profiles
     ):
@@ -7106,6 +7430,21 @@ def evaluate_relevance(
         "inactive_population_statistic": "Работа, зарплаты и доходы",
         "telecom_service_complaint": "Связь, интернет и телевидение",
         "outpatient_access_complaint": "Здравоохранение",
+        "essential_utility_persistence": "ЖКХ и состояние жилья",
+        "housing_repair_disruption": "ЖКХ и состояние жилья",
+        "road_safety_collective_demand": "Дороги и благоустройство",
+        "employment_access_barrier": "Работа, зарплаты и доходы",
+        "education_service_mismatch": "Образование и дети",
+        "education_material_quality": "Образование и дети",
+        "telecom_contract_degradation": "Связь, интернет и телевидение",
+        "vulnerable_financial_access": "Социальная защита и базовые услуги",
+        "mass_consumer_non_delivery": "Качество товаров и услуг",
+        "contested_mandatory_public_rule": regulatory_category,
+        "memorial_change_opposition": "Дороги и благоустройство",
+        "subsistence_income_testimony": "Социальная защита и базовые услуги",
+        "early_career_support_gap": "Работа, зарплаты и доходы",
+        "student_housing_conditions": "Образование и дети",
+        "collective_waste_site_remedy_gap": "Дороги и благоустройство",
     }
     bound_profile_labels = {
         "consumer_redress": "подтверждённый спор о защите прав потребителя",
@@ -7120,13 +7459,37 @@ def evaluate_relevance(
         "inactive_population_statistic": "статистика граждан, не занятых в экономике",
         "telecom_service_complaint": "подтверждённая жалоба на услугу связи",
         "outpatient_access_complaint": "подтверждённая жалоба на доступ к амбулаторной помощи",
+        "essential_utility_persistence": "длительная проблема базовой коммунальной услуги",
+        "housing_repair_disruption": "ущерб или вынужденное переселение из-за ремонта жилья",
+        "road_safety_collective_demand": "коллективное требование дорожной безопасности",
+        "employment_access_barrier": "системный барьер при трудоустройстве",
+        "education_service_mismatch": "несоответствие обещанной образовательной услуги",
+        "education_material_quality": "массовая проблема качества учебных материалов",
+        "telecom_contract_degradation": "ухудшение условий массовой услуги связи",
+        "vulnerable_financial_access": "ограничение финансовой услуги для уязвимой группы",
+        "mass_consumer_non_delivery": "массовое неисполнение оплаченных заказов",
+        "contested_mandatory_public_rule": "общественная реакция на обязательное правило",
+        "memorial_change_opposition": "изменение мемориального объекта вопреки мнению жителей",
+        "subsistence_income_testimony": "подтверждённая недостаточность пенсионного дохода",
+        "early_career_support_gap": "неравный доступ к компенсации молодым специалистам",
+        "student_housing_conditions": "ненадлежащие условия студенческого общежития",
+        "collective_waste_site_remedy_gap": "коллективная проблема контейнерной площадки",
     }
-    for profile in sorted(bounded_issue_profiles):
+    for category in sorted(appeal_categories):
+        if category in category_weights:
+            category_weights[category] += 18
+            matched_terms.append("нерешённая социальная проблема в обращении к власти")
+
+    all_issue_profiles = bounded_issue_profiles | protected_issue_profiles
+    for profile in sorted(all_issue_profiles):
         category = bound_profile_categories.get(profile)
         if category in category_weights:
             category_weights[category] += 18
             matched_terms.append(bound_profile_labels[profile])
-        evidence_patterns = BOUND_PUBLIC_ISSUE_PATTERNS[profile][1]
+        if profile in BOUND_PUBLIC_ISSUE_PATTERNS:
+            evidence_patterns = BOUND_PUBLIC_ISSUE_PATTERNS[profile][1]
+        else:
+            evidence_patterns = PROTECTED_PUBLIC_ISSUE_PATTERNS[profile][1]
         for index, sentence in enumerate(body[:6]):
             folded_sentence = normalized_search_text(sentence)
             if any(pattern.search(folded_sentence) for pattern in evidence_patterns):
@@ -7145,6 +7508,8 @@ def evaluate_relevance(
         or animal_welfare_signal
         or bullying_signal
         or bounded_issue_profiles
+        or protected_issue_profiles
+        or appeal_categories
     )
 
     if not any(category_weights.values()):
@@ -8080,6 +8445,28 @@ def evaluate_relevance(
             reason=f"нейтральная благотворительная или социальная кампания: {support_campaign_hits[0]}",
         )
 
+    # A public-budget deficit is an accounting aggregate, not the monitor's
+    # consumer-shortage category.  Keep it only when the same bounded article
+    # names a concrete consequence for people or a public service.  This also
+    # prevents the bare word "дефицит" from supplying its own false problem
+    # evidence in otherwise neutral regional budget reports.
+    normalized_full_context = normalized_search_text(full_context)
+    public_budget_aggregate = bool(re.search(
+        r"(?:бюджет[а-яёіў]*.{0,80}дефицит|дефицит[а-яёіў]*.{0,40}бюджет)",
+        normalized_full_context,
+    ))
+    public_budget_impact = bool(re.search(
+        r"(?:сократил|урезал|не\s+профинансир|не\s+хватает\s+средств|"
+        r"задерж[а-яёіў]*\s+(?:выплат|пособ|зарплат)|закры[а-яёіў]*\s+(?:школ|больниц|фап)|"
+        r"жител[а-яёіў]*\s+(?:жалуют|возмущ|не\s+получ))",
+        normalized_full_context,
+    ))
+    if public_budget_aggregate and not public_budget_impact:
+        return RelevanceDecision(
+            False,
+            reason="бюджетный агрегат без установленного последствия для жителей",
+        )
+
     if macro_hits and not (
         strong_explicit
         or resident_hits
@@ -8128,6 +8515,7 @@ def evaluate_relevance(
         crime_exception_hits
         or domestic_illegal_recruitment
         or "labour_rights_enforcement" in bounded_issue_profiles
+        or "mass_consumer_non_delivery" in protected_issue_profiles
     ):
         return RelevanceDecision(False, reason=f"криминальная/происшественная тема: {crime_hits[0]}")
 
