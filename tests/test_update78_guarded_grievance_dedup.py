@@ -181,5 +181,5 @@ def test_source_name_variants_do_not_create_fake_related_coverage() -> None:
 
 def test_update78_build_marker() -> None:
     # The update78 behavior must remain present under the current build.
-    assert sm.MONITOR_BUILD == "2026-09-04.social.79-run42-systemic-precision-1.0"
-    assert sm.ARCHITECTURE_CORE_VERSION == "3.8"
+    assert sm.MONITOR_BUILD == "2026-09-04.social.80-run43-precision-recall-1.0"
+    assert sm.ARCHITECTURE_CORE_VERSION == "3.9"
