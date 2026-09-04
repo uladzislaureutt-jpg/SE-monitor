@@ -29,8 +29,8 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-09-03.social.77-semantic-data-contract-1.0"
-ARCHITECTURE_CORE_VERSION = "3.6"
+MONITOR_BUILD = "2026-09-04.social.78-guarded-grievance-dedup-1.0"
+ARCHITECTURE_CORE_VERSION = "3.7"
 SEMANTIC_DATA_CONTRACT_VERSION = "1.0"
 SEMANTIC_ARCHIVE_MAX_CHARS = 8000
 
@@ -6207,6 +6207,77 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:номер|нумар)[а-яёіў]*.*(?:парк|пдд|даі|гаи)",
         r"продал[а-яёіў]*.*просроченн[а-яёіў]*\s+на\s+сем[ья]\s+лет.*киндер",
     )),
+    # Update78 precision profiles are genre/state rules extracted from the
+    # run-41 error families. They remain source-agnostic and are dispatched
+    # only when no protected three-anchor grievance is present.
+    "neutral_rule_change_explainer": tuple(re.compile(value) for value in (
+        r"(?:вводят|вводится|изменяются|изменят|вступят)[а-яёіў]*.*"
+        r"правил[а-яёіў]*.*(?:электронн[а-яёіў]*\s+очеред|пересечени[а-яёіў]*\s+границ)",
+        r"(?:электронн[а-яёіў]*\s+очеред|пересечени[а-яёіў]*\s+границ).*"
+        r"(?:что\s+нужно\s+знать|нов[а-яёіў]*\s+правил|порядок\s+регистрац)",
+    )),
+    "preventive_safety_technology": tuple(re.compile(value) for value in (
+        r"внедрил[а-яёіў]*\s+систем[а-яёіў]*\s+оповещени[а-яёіў]*.*"
+        r"(?:водител|опасност|животн)",
+        r"систем[а-яёіў]*\s+(?:видеоаналитик|оповещени)[а-яёіў]*.*"
+        r"(?:снижен|предотвращ)[а-яёіў]*.*дтп",
+    )),
+    "aesthetic_fixture_reaction": tuple(re.compile(value) for value in (
+        r"(?:лавочк|скамейк)[а-яёіў]*.*(?:кладбищ|надгроб|могил|"
+        r"черн[а-яёіў]*\s+юмор|вечн[а-яёіў]*\s+отдых)",
+        r"(?:жутк|гранитн)[а-яёіў]*\s+(?:лавочк|скамейк)[а-яёіў]*.*"
+        r"(?:обсужд|юмор|внешн[а-яёіў]*\s+вид)",
+    )),
+    "private_single_loss": tuple(re.compile(value) for value in (
+        r"у\s+(?:семь|семьи)[а-яёіў]*.*сгорел[а-яёіў]*\s+дом",
+        r"пожар[а-яёіў]*.*лишил[а-яёіў]*\s+(?:одн[а-яёіў]*\s+)?семь[а-яёіў]*\s+"
+        r"(?:дом|жиль|всего)",
+    )),
+    "private_property_listing_reaction": tuple(re.compile(value) for value in (
+        r"(?:квартир|комнат)[а-яёіў]*\s+(?:для\s+)?аренд[а-яёіў]*.*"
+        r"комментатор[а-яёіў]*\s+(?:возмущ|обсужд)",
+        r"(?:показал|выставил)[а-яёіў]*\s+квартир[а-яёіў]*.*(?:аренд|сдач).*"
+        r"(?:возмущ|бурн[а-яёіў]*\s+обсужден)",
+    )),
+    "resolved_minor_local_remedy": tuple(re.compile(value) for value in (
+        r"(?:опасн[а-яёіў]*\s+)?столб[а-яёіў]*.*(?:убрал|демонтировал|больше\s+нет)",
+        r"(?:убрал|демонтировал)[а-яёіў]*.*(?:опасн[а-яёіў]*\s+)?столб",
+        r"опасн[а-яёіў]*\s+конструкц[а-яёіў]*.*(?:наконец\s+исчезл|уже\s+нет)",
+        r"(?:провал|опасн[а-яёіў]*\s+участок)[а-яёіў]*.*"
+        r"(?:обнесл|установил[а-яёіў]*\s+(?:металлическ[а-яёіў]*\s+)?огражден)",
+        r"угроз[а-яёіў]*\s+больше\s+нет.*(?:очистил|устранил|ликвидировал)",
+    )),
+    "resolved_labour_compliance": tuple(re.compile(value) for value in (
+        r"профсоюз[а-яёіў]*.*(?:помог|удалось)[а-яёіў]*\s+устрани[а-яёіў]*.*"
+        r"нарушени[а-яёіў]*\s+трудов[а-яёіў]*\s+законодательств",
+        r"профсоюзн[а-яёіў]*\s+мониторинг[а-яёіў]*.*"
+        r"(?:оперативно\s+)?устрани[а-яёіў]*\s+(?:ряд\s+)?нарушени",
+    )),
+    "neutral_contact_update": tuple(re.compile(value) for value in (
+        r"(?:поменял|изменил|объединил)[а-яёіў]*\s+номер[а-яёіў]*\s+"
+        r"(?:справочн|информационн)[а-яёіў]*\s+служб",
+        r"нов[а-яёіў]*\s+номер[а-яёіў]*.*(?:справочн|контакт[- ]?центр)",
+    )),
+    "corporate_receivable_case": tuple(re.compile(value) for value in (
+        r"просроченн[а-яёіў]*\s+(?:внешн[а-яёіў]*\s+)?дебиторск[а-яёіў]*\s+"
+        r"задолженност[а-яёіў]*.*(?:предприяти|организац)",
+        r"(?:прокуратур|предприяти)[а-яёіў]*.*(?:взыск|претензионн)[а-яёіў]*.*"
+        r"дебиторск[а-яёіў]*\s+задолженност",
+    )),
+    "household_safety_reminder": tuple(re.compile(value) for value in (
+        r"(?:в\s+ч[её]м\s+)?опасност[а-яёіў]*\s+подгорани[а-яёіў]*\s+пищ",
+        r"(?:напоминают|советуют)[а-яёіў]*\s+спасател[а-яёіў]*.*"
+        r"(?:плит|приготовлени[а-яёіў]*\s+пищ|пожарн[а-яёіў]*\s+безопасност)",
+    )),
+    "single_road_scare": tuple(re.compile(value) for value in (
+        r"(?:встреч[а-яёіў]*\s+с\s+лесовоз|лесовоз[а-яёіў]*.*выехал[а-яёіў]*\s+на\s+встречн)",
+        r"видео\s+с[а-яёіў]*\s+регистратор[а-яёіў]*.*(?:опасн[а-яёіў]*\s+обгон|"
+        r"встречн[а-яёіў]*\s+полос)",
+    )),
+    "foreign_ceremony_or_spectacle": tuple(re.compile(value) for value in (
+        r"на\s+филиппин[а-яёіў]*.*(?:свадьб|церемони)[а-яёіў]*",
+        r"(?:свадьб|церемони)[а-яёіў]*.*(?:подтопленн[а-яёіў]*\s+церк|по\s+пояс\s+в\s+вод)",
+    )),
     "private_tenancy_dispute": tuple(re.compile(value) for value in (
         r"хозя(?:йк|ин)[а-яёіў]*.*(?:не\s+хотел[а-яёіў]*\s+возвращ|залог)",
         r"арендатор[а-яёіў]*.*(?:залог|хозя(?:йк|ин)|пош[её]л[а-яёіў]*\s+в\s+суд)",
@@ -6401,11 +6472,15 @@ BOUND_PUBLIC_ISSUE_PATTERNS: dict[
     "telecom_service_complaint": (
         tuple(re.compile(value) for value in (
             r"(?:мобильн[а-яёіў]*\s+(?:оператор|интернет|связ)|оператор[а-яёіў]*\s+связ|"
-            r"интернет-провайдер|трафик)",
+            r"интернет-провайдер|трафик|супербезлимит|безлимитн[а-яёіў]*\s+интернет|"
+            r"скорост[а-яёіў]*\s+интернет)",
         )),
         tuple(re.compile(value) for value in (
             r"(?:клиент|абонент|пользовател|белорус)[а-яёіў]*.*"
             r"(?:жалует|возмущ|оспарива)[а-яёіў]*",
+            r"(?:белорус|абонент|пользовател)[а-яёіў]*.*обратил[а-яёіў]*\s+к\s+"
+            r"оператор[а-яёіў]*.*ограничил[а-яёіў]*\s+скорост",
+            r"пожаловал[а-яёіў]*\s+на\s+скорост[а-яёіў]*.*(?:оператор|интернет|тариф)",
             r"(?:неверн|ошибочн|необоснованн)[а-яёіў]*.*"
             r"(?:списал|начисл|трафик|плат[а-яёіў]*)",
             r"(?:оператор|провайдер)[а-яёіў]*.*(?:не\s+решил|игнорир|отказал)[а-яёіў]*.*"
@@ -6419,10 +6494,16 @@ BOUND_PUBLIC_ISSUE_PATTERNS: dict[
     # either a resident complaint or an abnormally long queue are required.
     "outpatient_access_complaint": (
         tuple(re.compile(value) for value in (
-            r"(?:поликлиник|больниц|амбулатор|гинеколог|врач|медкомисси)",
+            r"(?:поликлиник|больниц|амбулатор|гинеколог|врач|медкомисси|"
+            r"женск[а-яёіў]*\s+консультац|црб|при[её]м[а-яёіў]*\s+пациент)",
         )),
         tuple(re.compile(value) for value in (
-            r"(?:жител|пациент|граждан)[а-яёіў]*.{0,80}(?:пожаловал|жалоб|не\s+мож(?:ет|ут)\s+попасть)",
+            r"(?:жител|пациент|граждан|женщин|девушк|смолевичан)[а-яёіў]*"
+            r".{0,100}(?:пожаловал|жалоб|не\s+мож(?:ет|ут|гла)\s+попасть|"
+            r"не\s+удалос[а-яёіў]*\s+попасть)",
+            r"(?:пожаловал|жалоб)[а-яёіў]*.{0,100}(?:женск[а-яёіў]*\s+консультац|"
+            r"гинеколог|црб|поликлиник)",
+            r"не\s+(?:смог|смогла|удалось)[а-яёіў]*\s+попаст[а-яёіў]*\s+на\s+при[её]м",
             r"(?:длинн|многочасов|огромн)[а-яёіў]*\s+очеред",
         )),
     ),
@@ -6542,7 +6623,8 @@ PROTECTED_PUBLIC_ISSUE_PATTERNS: dict[
     "telecom_contract_degradation": (
         tuple(re.compile(value) for value in (
             r"(?:мобильн[а-яёіў]*\s+оператор|оператор[а-яёіў]*\s+связ|мтс|а1|life:|"
-            r"безлимитн[а-яёіў]*\s+тариф|тарифн[а-яёіў]*\s+план)",
+            r"безлимитн[а-яёіў]*\s+(?:тариф|интернет)|супербезлимит|"
+            r"скорост[а-яёіў]*\s+интернет|тарифн[а-яёіў]*\s+план)",
             r"(?:мабільн[а-яёіў]*\s+аператар|аператар[а-яёіў]*\s+сувяз|безлімітн[а-яёіў]*\s+тарыф)",
         )),
         tuple(re.compile(value) for value in (
@@ -6554,6 +6636,9 @@ PROTECTED_PUBLIC_ISSUE_PATTERNS: dict[
         )),
         tuple(re.compile(value) for value in (
             r"(?:абонент|пользовател|клиент)[а-яёіў]*.*(?:жалоб|возмущ|узнал|не\s+предупред)",
+            r"(?:белорус|абонент|пользовател)[а-яёіў]*.*(?:обратил|пожаловал)[а-яёіў]*.*"
+            r"(?:оператор|скорост|интернет)",
+            r"скриншот[а-яёіў]*\s+переписк[а-яёіў]*\s+с\s+оператор",
             r"(?:изменил|ввел|увел)[а-яёіў]*\s+(?:услови|ограничени)|для\s+абонент",
             r"(?:абанент|карыстальнік|кліент)[а-яёіў]*.*(?:скарг|абур|даведа)",
         )),
@@ -6670,6 +6755,62 @@ PROTECTED_PUBLIC_ISSUE_PATTERNS: dict[
             r"(?:студент|жильц)[а-яёіў]*.*(?:показал|сравнил|жалоб|возмущ)",
             r"(?:миллион|тысяч[а-яёіў]*).*?(?:просмотр|комментари)|видео[а-яёіў]*.*(?:завирус|обсужда)",
             r"(?:студэнт|жыхар)[а-яёіў]*.*(?:паказа|параўна|скарг|абур)",
+        )),
+    ),
+    # Update78: explicit grievances are protected only when the bounded lead
+    # supplies three independent anchors: service domain, concrete harm and
+    # an accountable complainant/public remedy.  These profiles address the
+    # systematic failure mode seen in run 41 without lowering the global
+    # relevance threshold.
+    "communal_resident_grievance": (
+        tuple(re.compile(value) for value in (
+            r"(?:жкх|коммунальн[а-яёіў]*\s+служб|канализац|подвал|крыша|"
+            r"детск[а-яёіў]*\s+площадк|тротуар|поручн)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:забива|протека|затека|подтоп|провалил|небезопасн|аварийн)[а-яёіў]*",
+            r"(?:горяч|сточн|канализационн)[а-яёіў]*\s+вод[а-яёіў]*.*(?:по\s+колено|в\s+подвал|в\s+дом)",
+            r"сырост[а-яёіў]*.*(?:квартир|подвал|дом)",
+            r"не\s+(?:чист|ремонтир|устраня)[а-яёіў]*",
+            r"реб[её]нок[а-яёіў]*.*не\s+может.*(?:поднят|спустит|дотянут)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:жител|жилец|жильц)[а-яёіў]*.*(?:озвучил|попросил|обратил|жалоб)",
+            r"(?:жител|жилец|жильц)[а-яёіў]*.*(?:несмотря\s+на\s+)?обращени[а-яёіў]*",
+            r"обращени[а-яёіў]*.*(?:коммунальн[а-яёіў]*\s+служб|жэу|жкх|диспетчерск)",
+            r"(?:озвучил|попросил|обратил)[а-яёіў]*.*(?:жкх|служб|руководств|исполком)",
+            r"(?:проблемн[а-яёіў]*\s+вопрос|вопрос[а-яёіў]*).*"
+            r"(?:передан|принят[а-яёіў]*\s+мер|обследован)",
+        )),
+    ),
+    "institutional_healthcare_safety": (
+        tuple(re.compile(value) for value in (
+            r"(?:больниц|медицинск[а-яёіў]*\s+(?:учрежден|отделен)|"
+            r"психиатрическ[а-яёіў]*\s+отделен)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:реб[её]нок|пациент)[а-яёіў]*.*(?:получил|обнаружил)[а-яёіў]*.*"
+            r"(?:травм|гематом|синяк)",
+            r"(?:травм|гематом|синяк)[а-яёіў]*.*(?:реб[её]нк|пациент)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:мать|отец|родител)[а-яёіў]*.*(?:пожаловал|жалоб|обратил)",
+            r"(?:жалоб|обращени)[а-яёіў]*.*(?:минздрав|главн[а-яёіў]*\s+врач|провер)",
+            r"(?:внутренн[а-яёіў]*\s+проверк|разбирательств[а-яёіў]*\s+милици)",
+        )),
+    ),
+    "vulnerable_retail_access": (
+        tuple(re.compile(value) for value in (
+            r"(?:магазин|торгов[а-яёіў]*\s+сет|касс[а-яёіў]*\s+самообслуживан)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:не\s+оказал|отказал)[а-яёіў]*.*помощ",
+            r"(?:обычн[а-яёіў]*\s+касс|кассир)[а-яёіў]*.*(?:не\s+работ|убрал)",
+            r"сложн[а-яёіў]*\s+пользоват[а-яёіў]*.*касс",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:пожил|инвалид|слабовидящ|реб[её]нок[- ]инвалид)[а-яёіў]*",
+            r"(?:руководств[а-яёіў]*\s+сет|магазин)[а-яёіў]*.*(?:обращал|просьб|провер)",
         )),
     ),
     "collective_waste_site_remedy_gap": (
@@ -6866,6 +7007,63 @@ def result_integrity_genre_rejection(
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
         return "Editorial Intent: жители самостоятельно решили вопрос без жалобы"
+    if matches("neutral_rule_change_explainer", include_lead=True) and not (
+        resident_explicit or persistence or special_public_interest
+        or regulatory_public_interest
+    ):
+        return "Editorial Intent: нейтральное разъяснение изменения правил"
+    if matches("preventive_safety_technology", include_lead=True) and not (
+        resident_explicit or persistence or special_public_interest
+    ):
+        return "Editorial Intent: профилактическая технология без текущей жалобы"
+    functional_fixture_problem = bool(re.search(
+        r"(?:сломал|разбит|не\s+работ|опасн|травм|мешает\s+проход|"
+        r"перекрыва[а-яёіў]*\s+доступ)",
+        folded_lead,
+    ))
+    if matches("aesthetic_fixture_reaction", include_lead=True) and not (
+        functional_fixture_problem
+    ):
+        return "Editorial Intent: эстетическая реакция без функциональной проблемы"
+    if matches("private_single_loss", include_lead=True) and not (
+        persistence or special_public_interest
+    ):
+        return "Result Integrity: единичная частная утрата без системного сбоя"
+    if matches("private_property_listing_reaction", include_lead=True) and not (
+        persistence or special_public_interest
+    ):
+        return "Result Integrity: реакция на единичное объявление о недвижимости"
+    if matches("resolved_minor_local_remedy", include_lead=True) and not (
+        persistence or special_public_interest
+    ):
+        return "Problem State: локальная проблема уже устранена или изолирована"
+    if matches("resolved_labour_compliance", include_lead=True) and not re.search(
+        r"(?:не\s+устран|остал[а-яёіў]*\s+без\s+решени|продолжа[а-яёіў]*\s+наруш)",
+        folded_lead,
+    ):
+        return "Problem State: выявленные трудовые нарушения уже устранены"
+    if matches("neutral_contact_update", include_lead=True) and not (
+        resident_explicit or persistence or special_public_interest
+    ):
+        return "Editorial Intent: нейтральное изменение контактных данных службы"
+    if matches("corporate_receivable_case", include_lead=True) and not (
+        resident_explicit or special_public_interest
+        or re.search(r"(?:задерж[а-яёіў]*\s+зарплат|невыплат[а-яёіў]*\s+работник|"
+                     r"сокращени[а-яёіў]*\s+персонал)", folded_lead)
+    ):
+        return "Editorial Intent: корпоративная дебиторская задолженность без ущерба жителям"
+    if matches("household_safety_reminder", include_lead=True) and not (
+        resident_explicit or persistence or special_public_interest
+    ):
+        return "Editorial Intent: бытовая памятка по безопасности"
+    if matches("single_road_scare", include_lead=True) and not (
+        resident_explicit or persistence or special_public_interest
+    ):
+        return "Result Integrity: единичный опасный манёвр без системной проблемы"
+    if matches("foreign_ceremony_or_spectacle", include_lead=True) and not (
+        special_public_interest
+    ):
+        return "Result Integrity: зарубежный событийный сюжет без воздействия на Беларусь"
     if matches("positive_public_infrastructure_opening", include_lead=True) and not (
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
@@ -7058,8 +7256,14 @@ def evaluate_relevance(
     opening = " ".join([title, *body[:8]])
     preliminary_context = " ".join([title, *body[:10]])
     bounded_issue_text = " ".join([title, *body[:6]])
+    # High-precision three-anchor profiles may look slightly deeper than the
+    # ordinary evidence-binding window.  Real regional stories often put the
+    # affected institution, the concrete failure and the complainant into
+    # separate short paragraphs.  Fourteen sentences is still a bounded lead,
+    # not an unrestricted deep-body rescue.
+    protected_issue_text = " ".join([title, *body[:14]])
     bounded_issue_profiles = bound_public_issue_profiles(bounded_issue_text)
-    protected_issue_profiles = protected_public_issue_profiles(bounded_issue_text)
+    protected_issue_profiles = protected_public_issue_profiles(protected_issue_text)
     appeal_categories = authority_appeal_categories(
         bounded_issue_text,
         categories,
@@ -7455,6 +7659,9 @@ def evaluate_relevance(
         "subsistence_income_testimony": "Социальная защита и базовые услуги",
         "early_career_support_gap": "Работа, зарплаты и доходы",
         "student_housing_conditions": "Образование и дети",
+        "communal_resident_grievance": "ЖКХ и состояние жилья",
+        "institutional_healthcare_safety": "Здравоохранение",
+        "vulnerable_retail_access": "Качество товаров и услуг",
         "collective_waste_site_remedy_gap": "Дороги и благоустройство",
     }
     bound_profile_labels = {
@@ -7484,6 +7691,9 @@ def evaluate_relevance(
         "subsistence_income_testimony": "подтверждённая недостаточность пенсионного дохода",
         "early_career_support_gap": "неравный доступ к компенсации молодым специалистам",
         "student_housing_conditions": "ненадлежащие условия студенческого общежития",
+        "communal_resident_grievance": "явная жалоба жильцов на коммунальный сбой",
+        "institutional_healthcare_safety": "жалоба на безопасность пациента в медучреждении",
+        "vulnerable_retail_access": "недоступность торговой услуги для уязвимой группы",
         "collective_waste_site_remedy_gap": "коллективная проблема контейнерной площадки",
     }
     for category in sorted(appeal_categories):
@@ -8405,7 +8615,10 @@ def evaluate_relevance(
     # Сама по себе стихия не является социально-экономической жалобой.
     # Оставляем только сообщения о бездействии/задержке служб, длительном
     # отсутствии базовых услуг, жалобах жителей или вынужденной самоорганизации.
-    if emergency_event_hits and not emergency_issue_hits:
+    if emergency_event_hits and not (
+        emergency_issue_hits
+        or "communal_resident_grievance" in protected_issue_profiles
+    ):
         return RelevanceDecision(
             False,
             reason=(
@@ -8527,6 +8740,7 @@ def evaluate_relevance(
         or domestic_illegal_recruitment
         or "labour_rights_enforcement" in bounded_issue_profiles
         or "mass_consumer_non_delivery" in protected_issue_profiles
+        or "institutional_healthcare_safety" in protected_issue_profiles
     ):
         return RelevanceDecision(False, reason=f"криминальная/происшественная тема: {crime_hits[0]}")
 
@@ -9599,6 +9813,7 @@ _EVENT_SEMANTIC_CONCEPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "low_water": tuple(re.compile(value) for value in (
         r"обмел[а-яёіў]*", r"маловод[а-яёіў]*", r"узровен[а-яёіў]*\s+вод",
         r"уровен[а-яёіў]*\s+вод[а-яёіў]*.*(?:низк|упал|снизил)",
+        r"(?:исчезл|ушл)[а-яёіў]*\s+(?:вся\s+)?вод[а-яёіў]*",
     )),
     "housing": tuple(re.compile(value) for value in (
         r"дом[а-яёіў]*", r"жиль[яёа-яіў]*", r"жылл[яёа-яіў]*",
@@ -9694,6 +9909,35 @@ _EVENT_SEMANTIC_CONCEPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "expired_passport": tuple(re.compile(value) for value in (
         r"просроченн[а-яёіў]*\s+паспорт",
     )),
+    "bottled_water": tuple(re.compile(value) for value in (
+        r"(?:бутилированн|питьев|минеральн)[а-яёіў]*\s+вод[а-яёіў]*",
+        r"производител[а-яёіў]*\s+(?:питьев|минеральн)[а-яёіў]*\s+вод[а-яёіў]*",
+    )),
+    "price_overcharge": tuple(re.compile(value) for value in (
+        r"завышал[а-яёіў]*\s+(?:отпускн[а-яёіў]*\s+)?цен",
+        r"цен[а-яёіў]*.*не\s+подтвержден[а-яёіў]*\s+экономическ[а-яёіў]*\s+расчет",
+    )),
+    "mogilev_anchor": tuple(re.compile(value) for value in (
+        r"могил[её]в[а-яёіў]*", r"магіл[её]ў[а-яёіў]*",
+    )),
+    "electronic_border_queue": tuple(re.compile(value) for value in (
+        r"электронн[а-яёіў]*\s+очеред[а-яёіў]*.*границ",
+        r"границ[а-яёіў]*.*электронн[а-яёіў]*\s+очеред",
+    )),
+    "rule_change": tuple(re.compile(value) for value in (
+        r"(?:нов[а-яёіў]*|измен[а-яёіў]*|актуализированн[а-яёіў]*)\s+"
+        r"(?:правил|порядок|положени)",
+        r"(?:правил|порядок|положени)[а-яёіў]*.*(?:измен[а-яёіў]*|вступ[а-яёіў]*\s+в\s+сил)",
+    )),
+    "granite_bench": tuple(re.compile(value) for value in (
+        r"(?:гранитн[а-яёіў]*\s+)?(?:лавочк|скамейк)[а-яёіў]*",
+    )),
+    "cemetery_aesthetic": tuple(re.compile(value) for value in (
+        r"(?:кладбищ|надгроб|могил|вечн[а-яёіў]*\s+отдых|черн[а-яёіў]*\s+юмор)",
+    )),
+    "brest_anchor": tuple(re.compile(value) for value in (
+        r"брест[а-яёіў]*", r"берасц[а-яёіў]*",
+    )),
 }
 
 
@@ -9738,6 +9982,12 @@ def _event_semantic_profile(result: ArticleResult) -> tuple[set[str], set[str]]:
         families.add("public_works_overspend")
     if {"cyprus", "residency_permit", "expired_passport"} <= concepts:
         families.add("cyprus_residency_facilitation")
+    if {"bottled_water", "price_overcharge", "mogilev_anchor"} <= concepts:
+        families.add("mogilev_bottled_water_overcharge")
+    if {"electronic_border_queue", "rule_change"} <= concepts:
+        families.add("electronic_border_queue_rules")
+    if {"granite_bench", "cemetery_aesthetic", "brest_anchor"} <= concepts:
+        families.add("brest_granite_bench_reaction")
     return families, concepts
 
 
@@ -9747,24 +9997,37 @@ def _strong_semantic_event_match(
     shared_numbers: set[str],
 ) -> bool:
     """Join multilingual rewrites only when family, facts and scope agree."""
-    if (
-        left.event_region
-        and right.event_region
-        and normalize_space(left.event_region).casefold()
-        != normalize_space(right.event_region).casefold()
-    ):
-        return False
     left_families, left_concepts = _event_semantic_profile(left)
     right_families, right_concepts = _event_semantic_profile(right)
     shared_families = left_families & right_families
     if not shared_families:
         return False
+    # A small set of fully anchored families can repair a demonstrably wrong
+    # inferred geography caused by boilerplate from another regional story.
+    # The family itself requires the explicit place and object on both sides.
+    exact_anchor_families = {"brest_granite_bench_reaction"}
+    if (
+        left.event_region
+        and right.event_region
+        and normalize_space(left.event_region).casefold()
+        != normalize_space(right.event_region).casefold()
+        and not shared_families & exact_anchor_families
+    ):
+        return False
     left_value = normalized_search_text(f"{left.title}. {left.excerpt[:1200]}")
     right_value = normalized_search_text(f"{right.title}. {right.excerpt[:1200]}")
     if "natural_water_level" in shared_families:
-        named_waters = ("припят", "днепр", "неман", "сож", "березин", "двин")
+        named_waters = (
+            "припят", "днепр", "неман", "сож", "березин", "двин", "дальв",
+        )
         if any(anchor in left_value and anchor in right_value for anchor in named_waters):
             return True
+    if shared_families & {
+        "mogilev_bottled_water_overcharge",
+        "electronic_border_queue_rules",
+        "brest_granite_bench_reaction",
+    }:
+        return True
     if shared_families & {
         "charged_chocolate_recall",
         "boric_foot_spray_recall",
@@ -10056,6 +10319,13 @@ def _dedup_preference(
     )
 
 
+def _canonical_source_identity(value: str) -> str:
+    """Normalize harmless spelling/channel variants of one newsroom name."""
+    folded = normalize_space(value).casefold().replace("ё", "е")
+    folded = re.sub(r"(?<![а-яa-z])online(?![а-яa-z])", "онлайн", folded)
+    return re.sub(r"[^а-яіўa-z0-9]+", "", folded)
+
+
 def deduplicate_results(results: list[ArticleResult]) -> list[ArticleResult]:
     # First remove technical variants of one URL, including tracking-only
     # query parameters.  Then conservatively consolidate independent rewrites
@@ -10085,8 +10355,8 @@ def deduplicate_results(results: list[ArticleResult]) -> list[ArticleResult]:
         primary = ordered[0]
         related_by_source: dict[str, tuple[str, str]] = {}
         for item in ordered[1:]:
-            source_key = item.source_name.casefold()
-            if source_key == primary.source_name.casefold():
+            source_key = _canonical_source_identity(item.source_name)
+            if source_key == _canonical_source_identity(primary.source_name):
                 continue
             related_by_source.setdefault(
                 source_key,

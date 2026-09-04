@@ -1,30 +1,31 @@
 {
-  "package": "SE-monitor-update-77-semantic-data-contract-1.0",
-  "created_at": "2026-09-03",
-  "target_build": "2026-09-03.social.77-semantic-data-contract-1.0",
-  "architecture_core": "3.6",
-  "expected_base_build": "2026-09-03.social.76-guarded-recall-report39-1.0",
-  "install_at": "repository_root",
-  "production_semantic_decisions_enabled": false,
-  "regex_decisions_changed": false,
-  "public_report_contract_changed": false,
-  "purpose": [
-    "archive versioned semantic inputs for both regex relevance routes",
-    "retain weak and borderline regex rejections for later adjudication",
-    "define independent veto and rescue development contours"
+  "package": "SE-monitor-update-78-guarded-grievance-dedup-1.0",
+  "build": "2026-09-04.social.78-guarded-grievance-dedup-1.0",
+  "architecture_core_version": "3.7",
+  "semantic_data_contract_version": "1.0",
+  "requires": "update77 semantic data contract 1.0",
+  "installation_root": "repository root",
+  "changes": [
+    "guarded three-anchor admission for communal, healthcare and vulnerable-retail grievances",
+    "bounded telecom and outpatient-access recall profiles",
+    "genre/state exclusions for run-41 noise families",
+    "anchored semantic consolidation for four run-41 duplicate families",
+    "canonical newsroom-name identity for related coverage"
   ],
   "files": [
-    ".github/workflows/daily-social-monitor.yml",
-    "EVALUATION-CONCLUSION.md",
-    "INSTALL-UPDATE77.md",
-    "data/ml/raw_history/README.md",
-    "ml/semantic_dual_head_experiment/README.md",
     "social_monitor.py",
-    "tests/test_update77_semantic_data_contract.py"
+    "tests/test_update77_semantic_data_contract.py",
+    "tests/test_update78_guarded_grievance_dedup.py",
+    "INSTALL-UPDATE78.md",
+    "RUN41-REGRESSION.md",
+    "UPDATE_MANIFEST.json",
+    "SHA256SUMS.txt"
   ],
-  "verification": {
-    "command": "python -m pytest -q",
-    "result": "559 passed",
-    "tested_as_overlay_on_latest_repository_plus_semantic-cascade-blind-eval-1.0": true
-  }
+  "does_not_modify": [
+    "config/sources.csv",
+    "config/settings.yaml",
+    ".github/workflows",
+    "data/ml/blind_gold_2026_09_03",
+    "semantic archive contract"
+  ]
 }
