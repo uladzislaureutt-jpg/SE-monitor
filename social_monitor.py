@@ -29,8 +29,8 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-09-04.social.78-guarded-grievance-dedup-1.0"
-ARCHITECTURE_CORE_VERSION = "3.7"
+MONITOR_BUILD = "2026-09-04.social.79-run42-systemic-precision-1.0"
+ARCHITECTURE_CORE_VERSION = "3.8"
 SEMANTIC_DATA_CONTRACT_VERSION = "1.0"
 SEMANTIC_ARCHIVE_MAX_CHARS = 8000
 
@@ -3010,9 +3010,21 @@ def telegram_title_from_text(text: str) -> str:
     lines = [normalize_space(line) for line in raw.splitlines() if normalize_space(line)]
     meaningful = [line for line in lines if not telegram_line_is_service_only(line)]
     candidate = meaningful[0] if meaningful else (lines[0] if lines else normalize_space(raw))
-    first_sentence = split_sentences(candidate)
+    # A newsroom or brand domain can be ordinary title text (``Mak.by?``).
+    # Protect the dot while detecting the first sentence; otherwise the
+    # generic sentence splitter truncates the visible title at ``Mak``.
+    domain_dot_marker = "\uf000"
+    sentence_candidate = re.sub(
+        r"(?<=[0-9A-Za-zА-Яа-яЁёІіЎў])\.(?=(?:by|ru|com|org|net)\b)",
+        domain_dot_marker,
+        candidate,
+        flags=re.IGNORECASE,
+    )
+    first_sentence = split_sentences(sentence_candidate)
     if first_sentence:
-        candidate = first_sentence[0]
+        candidate = first_sentence[0].replace(domain_dot_marker, ".")
+    candidate = re.sub(r"^[^\w«„“\"']+", "", candidate, flags=re.UNICODE)
+    candidate = re.sub(r"\s+([?!.,;:])", r"\1", candidate)
     if len(candidate) > 180:
         candidate = candidate[:177].rsplit(" ", 1)[0].rstrip(" ,;:—–") + "…"
     return candidate or "Telegram-публикация"
@@ -6278,6 +6290,36 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"на\s+филиппин[а-яёіў]*.*(?:свадьб|церемони)[а-яёіў]*",
         r"(?:свадьб|церемони)[а-яёіў]*.*(?:подтопленн[а-яёіў]*\s+церк|по\s+пояс\s+в\s+вод)",
     )),
+    # Update79: reusable editorial genres exposed by run 42.  Each rule
+    # describes intent/state rather than a particular publisher or URL.
+    "medical_risk_explainer": tuple(re.compile(value) for value in (
+        r"почему\s+(?:инсульт|инфаркт|болезн|заболевани)[а-яёіў]*.*"
+        r"(?:быва|случа|возника)[а-яёіў]*.*(?:у\s+дет|у\s+молод)",
+        r"молодост[а-яёіў]*\s+(?:ничего\s+)?не\s+гарантиру[а-яёіў]*.*"
+        r"(?:инсульт|инфаркт|болезн)",
+        r"(?:врач|невролог|кардиолог)[а-яёіў]*.*(?:объяснил|рассказал|назвал)[а-яёіў]*.*"
+        r"(?:причин|риск|симптом)",
+    )),
+    "foreign_critical_infrastructure_event": tuple(re.compile(value) for value in (
+        r"(?:заэс|запорожск[а-яёіў]*\s+аэс|энергодар)[а-яёіў]*.*"
+        r"(?:бл[эе]каут|нет\s+внешн[а-яёіў]*\s+электроснабж|дизел[а-яёіў]*\s+генератор)",
+        r"(?:обстрел|боев[а-яёіў]*\s+действи)[а-яёіў]*.*"
+        r"(?:аэс|электростанц|электроснабж)[а-яёіў]*.*(?:украин|росси)",
+    )),
+    "positive_historical_local_retrospective": tuple(re.compile(value) for value in (
+        r"(?:а\s+вы\s+)?помните.*как\s+(?:появил|создал|открыл)[а-яёіў]*.*"
+        r"(?:детск[а-яёіў]*\s+площадк|парк|сквер)",
+        r"истори[а-яёіў]*\s+создани[а-яёіў]*.*(?:площадк|парк|сквер).*"
+        r"(?:добро[а-яёіў]*\s+дел|любим[а-яёіў]*\s+мест)",
+    )),
+    "official_legal_clarification": tuple(re.compile(value) for value in (
+        r"официальн[а-яёіў]*\s+(?:толковани|разъяснени)[а-яёіў]*.*"
+        r"(?:кодекс|законодательств|требовани)",
+        r"(?:нов[а-яёіў]*\s+редакци|изменени[а-яёіў]*).*"
+        r"не\s+меня[а-яёіў]*\s+(?:действующ|прежн)[а-яёіў]*\s+подход",
+        r"не\s+явля[а-яёіў]*\s+нарушени[а-яёіў]*.*"
+        r"не\s+явля[а-яёіў]*\s+основани[а-яёіў]*.*(?:ответственност|штраф)",
+    )),
     "private_tenancy_dispute": tuple(re.compile(value) for value in (
         r"хозя(?:йк|ин)[а-яёіў]*.*(?:не\s+хотел[а-яёіў]*\s+возвращ|залог)",
         r"арендатор[а-яёіў]*.*(?:залог|хозя(?:йк|ин)|пош[её]л[а-яёіў]*\s+в\s+суд)",
@@ -6783,6 +6825,40 @@ PROTECTED_PUBLIC_ISSUE_PATTERNS: dict[
             r"(?:передан|принят[а-яёіў]*\s+мер|обследован)",
         )),
     ),
+    "persistent_building_envelope_grievance": (
+        tuple(re.compile(value) for value in (
+            r"(?:квартир|жил[а-яёіў]*\s+(?:дом|комплекс|квартал)|застройщик|"
+            r"межпанельн[а-яёіў]*\s+шв|фасад)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:мокр[а-яёіў]*\s+пятн|плесен|сырост|залити|протеч|проника[а-яёіў]*\s+влаг)",
+            r"(?:стен|квартир)[а-яёіў]*.*(?:мокр|намока|затаплива)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:жител|жилец|жильц)[а-яёіў]*.*(?:жалоб|проблем|обратил)",
+            r"(?:несколько|много)\s+лет|продолжа[а-яёіў]*\s+(?:несколько\s+)?лет",
+            r"(?:реб[её]нок|дет)[а-яёіў]*.*(?:опасн|угроз|здоров)",
+            r"(?:застройщик|комисси)[а-яёіў]*.*(?:обследован|проверк|герметизац|работ)",
+        )),
+    ),
+    "mass_financial_service_restriction": (
+        tuple(re.compile(value) for value in (
+            r"(?:беларусбанк|банк[а-яёіў]*).*?(?:мобильн[а-яёіў]*\s+приложен|"
+            r"m-belarusbank|банковск[а-яёіў]*\s+карт|карточк)",
+            r"(?:m-belarusbank|мобильн[а-яёіў]*\s+банк)[а-яёіў]*.*(?:карт|счет)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:не\s+смогут|нельзя|запрет|отмен)[а-яёіў]*.*(?:добавля|привяз|пользова)[а-яёіў]*.*карт",
+            r"(?:перестанут|не\s+будут)[а-яёіў]*\s+работат[а-яёіў]*.*карт",
+            r"ограничени[а-яёіў]*\s+по\s+(?:карт|операци|приложен)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:активн|массов|бурн)[а-яёіў]*\s+обсужден",
+            r"(?:у\s+люд|клиент|пользовател)[а-яёіў]*.*(?:немало|много)\s+вопрос",
+            r"(?:пожил|пенсионер|старш[а-яёіў]*\s+поколен|родител)[а-яёіў]*.*"
+            r"(?:помог|карт|приложен|зрени|доступ)",
+        )),
+    ),
     "institutional_healthcare_safety": (
         tuple(re.compile(value) for value in (
             r"(?:больниц|медицинск[а-яёіў]*\s+(?:учрежден|отделен)|"
@@ -6815,16 +6891,21 @@ PROTECTED_PUBLIC_ISSUE_PATTERNS: dict[
     ),
     "collective_waste_site_remedy_gap": (
         tuple(re.compile(value) for value in (
-            r"(?:мусорн[а-яёіў]*\s+контейнер|контейнерн[а-яёіў]*\s+площадк|площадк[а-яёіў]*\s+для\s+мусор)",
+            r"(?:мусорн[а-яёіў]*\s+контейнер|контейнерн[а-яёіў]*\s+площадк|площадк[а-яёіў]*\s+(?:для\s+)?(?:мусор|тбо|тко)|"
+            r"несанкционированн[а-яёіў]*\s+свалк|свалк[а-яёіў]*\s+(?:возле|рядом)\s+контейнер)",
             r"(?:смеццев[а-яёіў]*\s+кантэйнер|кантэйнерн[а-яёіў]*\s+пляцоўк)",
         )),
         tuple(re.compile(value) for value in (
             r"(?:нет|нужн|просят|требуют)[а-яёіў]*.*(?:крыш|навес|крыт[а-яёіў]*\s+площадк)",
             r"(?:займет|понадобится)[а-яёіў]*\s+(?:десятилет|десятки\s+лет)",
+            r"(?:свалк|мусор|хлам)[а-яёіў]*.*(?:гни[её]т|запах|крыс|зелен[а-яёіў]*\s+зон)",
+            r"(?:матрас|ветк|сантехник|мебел)[а-яёіў]*.*(?:сгружа|выбрасыва|свалк)",
             r"(?:няма|патрэбн|просяць|патрабуюць)[а-яёіў]*.*(?:дах|навес)",
         )),
         tuple(re.compile(value) for value in (
             r"(?:жител|горожан)[а-яёіў]*.*(?:жал|прос|треб|обращ)",
+            r"(?:жител|жилец|жильц)[а-яёіў]*.*(?:страда|возмущ|своими\s+силами)",
+            r"(?:в\s+редакци[а-яёіў]*\s+обратил|расчища[а-яёіў]*\s+раз\s+в\s+месяц)",
             r"(?:жыхар|гараджан)[а-яёіў]*.*(?:скарг|прос|патраб|зварот)",
         )),
     ),
@@ -7064,6 +7145,24 @@ def result_integrity_genre_rejection(
         special_public_interest
     ):
         return "Result Integrity: зарубежный событийный сюжет без воздействия на Беларусь"
+    if matches("medical_risk_explainer", include_lead=True) and not (
+        title_explicit or resident_explicit or lead_findings
+    ):
+        return "Editorial Intent: медицинское разъяснение рисков без жалобы на систему здравоохранения"
+    if matches("foreign_critical_infrastructure_event", include_lead=True) and not re.search(
+        r"беларус[а-яёіў]*.*(?:энергоснабж|поставк[а-яёіў]*\s+электроэнерг|"
+        r"радиационн[а-яёіў]*\s+опасност)",
+        folded_lead,
+    ):
+        return "Result Integrity: зарубежная критическая инфраструктура без воздействия на Беларусь"
+    if matches("positive_historical_local_retrospective", include_lead=True) and not (
+        resident_explicit or persistence
+    ):
+        return "Editorial Intent: позитивная ретроспектива без текущей проблемы"
+    if matches("official_legal_clarification", include_lead=True) and not (
+        title_explicit or resident_explicit or lead_findings or persistence
+    ):
+        return "Editorial Intent: официальное толкование нормы без конкретной жалобы"
     if matches("positive_public_infrastructure_opening", include_lead=True) and not (
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
@@ -7660,6 +7759,8 @@ def evaluate_relevance(
         "early_career_support_gap": "Работа, зарплаты и доходы",
         "student_housing_conditions": "Образование и дети",
         "communal_resident_grievance": "ЖКХ и состояние жилья",
+        "persistent_building_envelope_grievance": "ЖКХ и состояние жилья",
+        "mass_financial_service_restriction": "Социальная защита и базовые услуги",
         "institutional_healthcare_safety": "Здравоохранение",
         "vulnerable_retail_access": "Качество товаров и услуг",
         "collective_waste_site_remedy_gap": "Дороги и благоустройство",
@@ -7692,6 +7793,8 @@ def evaluate_relevance(
         "early_career_support_gap": "неравный доступ к компенсации молодым специалистам",
         "student_housing_conditions": "ненадлежащие условия студенческого общежития",
         "communal_resident_grievance": "явная жалоба жильцов на коммунальный сбой",
+        "persistent_building_envelope_grievance": "длительная жалоба на дефект ограждающих конструкций дома",
+        "mass_financial_service_restriction": "массовая реакция на ограничение банковской услуги",
         "institutional_healthcare_safety": "жалоба на безопасность пациента в медучреждении",
         "vulnerable_retail_access": "недоступность торговой услуги для уязвимой группы",
         "collective_waste_site_remedy_gap": "коллективная проблема контейнерной площадки",
@@ -7753,6 +7856,20 @@ def evaluate_relevance(
         geo_text, topic.get("foreign_residence_terms", [])
     )
     locality_hits = find_terms(geo_text, [source.locality, source.country])
+    # Foreign adjectives are also used as names of Belarusian residential
+    # projects (for example, «Английский квартал»).  Such a name is not
+    # foreign geography when the bounded body supplies Belarusian context and
+    # a protected housing-envelope grievance.
+    foreign_named_local_object = bool(
+        re.search(
+            r"(?:английск|французск|итальянск|испанск|немецк|голландск|"
+            r"скандинавск|европейск)[а-яёіў]*\s+(?:квартал|жил[а-яёіў]*\s+комплекс|"
+            r"микрорайон|парк|деревн)",
+            normalized_search_text(title),
+        )
+        and belarus_hits
+        and "persistent_building_envelope_grievance" in protected_issue_profiles
+    )
 
     # Упоминание «беларус/белоруска» само по себе не делает материал
     # внутренним: истории об эмигрантах и жизни за рубежом не относятся к
@@ -7773,6 +7890,7 @@ def evaluate_relevance(
             cross_border_rights_signal
             or resident_explicit_signal
             or domestic_regulatory_discussion
+            or foreign_named_local_object
         )
     ):
         return RelevanceDecision(
@@ -8741,6 +8859,8 @@ def evaluate_relevance(
         or "labour_rights_enforcement" in bounded_issue_profiles
         or "mass_consumer_non_delivery" in protected_issue_profiles
         or "institutional_healthcare_safety" in protected_issue_profiles
+        or "collective_waste_site_remedy_gap" in protected_issue_profiles
+        or "mass_financial_service_restriction" in protected_issue_profiles
     ):
         return RelevanceDecision(False, reason=f"криминальная/происшественная тема: {crime_hits[0]}")
 
@@ -9938,6 +10058,25 @@ _EVENT_SEMANTIC_CONCEPT_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
     "brest_anchor": tuple(re.compile(value) for value in (
         r"брест[а-яёіў]*", r"берасц[а-яёіў]*",
     )),
+    "gomel_anchor": tuple(re.compile(value) for value in (
+        r"гомел[а-яёіў]*", r"гомельск[а-яёіў]*", r"гомельск[а-яёіў]*",
+    )),
+    "psychiatric_hospital": tuple(re.compile(value) for value in (
+        r"психиатрическ[а-яёіў]*\s+(?:больниц|отделен)",
+        r"психбольниц[а-яёіў]*",
+        r"псіхіятрычн[а-яёіў]*\s+(?:бальніц|аддзялен)",
+    )),
+    "child_patient": tuple(re.compile(value) for value in (
+        r"(?:5[- ‑–]?(?:летн|гадов)|пятилетн|пяцігадов)[а-яёіў]*\s+"
+        r"(?:сын|реб[её]нок|мальчик|сына|дзіц|хлопчык)",
+        r"(?:сын|реб[её]нок|мальчик)[а-яёіў]*.*(?:инвалид|аутизм)",
+        r"(?:сын|сына|реб[её]нок|мальчик|дзіц|хлопчык)[а-яёіў]*",
+    )),
+    "child_injury_complaint": tuple(re.compile(value) for value in (
+        r"(?:мать|мама|маці)[а-яёіў]*.*(?:пожаловал|паскардз|жалоб)[а-яёіў]*.*(?:травм|гематом|синяк|траўм)",
+        r"(?:травм|гематом|синяк|траўм)[а-яёіў]*.*(?:сын|реб[её]нок|дзіц|хлопчык)",
+        r"(?:сын|реб[её]нок|дзіц|хлопчык)[а-яёіў]*.*(?:травм|гематом|синяк|траўм)",
+    )),
 }
 
 
@@ -9988,6 +10127,11 @@ def _event_semantic_profile(result: ArticleResult) -> tuple[set[str], set[str]]:
         families.add("electronic_border_queue_rules")
     if {"granite_bench", "cemetery_aesthetic", "brest_anchor"} <= concepts:
         families.add("brest_granite_bench_reaction")
+    if {
+        "gomel_anchor", "psychiatric_hospital", "child_patient",
+        "child_injury_complaint",
+    } <= concepts:
+        families.add("gomel_psychiatric_child_injury")
     return families, concepts
 
 
@@ -10005,7 +10149,10 @@ def _strong_semantic_event_match(
     # A small set of fully anchored families can repair a demonstrably wrong
     # inferred geography caused by boilerplate from another regional story.
     # The family itself requires the explicit place and object on both sides.
-    exact_anchor_families = {"brest_granite_bench_reaction"}
+    exact_anchor_families = {
+        "brest_granite_bench_reaction",
+        "gomel_psychiatric_child_injury",
+    }
     if (
         left.event_region
         and right.event_region
@@ -10026,6 +10173,7 @@ def _strong_semantic_event_match(
         "mogilev_bottled_water_overcharge",
         "electronic_border_queue_rules",
         "brest_granite_bench_reaction",
+        "gomel_psychiatric_child_injury",
     }:
         return True
     if shared_families & {

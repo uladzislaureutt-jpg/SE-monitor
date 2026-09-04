@@ -96,8 +96,8 @@ def test_semantic_contract_does_not_replace_legacy_rejected_debug(tmp_path: Path
 
 
 def test_build_and_contract_versions_are_explicit():
-    # Update78 changes the regex/dedup architecture while preserving the
-    # semantic archive contract introduced by update77.
-    assert monitor.MONITOR_BUILD == "2026-09-04.social.78-guarded-grievance-dedup-1.0"
-    assert monitor.ARCHITECTURE_CORE_VERSION == "3.7"
+# Later regex/dedup updates preserve the semantic archive contract
+# introduced by update77.
+    assert monitor.MONITOR_BUILD == "2026-09-04.social.79-run42-systemic-precision-1.0"
+    assert monitor.ARCHITECTURE_CORE_VERSION == "3.8"
     assert monitor.SEMANTIC_DATA_CONTRACT_VERSION == "1.0"

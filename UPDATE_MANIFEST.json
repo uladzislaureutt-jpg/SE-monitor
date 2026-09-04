@@ -1,23 +1,32 @@
 {
-  "package": "SE-monitor-update-78-guarded-grievance-dedup-1.0",
-  "build": "2026-09-04.social.78-guarded-grievance-dedup-1.0",
-  "architecture_core_version": "3.7",
+  "package": "SE-monitor-update-79-run42-systemic-precision-1.0",
+  "build": "2026-09-04.social.79-run42-systemic-precision-1.0",
+  "architecture_core_version": "3.8",
   "semantic_data_contract_version": "1.0",
-  "requires": "update77 semantic data contract 1.0",
+  "requires": "update78 guarded grievance/dedup 1.0",
   "installation_root": "repository root",
   "changes": [
-    "guarded three-anchor admission for communal, healthcare and vulnerable-retail grievances",
-    "bounded telecom and outpatient-access recall profiles",
-    "genre/state exclusions for run-41 noise families",
-    "anchored semantic consolidation for four run-41 duplicate families",
-    "canonical newsroom-name identity for related coverage"
+    "guarded three-anchor recall for persistent building-envelope grievances",
+    "guarded mass financial-service restriction profile",
+    "expanded collective waste-site grievance profile with crime-gate protection",
+    "four evidence-aware genre exclusions derived from run 42",
+    "anchored multilingual consolidation for the Gomel psychiatric-hospital child-injury event",
+    "Telegram title preservation for brand domains such as Mak.by"
   ],
+  "run42_semantic_replay": {
+    "rows": 179,
+    "unchanged": 172,
+    "keep_to_reject": 4,
+    "reject_to_keep": 3
+  },
+  "tests": "600 passed",
   "files": [
     "social_monitor.py",
     "tests/test_update77_semantic_data_contract.py",
     "tests/test_update78_guarded_grievance_dedup.py",
-    "INSTALL-UPDATE78.md",
-    "RUN41-REGRESSION.md",
+    "tests/test_update79_run42_systemic_precision.py",
+    "INSTALL-UPDATE79.md",
+    "RUN42-REGRESSION.md",
     "UPDATE_MANIFEST.json",
     "SHA256SUMS.txt"
   ],
@@ -25,7 +34,9 @@
     "config/sources.csv",
     "config/settings.yaml",
     ".github/workflows",
-    "data/ml/blind_gold_2026_09_03",
-    "semantic archive contract"
+    "GOLD datasets",
+    "semantic archives",
+    "semantic archive contract",
+    "secrets and delivery settings"
   ]
 }

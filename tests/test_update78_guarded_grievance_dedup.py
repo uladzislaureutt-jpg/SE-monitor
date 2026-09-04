@@ -180,5 +180,6 @@ def test_source_name_variants_do_not_create_fake_related_coverage() -> None:
 
 
 def test_update78_build_marker() -> None:
-    assert sm.MONITOR_BUILD == "2026-09-04.social.78-guarded-grievance-dedup-1.0"
-    assert sm.ARCHITECTURE_CORE_VERSION == "3.7"
+    # The update78 behavior must remain present under the current build.
+    assert sm.MONITOR_BUILD == "2026-09-04.social.79-run42-systemic-precision-1.0"
+    assert sm.ARCHITECTURE_CORE_VERSION == "3.8"
