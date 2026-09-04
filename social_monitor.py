@@ -29,8 +29,8 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-09-04.social.79-run42-systemic-precision-1.0"
-ARCHITECTURE_CORE_VERSION = "3.8"
+MONITOR_BUILD = "2026-09-04.social.80-run43-precision-recall-1.0"
+ARCHITECTURE_CORE_VERSION = "3.9"
 SEMANTIC_DATA_CONTRACT_VERSION = "1.0"
 SEMANTIC_ARCHIVE_MAX_CHARS = 8000
 
@@ -1122,6 +1122,10 @@ EVENT_LOCALITY_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     ("Вилейка", "Минская область", (r"вилейк(?:а|е|и|у|ой)", r"вілейк(?:а|е|і|у|ай)")),
     ("Марьина Горка", "Минская область", (r"марьин(?:а|ой|у)\s+горк(?:а|е|и|у|ой)", r"мар'ін(?:а|ай|у)\s+горк(?:а|е|і|у|ай)")),
     ("Раков", "Минская область", (r"(?<![а-яёіўa-z])раков(?:е|а|у|ом)?(?![а-яёіўa-z])", r"(?<![а-яёіўa-z])ракаў|ракав(?:е|а|у|ам)(?![а-яёіўa-z])")),
+    ("Любань", "Минская область", (
+        r"(?<![а-яёіўa-z])любан(?:ь|и|ю|ью)(?![а-яёіўa-z])",
+        r"(?<![а-яёіўa-z])любан(?:ь|і|ю|ню)(?![а-яёіўa-z])",
+    )),
 
     ("Могилев", "Могилевская область", (r"могил[её]в(?:е|а|у|ом)?", r"магіл[ёе]ў|магіл[её]в(?:е|а|у|ам)?")),
     ("Бобруйск", "Могилевская область", (r"бобруйск(?:е|а|у|ом)?", r"бабруйск(?:у|а|ам|е)?")),
@@ -1171,7 +1175,7 @@ EVENT_OBJECT_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
     # Anchored to word-start; "прыпынк" (be) is a distinct root with no
     # equivalent collision so left as-is.
     ("public_transport", "общественный транспорт", (r"автобус", r"аўтобус", r"маршрут", r"(?<![а-яёіўa-z])остановк", r"прыпынк", r"вокзал", r"поезд", r"цягнік")),
-    ("water_supply", "водоснабжение", (r"водоснаб", r"водопровод", r"питьев.*вод", r"пітн.*вад", r"горяч.*вод", r"гарач.*вад")),
+    ("water_supply", "водоснабжение", (r"водоснаб", r"водопровод", r"питьев.*вод", r"пітн.*вад", r"горяч.*вод", r"гарач.*вад", r"без\s+воды", r"няма\s+вады")),
     ("natural_water", "река/озеро/берег", (
         r"(?<![а-яёіўa-z])рек(?:а|е|и|у|ой|ах|ами)(?![а-яёіўa-z])",
         r"(?<![а-яёіўa-z])рак(?:а|і|у|ой|ах|амі)(?![а-яёіўa-z])",
@@ -1307,7 +1311,7 @@ EVENT_PROBLEM_PATTERNS: tuple[tuple[str, str, tuple[str, ...]], ...] = (
         r"без\s+документ[а-яёіў]*.*(?:качеств|безопасност)",
         r"не\s+было\s+документ[а-яёіў]*.*(?:качеств|безопасност)",
     )),
-    ("outage", "отключение/перебои", (r"отключ", r"адключ", r"перебо", r"перабо", r"пропал[аио]?\s+(?:вода|свет|интернет|связ)", r"нет\s+(?:воды|света|интернета|связи)", r"няма\s+(?:вады|святла|інтэрнэту|сувязі)")),
+    ("outage", "отключение/перебои", (r"отключ", r"адключ", r"перебо", r"перабо", r"пропал[аио]?\s+(?:вода|свет|интернет|связ)", r"(?:остал[а-яёіў]*\s+)?без\s+(?:воды|света|интернета|связи)", r"нет\s+(?:воды|света|интернета|связи)", r"няма\s+(?:вады|святла|інтэрнэту|сувязі)")),
     ("nonpayment", "невыплата/списание", (r"невыплат", r"не\s+выплат", r"не\s+заплат", r"не\s+выплац", r"списал", r"списан", r"навяз.*услуг", r"платн.*без\s+соглас")),
     (
         "queue_delay",
@@ -6859,6 +6863,59 @@ PROTECTED_PUBLIC_ISSUE_PATTERNS: dict[
             r"(?:помог|карт|приложен|зрени|доступ)",
         )),
     ),
+    # Update80: short social posts often keep the decisive resident evidence
+    # in SUMMARY while TEXT contains only a title and a link.  These profiles
+    # remain three-anchor gates and therefore do not lower the ordinary score.
+    "persistent_heavy_vehicle_misrouting": (
+        tuple(re.compile(value) for value in (
+            r"(?:фур|грузовик|большегруз|грузов[а-яёіў]*\s+автомобил)[а-яёіў]*",
+            r"(?:великагруз|грузавік|фур)[а-яёіў]*",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:едут|направля[а-яёіў]*|заезжа[а-яёіў]*).*?(?:к\s+магазин|по\s+адрес).*?"
+            r"(?:у\s+подъезд|во\s+двор|к\s+жил[а-яёіў]*\s+дом)",
+            r"(?:оказыва[а-яёіў]*|попада[а-яёіў]*).*?(?:у\s+подъезд|во\s+двор|"
+            r"к\s+жил[а-яёіў]*\s+дом)",
+            r"(?:ошибочн|неверн|странн)[а-яёіў]*\s+адрес[а-яёіў]*.*(?:фур|грузовик|большегруз)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:жител|жилец|жильц)[а-яёіў]*.*(?:жэс|исполком|жалоб|обращ)",
+            r"(?:проблем[а-яёіў]*\s+)?не\s+реша[а-яёіў]*.*(?:несколько|много)\s+лет",
+            r"(?:несколько|много)\s+лет.*(?:жэс|исполком|обращ|жалоб)",
+        )),
+    ),
+    "mass_veterinary_product_safety": (
+        tuple(re.compile(value) for value in (
+            r"(?:вакцин|ветеринарн[а-яёіў]*\s+препарат|препарат[а-яёіў]*\s+для\s+"
+            r"(?:кош|кот|собак|питомц))[а-яёіў]*",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:сильн[а-яёіў]*\s+)?побочн[а-яёіў]*.*(?:рвот|кровав|температур|осложнен)",
+            r"(?:гибел|смерт)[а-яёіў]*\s+(?:кош|кот|собак|питомц|животн)",
+            r"(?:кош|кот|собак|питомц|животн)[а-яёіў]*.*(?:погиб|умер|скончал)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:массов|многочисленн)[а-яёіў]*\s+жалоб|люди\s+массово\s+жалу[а-яёіў]*",
+            r"(?:прода[её]тся|доступен|использу[ею]т)[а-яёіў]*\s+(?:и\s+)?в\s+беларус[а-яёіў]*",
+            r"(?:производител|россельхознадзор|ведомств)[а-яёіў]*.*(?:проверк|внимани|жалоб)",
+        )),
+    ),
+    "systemic_wage_disparity": (
+        tuple(re.compile(value) for value in (
+            r"(?:зарплат|заработк|доход)[а-яёіў]*.*(?:минск|регион|отрасл|сфер)",
+            r"(?:минск|регион|отрасл|сфер)[а-яёіў]*.*(?:зарплат|заработк|доход)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"разниц[а-яёіў]*.*(?:в\s+разы|многократн|существенн)",
+            r"(?:заработк|зарплат)[а-яёіў]*.*(?:скромн|низк|меньше|ниже)",
+            r"из-за\s+(?:зарплат|доход)[а-яёіў]*.*(?:рван|напряжен|недовольств)",
+        )),
+        tuple(re.compile(value) for value in (
+            r"(?:несколько|отдельн)[а-яёіў]*\s+(?:отрасл|сфер)|между\s+(?:отрасл|регион)",
+            r"(?:статистик|данн[а-яёіў]*).*?(?:зарплат|заработк|доход)",
+            r"(?:минск|столиц)[а-яёіў]*.*(?:регион|област)[а-яёіў]*",
+        )),
+    ),
     "institutional_healthcare_safety": (
         tuple(re.compile(value) for value in (
             r"(?:больниц|медицинск[а-яёіў]*\s+(?:учрежден|отделен)|"
@@ -7360,7 +7417,10 @@ def evaluate_relevance(
     # affected institution, the concrete failure and the complainant into
     # separate short paragraphs.  Fourteen sentences is still a bounded lead,
     # not an unrestricted deep-body rescue.
-    protected_issue_text = " ".join([title, *body[:14]])
+    # Metadata summaries can be the only place where a Telegram/link post
+    # preserves the complainants, duration and scale.  They are admitted only
+    # to the strict three-anchor profiles, never to the ordinary score path.
+    protected_issue_text = " ".join([title, summary, *body[:14]])
     bounded_issue_profiles = bound_public_issue_profiles(bounded_issue_text)
     protected_issue_profiles = protected_public_issue_profiles(protected_issue_text)
     appeal_categories = authority_appeal_categories(
@@ -7384,6 +7444,13 @@ def evaluate_relevance(
     )
 
     politics_hits = find_terms(opening, topic.get("politics_exclusions", []))
+    # Prefix matching is useful for political morphology, but Russian
+    # ``протест`` must not fire inside the unrelated verb ``протестировать``.
+    if "протест" in politics_hits and not re.search(
+        r"(?<![а-яёіўa-z0-9])протест(?!ир)[а-яёіўa-z0-9]*",
+        normalized_search_text(opening),
+    ):
+        politics_hits.remove("протест")
     politics_lead = " ".join([title, *body[:2]])
     politics_service_exception = bool(
         category_hits(politics_lead, categories)
@@ -7761,6 +7828,9 @@ def evaluate_relevance(
         "communal_resident_grievance": "ЖКХ и состояние жилья",
         "persistent_building_envelope_grievance": "ЖКХ и состояние жилья",
         "mass_financial_service_restriction": "Социальная защита и базовые услуги",
+        "persistent_heavy_vehicle_misrouting": "Дороги и благоустройство",
+        "mass_veterinary_product_safety": "Качество товаров и услуг",
+        "systemic_wage_disparity": "Работа, зарплаты и доходы",
         "institutional_healthcare_safety": "Здравоохранение",
         "vulnerable_retail_access": "Качество товаров и услуг",
         "collective_waste_site_remedy_gap": "Дороги и благоустройство",
@@ -7795,6 +7865,9 @@ def evaluate_relevance(
         "communal_resident_grievance": "явная жалоба жильцов на коммунальный сбой",
         "persistent_building_envelope_grievance": "длительная жалоба на дефект ограждающих конструкций дома",
         "mass_financial_service_restriction": "массовая реакция на ограничение банковской услуги",
+        "persistent_heavy_vehicle_misrouting": "многолетняя жалоба жильцов на ошибочную маршрутизацию грузового транспорта",
+        "mass_veterinary_product_safety": "массовые сообщения о тяжёлом вреде от ветеринарного товара",
+        "systemic_wage_disparity": "подтверждённый разрыв зарплат между отраслями или регионами",
         "institutional_healthcare_safety": "жалоба на безопасность пациента в медучреждении",
         "vulnerable_retail_access": "недоступность торговой услуги для уязвимой группы",
         "collective_waste_site_remedy_gap": "коллективная проблема контейнерной площадки",
@@ -8841,6 +8914,7 @@ def evaluate_relevance(
         domestic_consumer_hits
         or resident_hits
         or "domestic_product_safety_enforcement" in bounded_issue_profiles
+        or "mass_veterinary_product_safety" in protected_issue_profiles
     ):
         return RelevanceDecision(False, reason=f"внешнеторговая/корпоративная тема: {trade_hits[0]}")
 
@@ -10332,6 +10406,20 @@ def _looks_like_same_event(left: ArticleResult, right: ArticleResult) -> bool:
     if (
         left.event_signature == right.event_signature
         == "барановичи|school_appearance_rules|public_resonance"
+    ):
+        return True
+
+    # Short alerts and full municipal reports describe utility outages very
+    # differently.  The combination of the same resolved locality, the same
+    # water-outage signature and a shared affected-object count is narrow
+    # enough to consolidate them without merging unrelated local incidents.
+    if (
+        left.event_signature
+        and left.event_signature == right.event_signature
+        and left.event_signature.endswith("|water_supply|outage")
+        and normalize_space(left.event_locality).casefold()
+        == normalize_space(right.event_locality).casefold()
+        and bool(left_numbers & right_numbers)
     ):
         return True
 

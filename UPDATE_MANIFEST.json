@@ -1,32 +1,35 @@
 {
-  "package": "SE-monitor-update-79-run42-systemic-precision-1.0",
-  "build": "2026-09-04.social.79-run42-systemic-precision-1.0",
-  "architecture_core_version": "3.8",
+  "package": "SE-monitor-update-80-run43-precision-recall-1.0",
+  "build": "2026-09-04.social.80-run43-precision-recall-1.0",
+  "architecture_core_version": "3.9",
   "semantic_data_contract_version": "1.0",
-  "requires": "update78 guarded grievance/dedup 1.0",
+  "requires": "update79 run42 systemic precision 1.0",
   "installation_root": "repository root",
   "changes": [
-    "guarded three-anchor recall for persistent building-envelope grievances",
-    "guarded mass financial-service restriction profile",
-    "expanded collective waste-site grievance profile with crime-gate protection",
-    "four evidence-aware genre exclusions derived from run 42",
-    "anchored multilingual consolidation for the Gomel psychiatric-hospital child-injury event",
-    "Telegram title preservation for brand domains such as Mak.by"
+    "strict protected-profile use of editorial summaries for short social posts",
+    "persistent heavy-vehicle misrouting grievance profile",
+    "mass veterinary-product safety profile with Belarus-market and breadth evidence",
+    "systemic wage-disparity exception to name-only political rejection",
+    "exact protest token handling that excludes the unrelated verb протестировать",
+    "Lyuban event geography and water-outage fingerprint completion",
+    "same-locality water-outage consolidation with a shared numeric fact"
   ],
-  "run42_semantic_replay": {
-    "rows": 179,
-    "unchanged": 172,
-    "keep_to_reject": 4,
-    "reject_to_keep": 3
+  "semantic_replay": {
+    "run42_rows": 179,
+    "run42_additional_changes_vs_update79": 0,
+    "run43_rows": 81,
+    "run43_reject_to_keep": 3,
+    "run43_other_decisions_unchanged": 78
   },
-  "tests": "600 passed",
+  "tests": "611 passed",
   "files": [
     "social_monitor.py",
     "tests/test_update77_semantic_data_contract.py",
     "tests/test_update78_guarded_grievance_dedup.py",
     "tests/test_update79_run42_systemic_precision.py",
-    "INSTALL-UPDATE79.md",
-    "RUN42-REGRESSION.md",
+    "tests/test_update80_run43_precision_recall.py",
+    "INSTALL-UPDATE80.md",
+    "RUN42-RUN43-REGRESSION.md",
     "UPDATE_MANIFEST.json",
     "SHA256SUMS.txt"
   ],
