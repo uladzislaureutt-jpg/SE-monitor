@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import datetime as dt
+import hashlib
 import html
 import json
 import logging
@@ -28,8 +29,10 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-09-03.social.76-guarded-recall-report39-1.0"
-ARCHITECTURE_CORE_VERSION = "3.5"
+MONITOR_BUILD = "2026-09-03.social.77-semantic-data-contract-1.0"
+ARCHITECTURE_CORE_VERSION = "3.6"
+SEMANTIC_DATA_CONTRACT_VERSION = "1.0"
+SEMANTIC_ARCHIVE_MAX_CHARS = 8000
 
 ARTICLE_EXTENSIONS = (".html", ".htm", ".shtml", ".php")
 BLOCKED_PATH_PARTS = (
@@ -795,6 +798,14 @@ class CandidateProcessingTelemetry:
     transport_status_code: int = 0
     transport_failure_class: str = ""
     http_observations: tuple["HttpObservation", ...] = ()
+    # Private training/evaluation trace for the future semantic second layer.
+    # It records the exact normalized input contract, but never participates in
+    # the current regex decision or the public report.
+    semantic_contract_version: str = ""
+    semantic_model_title: str = ""
+    semantic_model_text: str = ""
+    semantic_text_sha256: str = ""
+    semantic_text_truncated: bool = False
 
 
 @dataclass
@@ -9336,6 +9347,18 @@ def process_candidate_detailed(
     if not title:
         title = candidate.url
 
+    (
+        trace.semantic_model_text,
+        trace.semantic_text_sha256,
+        trace.semantic_text_truncated,
+    ) = build_semantic_archive_text(
+        title,
+        candidate.summary,
+        text,
+    )
+    trace.semantic_contract_version = SEMANTIC_DATA_CONTRACT_VERSION
+    trace.semantic_model_title = title
+
     decision = evaluate_relevance(
         title,
         candidate.summary,
@@ -10117,6 +10140,113 @@ def write_rejected_signals_csv(
     with path.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=["url", "source", "title", "prefilter_status", "final_stage", "reason", "html_length", "text_length"])
         writer.writeheader(); writer.writerows(rows)
+
+
+def build_semantic_archive_text(
+    title: str,
+    summary: str,
+    text: str,
+    max_chars: int = SEMANTIC_ARCHIVE_MAX_CHARS,
+) -> tuple[str, str, bool]:
+    """Build the versioned private input seen by a future semantic layer.
+
+    The normalized full value is hashed before bounded truncation. This makes
+    accidental input drift detectable without allowing unbounded repository
+    growth. Newlines are deliberate field separators; whitespace inside each
+    source field is normalized.
+    """
+    sections = []
+    for label, value in (
+        ("TITLE", title),
+        ("SUMMARY", summary),
+        ("TEXT", text),
+    ):
+        normalized = normalize_space(repair_mojibake(value or ""))
+        if normalized:
+            sections.append(f"{label}: {normalized}")
+    full_text = "\n".join(sections)
+    digest = hashlib.sha256(full_text.encode("utf-8")).hexdigest()
+    if max_chars < 1 or len(full_text) <= max_chars:
+        return full_text, digest, False
+
+    clipped = full_text[:max_chars].rstrip()
+    boundary = clipped.rfind(" ")
+    if boundary >= max(0, max_chars - 160):
+        clipped = clipped[:boundary]
+    return clipped, digest, True
+
+
+def write_semantic_training_signals_csv(
+    path: Path,
+    outcomes: dict[str, tuple[Candidate, CandidateProcessingTelemetry]],
+) -> None:
+    """Persist both sides of the regex relevance decision as private SILVER.
+
+    This is intentionally independent of ``write_rejected_signals_csv``:
+    expanding that operator-facing diagnostic would change its historical
+    meaning. A row is emitted only after successful extraction and an actual
+    regex relevance decision. Dates, excerpt construction and report
+    consolidation are downstream concerns and remain final-stage metadata.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "semantic_contract_version",
+        "url",
+        "source",
+        "source_country",
+        "published_at",
+        "discovered_via",
+        "title",
+        "regex_relevance_decision",
+        "pipeline_final_stage",
+        "prefilter_status",
+        "rejection_reason",
+        "semantic_model_text",
+        "semantic_text_sha256",
+        "semantic_text_chars",
+        "semantic_text_truncated",
+        "original_text_length",
+        "extraction_strategy",
+        "event_region",
+        "event_locality",
+        "event_object",
+        "event_problem",
+        "event_signature",
+    ]
+    rows = []
+    for candidate, trace in outcomes.values():
+        if trace.final_stage != "relevance_rejected" and not trace.relevance_passed:
+            continue
+        regex_decision = "KEEP" if trace.relevance_passed else "REJECT"
+        rows.append({
+            "semantic_contract_version": trace.semantic_contract_version,
+            "url": candidate.url,
+            "source": candidate.source.name,
+            "source_country": candidate.source.country,
+            "published_at": trace.event_published_at or candidate.published_at,
+            "discovered_via": candidate.discovered_via,
+            "title": trace.semantic_model_title or candidate.title,
+            "regex_relevance_decision": regex_decision,
+            "pipeline_final_stage": trace.final_stage,
+            "prefilter_status": trace.prefilter_status,
+            "rejection_reason": trace.rejection_reason,
+            "semantic_model_text": trace.semantic_model_text,
+            "semantic_text_sha256": trace.semantic_text_sha256,
+            "semantic_text_chars": len(trace.semantic_model_text),
+            "semantic_text_truncated": str(trace.semantic_text_truncated).lower(),
+            "original_text_length": trace.text_length,
+            "extraction_strategy": trace.extraction_strategy,
+            "event_region": trace.event_region,
+            "event_locality": trace.event_locality,
+            "event_object": trace.event_object,
+            "event_problem": trace.event_problem,
+            "event_signature": trace.event_signature,
+        })
+    rows.sort(key=lambda row: (row["source_country"], row["source"], row["title"], row["url"]))
+    with path.open("w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def build_country_coverage(
@@ -11608,6 +11738,9 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
     coverage_path = reports_dir / f"social_coverage_{date_stamp}.csv"
     access_telemetry_path = reports_dir / f"social_access_telemetry_{date_stamp}.csv"
     debug_path = project_root / "debug" / f"rejected_signals_{date_stamp}.csv"
+    semantic_training_path = (
+        project_root / "debug" / f"semantic_training_signals_{date_stamp}.csv"
+    )
 
     report_started = time.perf_counter()
     html_report = build_html_report(
@@ -11617,6 +11750,10 @@ def run_monitor(project_root: Path, dry_run: bool = False) -> dict[str, Any]:
     write_csv_report(csv_path, results)
     write_coverage_csv(coverage_path, source_coverage)
     write_rejected_signals_csv(debug_path, processing_outcomes)
+    write_semantic_training_signals_csv(
+        semantic_training_path,
+        processing_outcomes,
+    )
     errors_path.write_text("\n".join(errors), encoding="utf-8")
     report_seconds = time.perf_counter() - report_started
 

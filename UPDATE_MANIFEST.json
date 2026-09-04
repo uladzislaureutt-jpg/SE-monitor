@@ -1,27 +1,30 @@
 {
-  "package": "SE-monitor-update-semantic-cascade-blind-eval-1.0",
-  "build": "2026-09-03.semantic-cascade-blind-eval.1.0",
-  "install_target": "repository_root",
-  "operation": "additive_overlay",
-  "production_integration": false,
-  "adds": [
-    ".github/workflows/social-semantic-cascade-blind-eval.yml",
-    "ml/semantic_cascade_experiment/",
-    "data/ml/blind_gold_2026_09_03/",
-    "tests/test_semantic_cascade_experiment.py",
-    "INSTALL-SEMANTIC-CASCADE-1.0.md"
+  "package": "SE-monitor-update-77-semantic-data-contract-1.0",
+  "created_at": "2026-09-03",
+  "target_build": "2026-09-03.social.77-semantic-data-contract-1.0",
+  "architecture_core": "3.6",
+  "expected_base_build": "2026-09-03.social.76-guarded-recall-report39-1.0",
+  "install_at": "repository_root",
+  "production_semantic_decisions_enabled": false,
+  "regex_decisions_changed": false,
+  "public_report_contract_changed": false,
+  "purpose": [
+    "archive versioned semantic inputs for both regex relevance routes",
+    "retain weak and borderline regex rejections for later adjudication",
+    "define independent veto and rescue development contours"
   ],
-  "must_not_modify": [
-    "social_monitor.py",
-    "main.py",
-    "config/",
-    "data/state.json",
-    "data/discovery_cache.json",
+  "files": [
     ".github/workflows/daily-social-monitor.yml",
-    "secrets",
-    "delivery"
+    "EVALUATION-CONCLUSION.md",
+    "INSTALL-UPDATE77.md",
+    "data/ml/raw_history/README.md",
+    "ml/semantic_dual_head_experiment/README.md",
+    "social_monitor.py",
+    "tests/test_update77_semantic_data_contract.py"
   ],
-  "manual_workflow": "S-monitor semantic cascade blind evaluation (manual, isolated)",
-  "expected_artifact": "s-monitor-semantic-cascade-blind-eval-results",
-  "rollback": "Delete only the added paths listed in adds."
+  "verification": {
+    "command": "python -m pytest -q",
+    "result": "559 passed",
+    "tested_as_overlay_on_latest_repository_plus_semantic-cascade-blind-eval-1.0": true
+  }
 }
