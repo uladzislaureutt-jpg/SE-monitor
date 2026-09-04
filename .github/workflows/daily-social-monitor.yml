@@ -141,7 +141,7 @@ jobs:
         if: ${{ success() && inputs.dry_run != true }}
         run: |
           set -e
-          mkdir -p data/ml/raw_history/articles data/ml/raw_history/rejected
+          mkdir -p data/ml/raw_history/articles data/ml/raw_history/rejected data/ml/raw_history/semantic_inputs
           # Prefixed with the run number (not just the report date) because
           # multiple runs can land on the same calendar date — e.g. manual
           # re-runs or same-day dry-run validation passes — and would
@@ -150,9 +150,17 @@ jobs:
             [ -e "$f" ] || continue
             cp "$f" "data/ml/raw_history/articles/run-${GITHUB_RUN_NUMBER}_$(basename "$f")"
           done
-          for f in debug/rejected_signals_*.csv; do
+          for f in debug/rejected_signals_*.csv debug/semantic_training_signals_*.csv; do
             [ -e "$f" ] || continue
-            cp "$f" "data/ml/raw_history/rejected/run-${GITHUB_RUN_NUMBER}_$(basename "$f")"
+            case "$f" in
+              debug/rejected_signals_*.csv)
+                destination="data/ml/raw_history/rejected"
+                ;;
+              *)
+                destination="data/ml/raw_history/semantic_inputs"
+                ;;
+            esac
+            cp "$f" "$destination/run-${GITHUB_RUN_NUMBER}_$(basename "$f")"
           done
 
       - name: Save monitoring state
