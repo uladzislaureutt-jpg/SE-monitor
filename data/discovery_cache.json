@@ -1,6 +1,6 @@
 {
   "belkagomel.by": {
-    "checked_at": "2026-08-22T08:41:47.847673+00:00",
+    "checked_at": "2026-09-05T15:09:27.420423+00:00",
     "feeds": [
       "https://belkagomel.by/comments/feed/",
       "https://belkagomel.by/feed/"
@@ -11,7 +11,7 @@
     ]
   },
   "belnovosti.by": {
-    "checked_at": "2026-08-22T08:42:17.468746+00:00",
+    "checked_at": "2026-09-05T15:10:18.474540+00:00",
     "feeds": [
       "https://www.belnovosti.by/all_rss.xml"
     ],
@@ -22,7 +22,7 @@
     ]
   },
   "bgmedia.site": {
-    "checked_at": "2026-08-22T08:41:11.611127+00:00",
+    "checked_at": "2026-09-05T15:08:52.390312+00:00",
     "feeds": [
       "https://bgmedia.site/feed/"
     ],
@@ -31,21 +31,21 @@
     ]
   },
   "bobr.by": {
-    "checked_at": "2026-08-22T08:42:01.031929+00:00",
+    "checked_at": "2026-09-05T15:10:00.982809+00:00",
     "feeds": [],
     "sitemaps": [
       "https://bobr.by/sitemap.xml"
     ]
   },
   "brestcity.com": {
-    "checked_at": "2026-08-22T08:41:16.941883+00:00",
+    "checked_at": "2026-09-05T15:09:00.496820+00:00",
     "feeds": [],
     "sitemaps": [
       "https://brestcity.com/blog/sitemap_index.xml"
     ]
   },
   "citydog.io": {
-    "checked_at": "2026-08-22T08:42:10.444312+00:00",
+    "checked_at": "2026-09-05T15:10:07.585600+00:00",
     "feeds": [
       "https://citydog.io/rss/"
     ],
@@ -54,14 +54,14 @@
     ]
   },
   "dzr.by": {
-    "checked_at": "2026-08-22T08:41:51.859604+00:00",
+    "checked_at": "2026-09-05T15:09:46.270130+00:00",
     "feeds": [],
     "sitemaps": [
       "https://dzr.by/sitemap_index.xml"
     ]
   },
   "ex-press.live": {
-    "checked_at": "2026-08-22T08:41:53.418399+00:00",
+    "checked_at": "2026-09-05T15:09:45.429644+00:00",
     "feeds": [
       "https://ex-press.live/rss"
     ],
@@ -88,7 +88,7 @@
     ]
   },
   "gs.by": {
-    "checked_at": "2026-08-22T08:41:16.000245+00:00",
+    "checked_at": "2026-09-05T15:08:56.895461+00:00",
     "feeds": [
       "https://www.gs.by/rss.xml"
     ],
@@ -110,7 +110,7 @@
     ]
   },
   "hpravy.org": {
-    "checked_at": "2026-08-22T08:41:23.137066+00:00",
+    "checked_at": "2026-09-05T15:09:06.927310+00:00",
     "feeds": [
       "https://hpravy.org/comments/feed/",
       "https://hpravy.org/feed/"
@@ -121,7 +121,7 @@
     ]
   },
   "hrodna.life": {
-    "checked_at": "2026-08-22T08:41:27.353437+00:00",
+    "checked_at": "2026-09-05T15:09:07.969758+00:00",
     "feeds": [
       "https://hrodna.life/comments/feed/",
       "https://hrodna.life/feed/"
@@ -142,7 +142,7 @@
     ]
   },
   "kraj.by": {
-    "checked_at": "2026-08-22T08:41:49.659284+00:00",
+    "checked_at": "2026-09-05T15:09:41.786195+00:00",
     "feeds": [],
     "sitemaps": [
       "https://kraj.by/sitemap.xml"
@@ -156,7 +156,7 @@
     ]
   },
   "m-media.storage.googleapis.com": {
-    "checked_at": "2026-08-22T08:42:04.694284+00:00",
+    "checked_at": "2026-09-05T15:10:06.344577+00:00",
     "feeds": [
       "https://m-media.storage.googleapis.com/feed/index.html",
       "https://mogilev.media/comments/feed/"
@@ -169,18 +169,17 @@
     "sitemaps": []
   },
   "masheka.by": {
-    "checked_at": "2026-08-22T08:42:09.171566+00:00",
+    "checked_at": "2026-09-05T15:10:06.983713+00:00",
     "feeds": [
       "https://masheka.by/rss.xml",
-      "https://masheka.by/rssdzen.xml",
-      "https://masheka.by/rssturbo.xml"
+      "https://masheka.by/rssdzen.xml"
     ],
     "sitemaps": [
       "https://masheka.by/sitemap.xml"
     ]
   },
   "media-polesye.com": {
-    "checked_at": "2026-08-22T08:41:12.786234+00:00",
+    "checked_at": "2026-09-05T15:08:57.275533+00:00",
     "feeds": [
       "https://media-polesye.com/feed/"
     ],
@@ -189,14 +188,14 @@
     ]
   },
   "mlyn.by": {
-    "checked_at": "2026-08-22T08:41:38.505737+00:00",
+    "checked_at": "2026-09-05T15:09:27.676604+00:00",
     "feeds": [],
     "sitemaps": [
       "https://mlyn.by/sitemap_index.xml"
     ]
   },
   "nashaniva.com": {
-    "checked_at": "2026-08-22T08:42:15.296074+00:00",
+    "checked_at": "2026-09-05T15:10:16.855344+00:00",
     "feeds": [],
     "sitemaps": [
       "https://nashaniva.com/sitemap.xml",
@@ -204,7 +203,7 @@
     ]
   },
   "newgrodno.by": {
-    "checked_at": "2026-08-22T08:41:29.009971+00:00",
+    "checked_at": "2026-09-05T15:09:13.167895+00:00",
     "feeds": [
       "https://newgrodno.by/feed/"
     ],
@@ -214,7 +213,7 @@
     ]
   },
   "onliner.by": {
-    "checked_at": "2026-08-22T08:42:17.762920+00:00",
+    "checked_at": "2026-09-05T15:10:16.102631+00:00",
     "feeds": [
       "https://www.onliner.by/feed"
     ],
@@ -228,7 +227,7 @@
     ]
   },
   "pristalica.by": {
-    "checked_at": "2026-08-22T08:42:04.432717+00:00",
+    "checked_at": "2026-09-05T15:10:03.554936+00:00",
     "feeds": [],
     "sitemaps": [
       "https://pristalica.by/sitemap_index.xml"
@@ -247,7 +246,7 @@
     ]
   },
   "slutsk-gorod.by": {
-    "checked_at": "2026-08-22T08:41:34.001217+00:00",
+    "checked_at": "2026-09-05T15:09:29.334657+00:00",
     "feeds": [
       "http://slutsk-gorod.by/?format=feed&type=atom",
       "http://slutsk-gorod.by/?format=feed&type=rss"
@@ -255,7 +254,7 @@
     "sitemaps": []
   },
   "smartpress.by": {
-    "checked_at": "2026-08-22T08:42:17.693243+00:00",
+    "checked_at": "2026-09-05T15:10:15.265023+00:00",
     "feeds": [
       "https://smartpress.by/rss/news/"
     ],
@@ -269,7 +268,7 @@
     ]
   },
   "smolevichi-24.by": {
-    "checked_at": "2026-08-22T08:43:48.600659+00:00",
+    "checked_at": "2026-09-05T15:10:01.518981+00:00",
     "feeds": [],
     "sitemaps": [
       "https://smolevichi-24.by/sitemap_index.xml"
@@ -288,7 +287,7 @@
     ]
   },
   "vgr.by": {
-    "checked_at": "2026-08-22T08:41:25.439436+00:00",
+    "checked_at": "2026-09-05T15:09:08.619229+00:00",
     "feeds": [
       "https://vgr.by/feed/"
     ],
@@ -297,7 +296,7 @@
     ]
   },
   "virtualbrest.ru": {
-    "checked_at": "2026-08-22T08:41:11.797497+00:00",
+    "checked_at": "2026-09-05T15:08:54.239028+00:00",
     "feeds": [
       "https://virtualbrest.ru/rss/news.php"
     ],
@@ -308,7 +307,7 @@
     ]
   },
   "vitebskspring.org": {
-    "checked_at": "2026-08-22T08:41:13.500309+00:00",
+    "checked_at": "2026-09-05T15:08:53.193944+00:00",
     "feeds": [
       "https://vitebskspring.org/?format=feed",
       "https://vitebskspring.org/?format=feed&type=atom",
@@ -317,7 +316,7 @@
     "sitemaps": []
   },
   "vkurier.by": {
-    "checked_at": "2026-08-22T08:41:28.238644+00:00",
+    "checked_at": "2026-09-05T15:09:05.732854+00:00",
     "feeds": [
       "https://vkurier.by/news/feed"
     ],
@@ -326,7 +325,7 @@
     ]
   },
   "zerkalo.io": {
-    "checked_at": "2026-08-22T08:42:17.905736+00:00",
+    "checked_at": "2026-09-05T15:10:17.640754+00:00",
     "feeds": [
       "https://news.zerkalo.io/rss/economics.rss",
       "https://news.zerkalo.io/rss/life.rss"
