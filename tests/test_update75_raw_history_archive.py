@@ -52,7 +52,7 @@ def test_archive_step_runs_before_state_is_saved():
     )
 
 
-def test_archive_step_copies_both_articles_and_rejected_signals():
+def test_archive_step_copies_articles_rejections_and_semantic_inputs():
     steps = _steps()
     archive_step = next(
         s for s in steps if s.get("name") == "Archive raw classification history"
@@ -60,8 +60,10 @@ def test_archive_step_copies_both_articles_and_rejected_signals():
     run = archive_step["run"]
     assert "reports/social_articles_*.csv" in run
     assert "debug/rejected_signals_*.csv" in run
+    assert "debug/semantic_training_signals_*.csv" in run
     assert "data/ml/raw_history/articles" in run
     assert "data/ml/raw_history/rejected" in run
+    assert "data/ml/raw_history/semantic_inputs" in run
     # Prefixed with the run number, not just the report date, since
     # multiple runs (manual re-runs, same-day dry-run checks) can share a
     # calendar date and would otherwise overwrite each other's archive.
@@ -69,7 +71,7 @@ def test_archive_step_copies_both_articles_and_rejected_signals():
     # The glob-with-no-match guard: bash leaves an unexpanded glob literal
     # in $f when nothing matches, so every copy loop must skip it instead
     # of trying (and failing) to cp a nonexistent literal path.
-    assert run.count('[ -e "$f" ] || continue') == 2
+    assert run.count('[ -e "$f" ] || continue') == 3
 
 
 def test_save_state_step_now_also_commits_raw_history():

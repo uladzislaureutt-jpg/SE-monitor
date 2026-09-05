@@ -1,0 +1,2 @@
+1237003cf908c3fd8246e0292dd9d69cf0fb43d1b8e4b90c59a3da9bf272f634  INSTALL-UPDATE82.1.md
+2e4dc788a24f536271b43abe7f675df7b1c60738b328ca06e88c73dc17e09ac6  tests/test_update75_raw_history_archive.py
