@@ -1,0 +1,20 @@
+{
+  "build": "2026-09-05.social.83-run47-integrity-shadow-score-1.0",
+  "module_sha256": "4d6b40949c8b96b0a24d72065b5f9321e35ff1cb46443ec5a5a07a19abbb9a82",
+  "scope": "Check event identity on archived report cards, enriching from saved inputs.\n\nNot a full production replay: relevance, date and excerpt selection are unchanged.\n",
+  "input_cards": 27,
+  "output_cards": 26,
+  "merged": [
+    {
+      "title": "Популярный магазин электроники в Беларуси торговал \"левой\" техникой",
+      "url": "https://newgrodno.by/society/populyarnyj-magazin-elektroniki-v-belarusi-torgoval-levoj-tehnikoj",
+      "signature": "беларусь|consumer_electronics_compliance|sale_noncompliance",
+      "related": [
+        [
+          "Reform.news",
+          "https://reform.news/gosstandart-zapretil-rossijskoj-dns-prodavat-v-belarusi-116-naimenovanij-bytovoj-tehniki"
+        ]
+      ]
+    }
+  ]
+}

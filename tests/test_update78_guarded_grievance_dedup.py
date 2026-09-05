@@ -181,5 +181,5 @@ def test_source_name_variants_do_not_create_fake_related_coverage() -> None:
 
 def test_update78_build_marker() -> None:
     # The update78 behavior must remain present under the current build.
-    assert sm.MONITOR_BUILD == "2026-09-05.social.82-regex-integrity-semantic-history-1.0"
+    assert sm.MONITOR_BUILD == "2026-09-05.social.83-run47-integrity-shadow-score-1.0"
     assert sm.ARCHITECTURE_CORE_VERSION == "3.9"

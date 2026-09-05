@@ -1,0 +1,4558 @@
+{
+  "input_file": "semantic_training_signals_2026-09-05.csv",
+  "input_sha256": "7c8fc52bd161af54a765dfc9d8c706fd8c053364d02e79ef8e03b117c7d9221a",
+  "settings_sha256": "170537c9b58255ad544b86c7115695209d2d6e96b10c4fb5e6b03d55a3f742bb",
+  "builds": [
+    "2026-09-05.social.83-run47-integrity-shadow-score-1.0"
+  ],
+  "count": 349,
+  "module_sha256": [
+    "4d6b40949c8b96b0a24d72065b5f9321e35ff1cb46443ec5a5a07a19abbb9a82"
+  ],
+  "unmatched_sources": [],
+  "transitions": {
+    "REJECT->REJECT": 341,
+    "KEEP->KEEP": 4,
+    "KEEP->REJECT": 4
+  },
+  "scope": "Offline relevance only; archived normalized/truncated text; current source config. No collection, deduplication, temporal filtering or semantic model inference.",
+  "rows": [
+    {
+      "url": "https://auto.onliner.by/2026/09/05/otvleklas-ot-upravleniya-dvoe-detej-posle-dtp-okazalis-v-bolnice",
+      "source": "Onlíner",
+      "title": "«Отвлеклась от управления». Двое детей после ДТП оказались в больнице - Авто Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://tech.onliner.by/2026/09/05/vystavka-luchshix-snimkov-o-nauke",
+      "source": "Onlíner",
+      "title": "Аневризма аорты и эмбрион дрозофилы: в Минске открылась выставка лучших снимков о науке - Технологии Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://auto.onliner.by/2026/09/05/belorus-vlozhil-bolshe-12-000-rublej-v-dorabotki-dlya-belgee-s50-vot-chto-poluchilos",
+      "source": "Onlíner",
+      "title": "Белорус вложил больше 12 000 рублей в доработки для Belgee S50. Вот что получилось - Авто Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://people.onliner.by/2026/09/05/poshli-normalnye-griby",
+      "source": "Onlíner",
+      "title": "Белые, польские, маслята, опята: пошли нормальные грибы (не везде) - Люди Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://tech.onliner.by/2026/09/05/novaya-karta-mira",
+      "source": "Onlíner",
+      "title": "В ООН одобрили новую карту мира - Технологии Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://auto.onliner.by/2026/09/05/vozle-stolichnogo-cirka-geely-vrezalsya-v-avtobus-i-vletel-v-fonar-postradal-podrostok",
+      "source": "Onlíner",
+      "title": "Возле столичного цирка Geely врезался в автобус и влетел в фонарь. Пострадал подросток - Авто Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://people.onliner.by/2026/09/05/gribniki-zabludilis-v-lesu-oni-sami-pozvonili-v-mchs",
+      "source": "Onlíner",
+      "title": "Грибники заблудились в лесу — они сами позвонили в МЧС - Люди Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://auto.onliner.by/2026/09/05/na-samom-zagruzhennom-perekrestke-kamennoj-gorki-izmenilas-sxema-dvizheniya-no-ne-vse-eto-ponyali",
+      "source": "Onlíner",
+      "title": "На самом загруженном перекрестке Каменной горки изменилась схема движения. Но не все это поняли - Авто Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Evidence Binding: тема и проблема связаны только глубоко в тексте",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://auto.onliner.by/2026/09/05/nepogoda-proshlas-po-oblastyam-bolshe-vsego-postradali-mashiny",
+      "source": "Onlíner",
+      "title": "Непогода прошлась по областям. Больше всего пострадали машины - Авто Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sport.onliner.by/2026/09/05/356733",
+      "source": "Onlíner",
+      "title": "ПСЖ продлил контракт с главным тренером - Спорт Onlíner",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/17-letnjaja-devushka-postradala-pri-stolknovenii-geely-s-avtobusom-v-minske",
+      "source": "Reform.news",
+      "title": "17-летняя девушка пострадала при столкновении Geely с автобусом в Минске",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/flagshtok-obnaruzhil-sledy-novyh-rabot-na-meste-predpolagaemogo-stroitelstva-jadernogo-mogilnika",
+      "source": "Reform.news",
+      "title": "«Флагшток» обнаружил следы новых работ на месте предполагаемого строительства ядерного могильника",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/shkola-priobretaet-cherty-rezhimnogo-uchrezhdenija-v-opk-prokommentirovali-novye-pravila-dosmotra-shkolnikov",
+      "source": "Reform.news",
+      "title": "«Школа приобретает черты режимного учреждения» — в ОПК прокомментировали новые правила досмотра школьников",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/jeto-ne-menjaet-moih-planov-otnositelno-vozvrashhenija-v-grodno-pochobut-soobshhil-o-perenose-sezda-sojuza-poljakov-belarusi",
+      "source": "Reform.news",
+      "title": "«Это не меняет моих планов относительно возвращения в Гродно» — Почобут сообщил о переносе съезда Союза поляков Беларуси",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/belarusskie-voennye-nachali-vtoroj-jetap-uchenij-na-rossijskom-poligone",
+      "source": "Reform.news",
+      "title": "Беларусские военные начали второй этап учений на российском полигоне",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/v-belarusi-ischerpali-kvotu-na-besposhlinnyj-vvoz-jelektromobilej",
+      "source": "Reform.news",
+      "title": "В Беларуси исчерпали квоту на беспошлинный ввоз электромобилей",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/vystava-majstar-klasy-zhyvaja-muzyka-i-imersi-naja-prastora-u-vilni-projdze-tydzen-belaruskaj-kultury",
+      "source": "Reform.news",
+      "title": "Выстава, майстар-класы, жывая музыка і імерсіўная прастора: у Вільні пройдзе тыдзень беларускай культуры",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/dvoe-detej-postradali-v-dtp-pod-belynichami",
+      "source": "Reform.news",
+      "title": "Двое детей пострадали в ДТП под Белыничами",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/kuharev-rasskazal-o-novyh-razvjazkah-ogranichenijah-dlja-gruzovikov-i-srokah-stroitelstva-metro",
+      "source": "Reform.news",
+      "title": "Кухарев рассказал о новых развязках, ограничениях для грузовиков и сроках строительства метро",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/putin-poruchil-ne-nanosit-udary-po-kievu-v-techenie-treh-sutok",
+      "source": "Reform.news",
+      "title": "Путин поручил не наносить удары по Киеву в течение трех суток",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/telo-propavshego-pensionera-obnaruzhili-v-reke-pod-mikashevichami",
+      "source": "Reform.news",
+      "title": "Тело пропавшего пенсионера обнаружили в реке под Микашевичами",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/u-mezhah-fotakonkursu-viki-ljubic-vjoski-bylo-zagruzhana-amal-dzve-z-palovaj-tysjachy-fotazdymka-belaruskih-vjosak",
+      "source": "Reform.news",
+      "title": "У межах фотаконкурсу «Вікі любіць вёскі» было загружана амаль дзве з паловай тысячы фотаздымкаў беларускіх вёсак",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/uitkoff-i-kushner-pribudut-v-kiev-6-sentjabrja",
+      "source": "Reform.news",
+      "title": "Уиткофф и Кушнер прибудут в Киев 6 сентября",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/uitkoff-i-kushner-pribyli-v-moskvu",
+      "source": "Reform.news",
+      "title": "Уиткофф и Кушнер прибыли в Москву",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://reform.news/chernogor-ot-budushhego-belarusi-v-znachitelnoj-stepeni-zavisit-bezopasnost-vsego-regiona",
+      "source": "Reform.news",
+      "title": "Черногор: От будущего Беларуси в значительной степени зависит безопасность всего региона",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/48-chasov-pod-pritselom-strely-gai-otpravila-dopnaryady-v-etu-oblast-belarusi",
+      "source": "Smartpress.by",
+      "title": "48 часов под прицелом “Стрелы”: МВД экстренно отправило допнаряды в эту область Беларуси",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Evidence Binding: тема и проблема связаны только глубоко в тексте",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/belgee-gotovit-bolee-dostupnuyu-versiyu-x50-i-postavit-cityray-na-konveyer",
+      "source": "Smartpress.by",
+      "title": "BELGEE готовит более доступную версию X50 и поставит Cityray на конвейер",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/v-belarusi-otkryli-sezon-okhoty-na-ryabchika-i-seruyu-kuropatku-skolko-stoyat-putevki",
+      "source": "Smartpress.by",
+      "title": "В Беларуси открыли сезон охоты на рябчика и серую куропатку: сколько стоят путевки",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/v-minske-perekroyut-desyatki-ulits-iz-za-polumarafona-gde-ogranichat-dvizhenie-6-sentyabrya",
+      "source": "Smartpress.by",
+      "title": "В Минске перекроют десятки улиц из-за полумарафона: где ограничат движение 6 сентября",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/v-kakikh-20-stranakh-zmei-kusayut-turistov-chashche-vsego-v-tri-iz-nikh-letaet-belavia",
+      "source": "Smartpress.by",
+      "title": "В каких 20 странах змеи кусают туристов чаще всего: в 3 из них летает “Белавиа”",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/molniya-makkuin-vyydet-na-trassu-formuly-1-v-montse-v-chest-20-letiya-tachek",
+      "source": "Smartpress.by",
+      "title": "Молния Маккуин против Формулы-1? Герой “Тачек” выедет на легендарную трассу в Монце",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/murovanku-khreptovichey-v-shchorsakh-prodali-za-94-rublya-istoricheskiy-kompleks-poluchil-novogo-vla",
+      "source": "Smartpress.by",
+      "title": "Мурованку Хрептовичей в Щорсах продали с шестого раза за 94 рубля: исторический комплекс получил нового владельца",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/pod-rechitsey-muzhchina-sobral-dve-korziny-belykh-gribov-takoy-ulov-mozhno-tolko-pozhelat",
+      "source": "Smartpress.by",
+      "title": "Под Речицей мужчина собрал две корзины белых грибов: такой улов можно только пожелать",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/provayder-podklyuchil-platnuyu-uslugu-bez-soglasiya-i-ubral-staryy-tarif-chto-delat-klientu",
+      "source": "Smartpress.by",
+      "title": "Провайдер подключил платную услугу без согласия и убрал старый тариф: что делать клиенту",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "справочный или рекомендательный материал: что делать",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/proverte-aptechku-eti-lekarstva-mogut-usilivat-vypadenie-volos-u-muzhchin",
+      "source": "Smartpress.by",
+      "title": "Проверьте аптечку: эти лекарства могут усиливать выпадение волос у мужчин",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smartpress.by/news/schyet-poshyel-na-desyatki-v-belarusi-zastrelili-uzhe-13-go-medvedya",
+      "source": "Smartpress.by",
+      "title": "Счёт пошёл на десятки: в Беларуси застрелили уже 13-го медведя – где",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/vs-rf-porazili-chetyre-sudna-v-portakh-chernomorska-i-odessy-1110508373.html",
+      "source": "Sputnik Беларусь",
+      "title": "ВС РФ поразили четыре судна в портах Черноморска и Одессы",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/dobro-pozhalovat-mirotvortsy-dmitriev-poprivetstvoval-uitkoffa-i-kushnera-1110505474.html",
+      "source": "Sputnik Беларусь",
+      "title": "Добро пожаловать, миротворцы! Дмитриев поприветствовал Уиткоффа и Кушнера",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/istrebitel-razbilsya-v-gretsii-vo-vremya-aviashou-1110510542.html",
+      "source": "Sputnik Беларусь",
+      "title": "Истребитель разбился на авиашоу в Греции",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/lukashenko-napravil-pozdravleniya-gostyam-i-uchastnikam-dnya-pismennosti-1110504133.html",
+      "source": "Sputnik Беларусь",
+      "title": "Лукашенко направил поздравление гостям и участникам Дня письменности",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/mnogo-syra-i-tsvetov-v-grodno-otmechayut-den-goroda-1110506348.html",
+      "source": "Sputnik Беларусь",
+      "title": "Много сыра и цветов: в Гродно отмечают День города",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/petkevich-my-vidim-molodykh-avtorov-vnosyaschikh-novye-traditsii-v-literaturu--1110510887.html",
+      "source": "Sputnik Беларусь",
+      "title": "Петкевич: мы видим молодых авторов, вносящих новые традиции в литературу",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/chut-menee-chetverti-naseleniya-estonii-stradaet-ozhireniem-lider-v-es--malta-1110510731.html",
+      "source": "Sputnik Беларусь",
+      "title": "Почти четверть населения Эстонии страдает ожирением, лидер в ЕС – Мальта",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/putin-i-sobyanin-dali-start-rublevo-arkhangelskoy-linii-metro-v-moskve-1110509978.html",
+      "source": "Sputnik Беларусь",
+      "title": "Путин и Собянин дали старт Рублево-Архангельской линии метро в Москве",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/putin-segodnya-vstretitsya-s-uitkoffom-i-kushnerom-1110505767.html",
+      "source": "Sputnik Беларусь",
+      "title": "Путин сегодня встретится с Уиткоффом и Кушнером",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/rossiyskie-voennye-osvobodili-kurtovku-v-dnr-1110503974.html",
+      "source": "Sputnik Беларусь",
+      "title": "Российские военные освободили Куртовку в ДНР",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/rossiya-v-techenie-trekh-sutok-ne-budet-nanosit-udary-po-ukraine-1110505676.html",
+      "source": "Sputnik Беларусь",
+      "title": "Россия в течение трех суток не будет наносить удары по Украине",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/shumakher-stalo-v-rossii-naritsatelnym-slovom-1110504696.html",
+      "source": "Sputnik Беларусь",
+      "title": "Слово \"шумахер\" стало в России нарицательным",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://sputnik.by/20260905/shufutinskiy-stal-narodnym-artistom-rossii-1110510142.html",
+      "source": "Sputnik Беларусь",
+      "title": "Шуфутинский стал народным артистом России",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/world/135858.html",
+      "source": "Zerkalo.io",
+      "title": "128 стран впервые согласовали документ об оружии, которое само выбирает цель.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/economics/135856.html",
+      "source": "Zerkalo.io",
+      "title": "«От будущего Беларуси зависит безопасность всего региона» - посол МИД Украины",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/cellar/135860.html",
+      "source": "Zerkalo.io",
+      "title": "Искусственный интеллект от OpenAI захватил сайт в Германии и создал закрытую сеть, пишет Reuters.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/accidents/135861.html",
+      "source": "Zerkalo.io",
+      "title": "Истребитель разбился прямо во время авиашоу в Греции.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/life/135852.html",
+      "source": "Zerkalo.io",
+      "title": "Квота на льготный ввоз электромобилей в Беларусь исчерпана - ГТК",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/life/135854.html",
+      "source": "Zerkalo.io",
+      "title": "Кому беларусы доверяют сильнее всего - исследование дало неожиданный расклад",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/life/135855.html",
+      "source": "Zerkalo.io",
+      "title": "Кухарев назвал срок открытия новых станций третьей линии метро",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/zerkalo_io/173679",
+      "source": "Zerkalo.io",
+      "title": "Минчанин выставил однокомнатную квартиру за 1400 рублей в месяц и удивился, что за две недели ею заинтересовались только россияне.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/world/135851.html",
+      "source": "Zerkalo.io",
+      "title": "Посланники Трампа прибыли в Москву.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/economics/135863.html",
+      "source": "Zerkalo.io",
+      "title": "Почобут заявил, что съезд Союза поляков Беларуси откладывается, но сам он все равно вернется в Гродно",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/cellar/135862.html",
+      "source": "Zerkalo.io",
+      "title": "Путин дал Михаилу Шуфутинскому звание народного артиста России.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/world/135857.html",
+      "source": "Zerkalo.io",
+      "title": "Путин приказал на три дня прекратить удары по Киеву.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/world/135853.html",
+      "source": "Zerkalo.io",
+      "title": "Россия ударила по аэропортам Киева и Борисполя на фоне обсуждения визита представителей США.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: зеленск",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/zerkalo_io/173683",
+      "source": "Zerkalo.io",
+      "title": "Странная смepть беларусского ученого.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.zerkalo.io/economics/135845.html",
+      "source": "Zerkalo.io",
+      "title": "У ИП пенсия может быть почти вдвое меньше средней по стране. В Минтруда объяснили почему",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "недостаточный балл: 3",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/zamkadomby/67531",
+      "source": "Беларусь за МКАДом",
+      "title": "Бобруйская «Венеция»: новый асфальт превратил двор в бассейн",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/zamkadomby/67540",
+      "source": "Беларусь за МКАДом",
+      "title": "ДТП в Белыничском районе: из-за отвлёкшегося водителя пострадали двоё детей",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/zamkadomby/67545",
+      "source": "Беларусь за МКАДом",
+      "title": "Легендарную «Мурованку Хрептовичей» всё-таки продали — за цену двух базовых величин",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нейтральная продажа имущества или торги: выставили на торги",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/zamkadomby/67532",
+      "source": "Беларусь за МКАДом",
+      "title": "Непогода накрыла Беларусь: рухнувшие деревья блокируют дороги и давят автомобили",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/obshchestvo/belgidromet-predupredil-o-neblagopriyatnom-yavlenii-na-6-sentyabrya-2026-goda-obyavlen",
+      "source": "Белновости",
+      "title": "Белгидромет предупредил о неблагоприятном явлении. На 6 сентября 2026 года объявлен оранжевый уровень опасности",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/sport/belorusy-dzyudoisty-voshli-v-top-10-na-yuniorskom-chempionate-evropy",
+      "source": "Белновости",
+      "title": "Белорусы-дзюдоисты вошли в ТОП-10 на юниорском чемпионате Европы",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/vuz-vysshee-uchebnoe-zavedenie",
+      "source": "Белновости",
+      "title": "ВУЗ | Высшее учебное заведение — главные новости сегодня: свежие события и аналитика",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/kulinariya/vyalenye-tomaty-v-masle-po-domashnemu-kak-sdelat-zagotovku-kotoraya-vkusnee-magazinnoy",
+      "source": "Белновости",
+      "title": "Вяленые томаты в масле по-домашнему: как сделать заготовку, которая вкуснее магазинной",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/goroskopy/goroskop-na-7-sentyabrya-2026-goda-dlya-vseh-znakov-zodiaka",
+      "source": "Белновости",
+      "title": "Гороскоп на 7 сентября 2026 года для всех знаков зодиака",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/obshchestvo/izmeneniya-v-shkolah-i-vuzah-belarusi-ministr-rasskazal-o-pitanii-i-fizpodgotovke",
+      "source": "Белновости",
+      "title": "Изменения в школах и вузах Беларуси. Министр рассказал о питании и физподготовке",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/lyudi-i-sobytiya/kak-razvlekalis-lyudi-bronzovogo-veka-naydena-neobychnaya-igra-vozrastom-4-600-let",
+      "source": "Белновости",
+      "title": "Как развлекались люди бронзового века. Найдена необычная игра возрастом 4 600 лет",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/kulinariya/myagkie-i-sochnye-bez-luka-gotovim-kotlety-po-mogilevski",
+      "source": "Белновости",
+      "title": "Мягкие и сочные без лука. Готовим котлеты по-могилевски",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/diety/pobochka-preparatov-dlya-pohudeniya-dazhe-ozempic-ugrozhaet-muzhchinam-oblyseniem",
+      "source": "Белновости",
+      "title": "Побочка препаратов для похудения. Даже Ozempic угрожает мужчинам облысением",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/lyubov-i-semya/pochemu-vazhno-blagodarit-drug-druga-za-melochi-i-kak-eto-menyaet-atmosferu-v-dome",
+      "source": "Белновости",
+      "title": "Почему важно благодарить друг друга за мелочи и как это меняет атмосферу в доме за неделю",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Evidence Binding: тема и проблема связаны только глубоко в тексте",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/diety/pochemu-vyalenaya-grusha-idealnyy-perekus-dlya-teh-kto-mnogo-rabotaet-za-kompyuterom",
+      "source": "Белновости",
+      "title": "Почему вяленая груша — идеальный перекус для тех, кто много работает за компьютером",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/poleznye-sovety/pochemu-stoit-derzhatsya-ot-piva-podalshe-dazhe-odin-bokal-v-den-risk-smerti",
+      "source": "Белновости",
+      "title": "Почему стоит держаться от пива подальше. Даже один бокал в день – риск смерти",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/politika/pravitelstvennyy-samolet-ssha-voshel-v-vozdushnoe-prostranstvo-rossii-v-moskve-ozhidayut",
+      "source": "Белновости",
+      "title": "Правительственный самолет США вошел в воздушное пространство России. В Москве ожидают представителей Трампа",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/v-mire/putin-rasporyadilsya-ne-nanosit-udary-po-kievu-v-techenie-3-sutok",
+      "source": "Белновости",
+      "title": "Путин распорядился не наносить удары по Киеву в течение 3 суток",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/krasota-i-zdorove/redkaya-infekciya-stremitelno-rasprostranyaetsya-v-evrope-dozhdevaya-gnil-ranee",
+      "source": "Белновости",
+      "title": "Редкая инфекция стремительно распространяется в Европе. «Дождевая гниль» ранее была только у животных",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/proisshestviya/ruhnuvshie-derevya-povrezhdennye-avto-v-belarusi-likvidirovali-posledstviya-nepogody",
+      "source": "Белновости",
+      "title": "Рухнувшие деревья, поврежденные авто. В Беларуси ликвидировали последствия непогоды",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/rekordy-i-antirekordy/samaya-bolshaya-peshchera-v-mire-gde-ona-nahoditsya-i-skolko-neboskryobov-v",
+      "source": "Белновости",
+      "title": "Самая большая пещера в мире: где она находится и сколько небоскрёбов в ней поместится",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/deti/sem-produktov-kotorye-vash-rebenok-perestanet-nenavidet-posle-odnogo-razgovora",
+      "source": "Белновости",
+      "title": "Семь продуктов, которые ваш ребенок перестанет ненавидеть после одного разговора",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/domashnie-zhivotnye/sovmestnye-igry-rebyonka-i-sobaki-5-bezopasnyh-variantov-dlya-doma-i-ulicy",
+      "source": "Белновости",
+      "title": "Совместные игры ребёнка и собаки: 5 безопасных вариантов для дома и улицы",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/deti/chto-delat-esli-vy-chuvstvuete-razdrazhenie-na-sobstvennogo-rebyonka-i-vinite-sebya-za-eto",
+      "source": "Белновости",
+      "title": "Что делать, если вы чувствуете раздражение на собственного ребёнка и вините себя за это",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/shoubiznes/shufutinskiy-stal-narodnym-artistom-rossii-zvanie-prisvoil-putin",
+      "source": "Белновости",
+      "title": "Шуфутинский стал народным артистом России. Звание присвоил Путин",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.belnovosti.by/avto/eto-proizoshlo-kvota-po-besposhlinnomu-vvozu-v-belarus-elektromobiley-ischerpana",
+      "source": "Белновости",
+      "title": "Это произошло. Квота по беспошлинному ввозу в Беларусь электромобилей исчерпана",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://ru.belsat.eu/95235069/kgb-v-mogileve",
+      "source": "Белсат",
+      "title": "В Могилеве КГБ проводит контрразведывательные мероприятия",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://ru.belsat.eu/95234758/pogibli-chetyre-cheloveka",
+      "source": "Белсат",
+      "title": "В результате очередной ночной атаки России на Украину погибли четыре человека",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://ru.belsat.eu/95236663/berausy-baza-rozyska-interpol-mihalevich",
+      "source": "Белсат",
+      "title": "Вы в базе розыска – что с этим делать. Объясняет Михалевич",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://ru.belsat.eu/95234947/parkovki-v-minske",
+      "source": "Белсат",
+      "title": "Лукашенко теперь урбанист: возмутился дворами, заставленными машинами. Почему пустуют паркинги?",
+      "archived": "KEEP",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "KEEP",
+        "reason": "",
+        "category": "Дороги и благоустройство"
+      }
+    },
+    {
+      "url": "https://ru.belsat.eu/95220868/-pochemu-territorialnye-vojska-treniruyutsya-vse-chashche",
+      "source": "Белсат",
+      "title": "Подготовка к большому кризису? Почему территориальные войска тренируются все чаще",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://ru.belsat.eu/95235902/putin-prikazal-ne-atakovat-kiev",
+      "source": "Белсат",
+      "title": "Путин приказал не атаковать Киев трое суток",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://ru.belsat.eu/95234663/posledstviya-nepogody",
+      "source": "Белсат",
+      "title": "Сломанные деревья по всей стране: МЧС устраняет последствия непогоды и предупреждает о сильном ветре",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://ru.belsat.eu/95235669/sezd-soyuza-polyakov-otlozhen",
+      "source": "Белсат",
+      "title": "Съезд Союза поляков в Беларуси отложен, однако это не меняет планов Почобута",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: политзаключ",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://ru.belsat.eu/95236746/charnahor-pra-vazhnasts-byelarusi-dlya-byaspyeki",
+      "source": "Белсат",
+      "title": "Украинский дипломат Черногор связал ситуацию в Беларуси с безопасностью во всем регионе",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121183",
+      "source": "Наша Ніва",
+      "title": "«У сезон можна зарабляць на рыбе больш за 10 000 у месяц».",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121190",
+      "source": "Наша Ніва",
+      "title": "Ігар Карней: Што немагчыма дараваць крыважэрнай сістэме",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: палітвяз",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121180",
+      "source": "Наша Ніва",
+      "title": "Іран не хоча пагаднення з ЗША і рыхтуецца працягваць вайну",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121195",
+      "source": "Наша Ніва",
+      "title": "Гурт «Дразды» прэзентаваў татарскую версію песні «Хата бацькоў»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121193",
+      "source": "Наша Ніва",
+      "title": "З'езд Саюза палякаў у Беларусі адклалі",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121186",
+      "source": "Наша Ніва",
+      "title": "Новая мадэль Claude за 44 хвіліны ўзламала шыфр, які не маглі разгадаць 373 гады",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121189",
+      "source": "Наша Ніва",
+      "title": "Пасажыра самалёта ў ЗША прыматалі скотчам да крэсла пасля бойкі на борце",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121187",
+      "source": "Наша Ніва",
+      "title": "Пуцін даў указанне трое сутак не біць па Кіеве",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121192",
+      "source": "Наша Ніва",
+      "title": "Сталі вядомыя пераможцы сёлетняй Нацыянальнай літаратурнай прэміі",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121191",
+      "source": "Наша Ніва",
+      "title": "У Беларусі вычарпалі гадавую квоту на электрамабілі",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121188",
+      "source": "Наша Ніва",
+      "title": "У Гомелі за палітыку асудзілі кіраўніка аб'яднання, якое шукае парэшткі ахвяраў вайны і сталінскіх рэпрэсій, і яго жонку-медсястру",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: рэпрэс",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121181",
+      "source": "Наша Ніва",
+      "title": "У Крыме ў выніку ўдару УСУ загінуў кіраўнік расійскага фонду «Народны фронт.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121194",
+      "source": "Наша Ніва",
+      "title": "Украінскі камандзір Білецкі: Беларусы — такія ж, як украінцы, але ў іх няма маральнай традыцыі ўзброенай барацьбы за незалежнасць",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/nashaniva/121182",
+      "source": "Наша Ніва",
+      "title": "Чэхія рыхтуецца да магчымай вайны ў Еўропе ў выпадку нападу Расіі",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/ru/news/202563",
+      "source": "Позірк",
+      "title": "В Самарканде депутат Шпаковский увязал права человека с санкциями и пожаловался на закрытый для белорусского калия порт Клайпеды | Pozirk",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: санкц",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/ru/news/202552",
+      "source": "Позірк",
+      "title": "Власти Амурской области РФ хотят обмениваться с Беларусью опытом применения беспилотников в сельском хозяйстве | Pozirk",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/be/news/202546",
+      "source": "Позірк",
+      "title": "Гадавая квота на льготны ўвоз электрамабіляў фізічнымі асобамі вычарпаная прыкладна за 9 месяцаў",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/ru/news/202544",
+      "source": "Позірк",
+      "title": "Годовая квота на льготный ввоз электромобилей физлицами исчерпана примерно за 9 месяцев | Pozirk",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/ru/news/202557",
+      "source": "Позірк",
+      "title": "Двое детей пострадало в результате аварии в Белыничском районе | Pozirk",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/be/news/202562",
+      "source": "Позірк",
+      "title": "Двое дзяцей пацярпела ў выніку аварыі ў Бялыніцкім раёне",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/ru/news/202570",
+      "source": "Позірк",
+      "title": "От Беларуси зависит безопасность региона, важно поддерживать диалог со сторонниками ее демократизации — украинский дипломат Чорногор | Pozirk",
+      "archived": "KEEP",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Editorial Intent: внешнеполитическая или военная дипломатия без социальной проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/ru/news/202547",
+      "source": "Позірк",
+      "title": "Польша до 9 декабря продлевает ограничения на низковысотные полеты вдоль границы с Беларусью и Украиной | Pozirk",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/be/news/202551",
+      "source": "Позірк",
+      "title": "Польшча да 9 снежня падаўжае абмежаванні на нізкавышынныя палёты ўздоўж мяжы з Беларуссю і Украінай",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/be/news/202569",
+      "source": "Позірк",
+      "title": "У Самаркандзе дэпутат Шпакоўскі звязаў правы чалавека з санкцыямі і паскардзіўся на закрыты для беларускага калію порт Клайпеды",
+      "archived": "KEEP",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Editorial Intent: внешнеторговое санкционное заявление без проблемы жителей",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pozirk.online/be/news/202556",
+      "source": "Позірк",
+      "title": "Улады Амурскай вобласці РФ хочуць абменьвацца з Беларуссю досведам выкарыстання беспілотнікаў у сельскай гаспадарцы",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://charter97.org/ru/news/2026/9/5/697358",
+      "source": "Хартия-97",
+      "title": "«Если русским за такую цену — пожалуйста, а белорусов пожалейте»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Evidence Binding: тема и проблема связаны только глубоко в тексте",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://charter97.org/ru/news/2026/9/5/697368",
+      "source": "Хартия-97",
+      "title": "БЖД испытывает проблемы с 62% запчастей для ремонта поездов",
+      "archived": "KEEP",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "KEEP",
+        "reason": "",
+        "category": "Общественный транспорт"
+      }
+    },
+    {
+      "url": "https://charter97.org/ru/news/2026/9/5/697382",
+      "source": "Хартия-97",
+      "title": "Белорус придумал необычный способ занять место на парковке",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://charter97.org/ru/news/2026/9/5/697366",
+      "source": "Хартия-97",
+      "title": "Житель Борисова придумал, как не тратить свои деньги",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://charter97.org/ru/news/2026/9/5/697390",
+      "source": "Хартия-97",
+      "title": "Житель Речицы показал, какие грибы нашел за один день в лесу",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://charter97.org/ru/news/2026/9/5/697374",
+      "source": "Хартия-97",
+      "title": "Мэр Минска пошел против пропагандистов Лукашенко?",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://charter97.org/ru/news/2026/9/5/697361",
+      "source": "Хартия-97",
+      "title": "Родителям школьников в Польше выплатили более миллиарда злотых по программе «Хороший старт»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/binklbinkl/29232",
+      "source": "Брест Live",
+      "title": "В Эквадоре полиция остановила мужчину в состоянии алкогольного опьянения",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/binklbinkl/29233",
+      "source": "Брест Live",
+      "title": "Водитель пассажирского автобуса в местечке Буга в Колумбии, как обычно вышел на маршрут.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/binklbinkl/29236",
+      "source": "Брест Live",
+      "title": "Как всего одна маленькая туфелька безнадежно испортила трогательное семейное селфи.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/binklbinkl/29234",
+      "source": "Брест Live",
+      "title": "Какие у вас планы на выходные?",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/binklbinkl/29237",
+      "source": "Брест Live",
+      "title": "Перед тем как войти, откройте дверь.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/twitter-okazalsya-pod-zapretom",
+      "source": "БрестСИТИ",
+      "title": "Twitter оказался под запретом в США – суд встал на сторону соцсети X",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/vtoroj-etap-takticheskix-uchenij",
+      "source": "БрестСИТИ",
+      "title": "Белорусские военные прибыли в РФ на второй этап тактических учений",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/brestskaya-oblast-vnosit-dostojnyj",
+      "source": "БрестСИТИ",
+      "title": "Брестская область вносит достойный вклад в вес хлебного каравая страны - Шулейко",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/v-belarusi-vtoroj-raz-za-tri-mesyaca",
+      "source": "БрестСИТИ",
+      "title": "В Беларуси второй раз за три месяца выявили схему незаконной поставки премиальных авто",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/gai-usilila-kontrol-za-bezopasnostyu",
+      "source": "БрестСИТИ",
+      "title": "ГАИ усилила контроль за безопасностью на дорогах",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/drevnij-supervulkan",
+      "source": "БрестСИТИ",
+      "title": "Древний супервулкан нашли на побережье восточной Англии",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "иностранная тема в заголовке: англи",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/kvota-na-besposhlinnyj",
+      "source": "БрестСИТИ",
+      "title": "Квота на беспошлинный ввоз физлицами электромобилей исчерпана, но есть выход",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/luchshix-truzhenikov",
+      "source": "БрестСИТИ",
+      "title": "Лучших тружеников чествуют на \"Дажынках\" в Брестской области",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/nazvany-strany-gde-na-turistov",
+      "source": "БрестСИТИ",
+      "title": "Названы страны, где на туристов чаще всего нападают змеи",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Evidence Binding: тема и проблема связаны только глубоко в тексте",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/dazhynki-v-2027-godu",
+      "source": "БрестСИТИ",
+      "title": "Областные \"Дажынкі\" в 2027 году пройдут в Столине",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/slazhennaya-rabota",
+      "source": "БрестСИТИ",
+      "title": "Слаженная работа большой команды профессионалов. Пархомчик о слагаемых весомого урожая",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://brestcity.com/blog/k-oblastnym-dazhynkam",
+      "source": "БрестСИТИ",
+      "title": "Учебно-производственные мастерские обновили в Новомышском аграрном колледже к областным \"Дажынкам\"",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191117.php",
+      "source": "Виртуальный Брест",
+      "title": "Twitter оказался под запретом в США – суд встал на сторону соцсети X",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191107.php",
+      "source": "Виртуальный Брест",
+      "title": "«В рот не полезет»: фермер снова «крутит» цены – теперь сало не для всех",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Result Integrity: реакция на цену одного частного продавца",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191111.php",
+      "source": "Виртуальный Брест",
+      "title": "«Исторический момент». ООН поддержала отказ от привычной карты мира",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191112.php",
+      "source": "Виртуальный Брест",
+      "title": "«Такого вообще не должно было произойти». Хакеры опубликовали более пяти терабайтов данных властей Берлина",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191122.php",
+      "source": "Виртуальный Брест",
+      "title": "Беларусбанк меняет правила работы с чужими картами в приложении: что делать клиентам",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191097.php",
+      "source": "Виртуальный Брест",
+      "title": "Белоруска присвоила деньги, собранные школьным попечительским советом",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191118.php",
+      "source": "Виртуальный Брест",
+      "title": "Брестская область вносит достойный вклад в вес хлебного каравая страны - Шулейко",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191124.php",
+      "source": "Виртуальный Брест",
+      "title": "В Беларуси второй раз за три месяца выявили схему незаконной поставки премиальных авто",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191123.php",
+      "source": "Виртуальный Брест",
+      "title": "В Минтруда объяснили, почему некоторые белорусы рискуют остаться с минимальной пенсией",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191131.php",
+      "source": "Виртуальный Брест",
+      "title": "В Нацбанке рассказали, каким был средний курс доллара в августе",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191109.php",
+      "source": "Виртуальный Брест",
+      "title": "Вы вряд ли видели такие доллары: 4 необычные банкноты США",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191115.php",
+      "source": "Виртуальный Брест",
+      "title": "Два ребенка пострадали в ДТП в Белыничском районе",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191099.php",
+      "source": "Виртуальный Брест",
+      "title": "Заявку в 115 закрыли, но ничего не сделали – как в этом случае поступать",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Editorial Intent: общий порядок повторного обращения без самостоятельного случая",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191114.php",
+      "source": "Виртуальный Брест",
+      "title": "Изменение программ и нормативов. Как в школах и вузах Беларуси усиливают физподготовку",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191103.php",
+      "source": "Виртуальный Брест",
+      "title": "Испытанный на полях Брестской области отечественный пресс-подборщик запустят в серийное производство",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191096.php",
+      "source": "Виртуальный Брест",
+      "title": "Кажется, до перехода границы Брест - Тересполь дотянут тротуар. Его не было до сих пор",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191125.php",
+      "source": "Виртуальный Брест",
+      "title": "Как в Беларуси будут составлять перечень критических товаров для финансирования из бюджета",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191100.php",
+      "source": "Виртуальный Брест",
+      "title": "Локальное соглашение о прекращении огня вступило в силу в районе ЗАЭС",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "иностранная тема: украин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191102.php",
+      "source": "Виртуальный Брест",
+      "title": "Лукашенко: День белорусской письменности - это праздник самобытной национальной культуры",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191113.php",
+      "source": "Виртуальный Брест",
+      "title": "Лукашенко: из года в год брестская земля удивляет щедростью хлебной нивы",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191104.php",
+      "source": "Виртуальный Брест",
+      "title": "Максимально приблизить к домашнему. Как улучшается питание детей в школах, рассказал Иванец",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191126.php",
+      "source": "Виртуальный Брест",
+      "title": "Моча альпинистов ускоряет таяние ледника у Эвереста",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Evidence Binding: тема и проблема связаны только глубоко в тексте",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191098.php",
+      "source": "Виртуальный Брест",
+      "title": "Названы страны, где на туристов чаще всего нападают змеи",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Evidence Binding: тема и проблема связаны только глубоко в тексте",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191106.php",
+      "source": "Виртуальный Брест",
+      "title": "Ожидать ли белорусам дождя 6 сентября, сообщили синоптики",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "прогноз без фактической социальной проблемы: синоптик",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191120.php",
+      "source": "Виртуальный Брест",
+      "title": "Пассажира American Airlines примотали скотчем к креслу после драки на борту",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191121.php",
+      "source": "Виртуальный Брест",
+      "title": "При взрыве на военном объекте в Боливии погибли как минимум 10 человек",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191116.php",
+      "source": "Виртуальный Брест",
+      "title": "Проверка боеготовности внутренних войск. Военнообязанные отрабатывают передвижение малыми группами",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191105.php",
+      "source": "Виртуальный Брест",
+      "title": "Производственный календарь на осень 2026: сколько работаем и отдыхаем",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191119.php",
+      "source": "Виртуальный Брест",
+      "title": "Путин дал указание в течение трех суток не наносить ударов по Киеву - Песков",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191101.php",
+      "source": "Виртуальный Брест",
+      "title": "С карты Беларуси исчезли 18 населенных пунктов: где они находились?",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191129.php",
+      "source": "Виртуальный Брест",
+      "title": "Слаженная работа большой команды профессионалов. Пархомчик о слагаемых весомого урожая",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191130.php",
+      "source": "Виртуальный Брест",
+      "title": "Слово «шумахер» стало в России нарицательным",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191128.php",
+      "source": "Виртуальный Брест",
+      "title": "Титанический труд и толика удачи. Лучших тружеников чествуют на «Дажынках» в Брестской области",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191110.php",
+      "source": "Виртуальный Брест",
+      "title": "Уиткофф и Кушнер прибыли в Москву на переговоры",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: путин",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191108.php",
+      "source": "Виртуальный Брест",
+      "title": "Учебно-производственные мастерские обновили в Новомышском аграрном колледже к областным «Дажынкам»",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://virtualbrest.ru/news191127.php",
+      "source": "Виртуальный Брест",
+      "title": "Ученые определили, как должна выглядеть идеальная грудь – речь не о размере",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://lnc.by/news/kultura/xxxiii-den-belorusskoy-pismennosti-prokhodit-v-kostyukovichakh",
+      "source": "Лунинецкие новости",
+      "title": "XXXIII День белорусской письменности проходит в Костюковичах",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://lnc.by/news/kultura/deputaty-brestskoy-oblasti-pochtili-pamyat-pogibshikh-v-gody-voyny-zemlyakov-",
+      "source": "Лунинецкие новости",
+      "title": "Депутаты Брестской области почтили память погибших в годы войны земляков",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: митинг",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://lnc.by/news/mikashevichy/luninetskiy-rayon-pobeditel-oblastnogo-sorevnovaniya-po-proizvodstvu-zerna",
+      "source": "Лунинецкие новости",
+      "title": "Лунинецкий район – победитель областного соревнования по производству зерна!",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://lnc.by/news/kultura/luninchane-prisoedinilis-k-uchastnikam-prazdnichnogo-shestviya-na-dozhinkakh",
+      "source": "Лунинецкие новости",
+      "title": "Лунинчане присоединились к участникам праздничного шествия на «Дожинках»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://lnc.by/news/kultura/luchshikh-truzhenikov-brestskoy-oblasti-chestvuyut-na-festivale-yarmarke-dozhinki-2026",
+      "source": "Лунинецкие новости",
+      "title": "Лучших тружеников Брестской области чествуют на фестивале-ярмарке «Дожинки-2026»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://lnc.by/news/kultura/podvore-luninetskogo-rayona-posetili-pochetnye-gosti-oblastnogo-festivalya-dozhinki-",
+      "source": "Лунинецкие новости",
+      "title": "Подворье Лунинецкого района посетили почетные гости областного фестиваля «Дожинки»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://lnc.by/news/kultura/fotomgnoveniya-oblastnogo-prazdnika-dozhinki-2026",
+      "source": "Лунинецкие новости",
+      "title": "Фотомгновения областного праздника «Дожинки-2026»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://media-polesye.com/news/16-filmov-i-serialov-sentyabrya-o-kotoryh-budut-govorit-vse",
+      "source": "Медиа-Полесье",
+      "title": "16 фильмов и сериалов сентября, о которых будут говорить все — Media-Polesyе",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://media-polesye.com/news/ot-budushhego-belarusi-zavisit-bezopasnost-vsego-regiona-posol-mid-ukrainy",
+      "source": "Медиа-Полесье",
+      "title": "«От будущего Беларуси зависит безопасность всего региона» — посол МИД Украины — Media-Polesyе",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://media-polesye.com/news/pinskij-rajon-boretsya-za-pobedu-na-dozhinkah-podderzhite-nashih-v-golosovanii",
+      "source": "Медиа-Полесье",
+      "title": "Пинский район борется за победу на «Дожинках». Поддержите наших в голосовании! — Media-Polesyе",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://media-polesye.com/news/salaty-s-baklazhanami-pryamo-kak-v-detstve-zabytye-retsepty",
+      "source": "Медиа-Полесье",
+      "title": "Салаты с баклажанами, прямо как в детстве: забытые рецепты — Media-Polesyе",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://media-polesye.com/news/sopli-i-bol-v-gorle-ne-povod-propuskat-trenirovku",
+      "source": "Медиа-Полесье",
+      "title": "Сопли и боль в горле не повод пропускать тренировку — Media-Polesyе",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/orshaeu/11913",
+      "source": "Orsha.eu",
+      "title": "«Аршанскі вечар» у Варшаве",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/orshaeu/11912",
+      "source": "Orsha.eu",
+      "title": "Теперь и TikТok Серого Кота признали «экстремистским»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: политзаключ",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitebsk_info/10592",
+      "source": "Витебск INFO",
+      "title": "Палітвязень Андрэй Аляксандраў стаў лаўрэатам прэміі Free Media Awards",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: палітвяз",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://vitebskspring.org/news/palitvjazni/item/7885-palitvyazen-andrej-alyaksandrau-stau-laureatam-premii-free-media-awards",
+      "source": "Витебская Весна",
+      "title": "Палітвязень Андрэй Аляксандраў стаў лаўрэатам прэміі Free Media Awards - Віцебская вясна",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: палітвяз",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://vitebskspring.org/news/roznae/item/7862-u-varshave-zbili-belarusa-z-vitsebsku",
+      "source": "Витебская Весна",
+      "title": "У Варшаве збілі беларуса з Віцебску - Віцебская вясна",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://vitebskspring.org/news/sud/item/7857-u-abnoulenym-spise-ekstremistskikh-materyyalau-kniga-sevyaryntsa-i-instagram-akaunt-natalli-kukishavaj",
+      "source": "Витебская Весна",
+      "title": "У абноўленым спісе &#34;экстрэмісцкіх матэрыялаў&#34; - кніга Севярынца і Instagram-акаўнт Наталлі Кукішавай - Віцебская вясна",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitvestiby/89170",
+      "source": "Витебские вести",
+      "title": "В Костюковичах торжественно открылся XXXIII День белорусской письменности Гостей фестиваля тепло приветствовали заместитель премьер-министра Республики Беларусь Наталья…",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitvestiby/89158",
+      "source": "Витебские вести",
+      "title": "Два года за два грамма: в Витебске",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "последствия стихии без жалобы на работу служб: гроз",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitvestiby/89169",
+      "source": "Витебские вести",
+      "title": "Изменение программ и нормативов.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitvestiby/89150",
+      "source": "Витебские вести",
+      "title": "Лепель празднует 587-й день рождения!",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitvestiby/89157",
+      "source": "Витебские вести",
+      "title": "Лукашенко поздравил участников и гостей Дня белорусской письменности.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitvestiby/89160",
+      "source": "Витебские вести",
+      "title": "Министр информации поздравил с открытием Дня белорусской письменности и вручил Национальную литературную премию авторам лучших произведений Чытайце, асалоды вам ад чытання!",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitvestiby/89168",
+      "source": "Витебские вести",
+      "title": "Первый поздравил участников и гостей областного фестиваля-ярмарки «Дажынкi-2026»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitvestiby/89171",
+      "source": "Витебские вести",
+      "title": "С первой субботы сентября открывается сезон охоты на рябчика, серую куропатку",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/vitvestiby/89159",
+      "source": "Витебские вести",
+      "title": "Сайт",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.klich.by/?p=166564",
+      "source": "Кліч Радзімы",
+      "title": "Памятаць мінулае, ганарыцца сучасным",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "недостаточный балл: 4",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.pvestnik.by/znajut-li-v-polocke-kak-pravilno-proiznositsya-familiya-geroya-vojny",
+      "source": "Полацкі веснік",
+      "title": "Знают ли в Полоцке как правильно произносится фамилия героя войны?",
+      "archived": "KEEP",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "KEEP",
+        "reason": "",
+        "category": "Дороги и благоустройство"
+      }
+    },
+    {
+      "url": "https://www.pvestnik.by/itogi-vstupitelnoj-kampanii-opredelili-ryad-specialnostej-naibolee-vostrebovannyh-dlya-postupajushhih",
+      "source": "Полацкі веснік",
+      "title": "Итоги вступительной кампании определили ряд специальностей, наиболее востребованных для поступающих",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162734",
+      "source": "Gomel Today",
+      "title": "«Спартак» ізноў пачаў выпускаць вафелькі «Смак»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162735",
+      "source": "Gomel Today",
+      "title": "Американца примотали в самолете скотчем к креслу из-за агрессивного поведения",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162730",
+      "source": "Gomel Today",
+      "title": "В Жлобине пара похитила стремянку, чтобы купить выпивку",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162731",
+      "source": "Gomel Today",
+      "title": "В Минске школьник бросал с крыши многоэтажки пакеты с водой – докидался до «уголовки»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162729",
+      "source": "Gomel Today",
+      "title": "В августе жители нашей страны",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162738",
+      "source": "Gomel Today",
+      "title": "Военный самолет потерпел крушение на авиашоу в Греции",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162739",
+      "source": "Gomel Today",
+      "title": "Гомельчанин в Амстердаме взял бесплатную книгу на улице, а в ней оказалась настоящая фотка голливудской знаменитости",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162736",
+      "source": "Gomel Today",
+      "title": "Житель Мяделя забронировал парковку табуреткой с грузом и заплатит штраф",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162733",
+      "source": "Gomel Today",
+      "title": "Могилевчанка отвлеклась от дороги и попала в ДТП – пострадали дети",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162728",
+      "source": "Gomel Today",
+      "title": "Непогода прошлась по Беларуси: пострадала и Гомельщина",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162714",
+      "source": "Gomel Today",
+      "title": "Пока на улице еще тепло, освежаемся зимними кадрами Сожа в рубрике",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162725",
+      "source": "Gomel Today",
+      "title": "Собака пробежала по спинам 56 человек и попала в Книгу рекордов Гиннеса",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162724",
+      "source": "Gomel Today",
+      "title": "Такому улову можно только позавидовать: под Речицей мужчина собрал корзину отборных грибов",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162737",
+      "source": "Gomel Today",
+      "title": "Четыре года назад лишь каждый четвертый белорус не был готов поделиться своими данными в магазинах ради бонусов и скидок.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/gomeltoday/162727",
+      "source": "Gomel Today",
+      "title": "Эксперты выяснили, в каких странах на туристов чаще всего нападают змеи",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://belkagomel.by/2026/09/05/yarkoj-oseni-da-v-gomele-provodyat-bolshuju-uborku",
+      "source": "Белка",
+      "title": "Яркой осени – да: в Гомеле проводят большую уборку",
+      "archived": "KEEP",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Editorial Intent: позитивная уборка или субботник без проблемы услуги",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://vgr.by/2026/09/05/v-grodno-prohodit-samyj-krasochnyj-prazdnik-festival-czvetov",
+      "source": "ВГР",
+      "title": "В Гродно проходит самый красочный праздник — фестиваль цветов — Вечерний Гродно",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://vgr.by/2026/09/05/idealnaya-kartoshka-dlya-dranikov-i-samyj-vkusnyj-pomidor-v-mire-v-grodno-prohodit-ovoshhnoj-festival",
+      "source": "ВГР",
+      "title": "Идеальная картошка для драников и самый вкусный помидор в мире — в Гродно проходит овощной фестиваль — Вечерний Гродно",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://vgr.by/2026/09/05/novyj-syr-mnogo-czvetov-i-razvlechenij-%e2%80%94-grodno-otmechaet-den-goroda",
+      "source": "ВГР",
+      "title": "Новый сыр, много цветов и развлечений — Гродно отмечает День города — Вечерний Гродно",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.gs.by/2026/09/05/v-belarusi-dobyt-ocherednoy-medved-po-rezultatam-rozygrysha-rgoo-boor",
+      "source": "Газета «Сильные Новости»",
+      "title": "В Беларуси добыт очередной медведь по результатам розыгрыша РГОО «БООР» - GS.BY",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.gs.by/2026/09/05/v-minske-razyskivayut-40-letnego-mihaila-markovskogo-propavshego-vozle-poligona-trosteneckiy",
+      "source": "Газета «Сильные Новости»",
+      "title": "В Минске разыскивают 40-летнего Михаила Марковского, пропавшего возле полигона «Тростенецкий» - GS.BY",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.gs.by/2026/09/05/grozy-veter-i-25-gradusov-chego-zhdat-ot-pogody-v-blizhayshie-dni-zhitelyam-grodnenschiny",
+      "source": "Газета «Сильные Новости»",
+      "title": "Грозы, ветер и +25 градусов: чего ждать от погоды в ближайшие дни жителям Гродненщины - GS.BY",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.gs.by/2026/09/05/dengi-lipnut-k-rukam-4-znaka-zodiaka-kotorye-vsegda-pri-dengah",
+      "source": "Газета «Сильные Новости»",
+      "title": "Деньги липнут к рукам: 4 знака зодиака, которые всегда при деньгах - GS.BY",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.gs.by/2026/09/05/kak-izmenilis-ceny-na-rynke-v-slonime-za-god",
+      "source": "Газета «Сильные Новости»",
+      "title": "Как изменились цены на рынке в Слониме за год - GS.BY",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.gs.by/2026/09/05/korporativnaya-rybalka-slonimskogo-umg-azart-trofei-i-druzheskaya-atmosfera-v-sokolovo",
+      "source": "Газета «Сильные Новости»",
+      "title": "Корпоративная рыбалка Слонимского УМГ: азарт, трофеи и дружеская атмосфера в Соколово - GS.BY",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.gs.by/2026/09/05/propal-21-avgusta-18-letniy-belorus-ne-vyhodit-na-svyaz-posle-poezdki-v-moskvu",
+      "source": "Газета «Сильные Новости»",
+      "title": "Уехал в Москву и исчез: 18-летний белорус не выходит на связь с 21 августа - GS.BY",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://flagshtok.info/by/telegram/post-6a9be11a27b80.html",
+      "source": "Флагшток",
+      "title": "Начинаются работы по реконструкции «Кузнечных» путепроводов в Гомеле. Но пока — только предварительные Как сказано в документации тендера, главное, что должен выполнить подрядчик, — это предварительные исследования существующей интенсивности и условий дв",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.hoiniki.by/?p=256942",
+      "source": "Хойніцкія навіны",
+      "title": "«Царица полей» набрала золотую спелость – репортаж с поля, где кипит работа",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.hoiniki.by/?p=256995",
+      "source": "Хойніцкія навіны",
+      "title": "Ваш участковый: уборочная без «приработков». Чем заканчиваются попытки нажиться на чужом урожае",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.hoiniki.by/?p=256959",
+      "source": "Хойніцкія навіны",
+      "title": "Золотой век: из хойникской Поташни до щита России – звёздный путь генерала Леонида Тишкевича",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.hoiniki.by/?p=257063",
+      "source": "Хойніцкія навіны",
+      "title": "К сведению населения: здоровое будущее нашего района в наших руках",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.hoiniki.by/?p=256936",
+      "source": "Хойніцкія навіны",
+      "title": "Пятнадцать лет на страже закона и справедливости – в Хойникском РОСК встречают праздник высокими показателями",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://www.hoiniki.by/?p=257069",
+      "source": "Хойніцкія навіны",
+      "title": "Человек трудом славен: в гостях у бабушки Софии из Новосёлок – семья, любовь и цветы у порога",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Evidence Binding: тема и проблема связаны только глубоко в тексте",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/auto/belorus-podelilsya-istoriej",
+      "source": "NewGrodno",
+      "title": "Alfa Romeo, да не та: белорус поделился историей своего необычного автомобиля",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/auto/belgee-x50-podesheveet",
+      "source": "NewGrodno",
+      "title": "BELGEE раскрыл планы: X50 подешевеет, а Cityray встанет на конвейер",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/istoriya-pchelovoda-dmitriya-akulo",
+      "source": "NewGrodno",
+      "title": "«Мои девочки»: история пчеловода Дмитрия Акуло, променявшего отдых на сто ульев и тонны меда",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/v-mire/v-meksike-korovy-vybezhali-na-pole",
+      "source": "NewGrodno",
+      "title": "В Мексике коровы выбежали на поле и сорвали футбольный матч - видео",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/zamok-bez-prividenij-i-bubliki-po-drevnemu-retseptu",
+      "source": "NewGrodno",
+      "title": "Замок без привидений и бублики по древнему рецепту. Репортаж из Крево",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/zdorove/kak-kofe-na-samom-dele-vliyaet-na-serdtse",
+      "source": "NewGrodno",
+      "title": "Как кофе на самом деле влияет на сердце и сосуды? Рассказали кардиологи",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/auto/kak-rabotaet-dewulf-enduro",
+      "source": "NewGrodno",
+      "title": "Как работает Dewulf Enduro: особенности нового комбайна",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/karkasnye-doma-v-belarusi",
+      "source": "NewGrodno",
+      "title": "Каркасные дома в Беларуси: как распознать скрытые дефекты до покупки?",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Evidence Binding: тема и проблема связаны только глубоко в тексте",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/mozhno-li-pohudet-na-ogurtsah-i-yagodah",
+      "source": "NewGrodno",
+      "title": "Можно ли похудеть на огурцах и ягодах? Мнение диетолога",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/aviatsionnyj-slet-krylya-belarusi",
+      "source": "NewGrodno",
+      "title": "Непогода вмешалась в планы: авиаслет «Крылья Беларуси» не состоится",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/ot-kukol-do-utyugov-i-memov",
+      "source": "NewGrodno",
+      "title": "От кукол до утюгов и мемов: что коллекционируют белорусы?",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/v-mire/student-iz-indii-za-6-mesyatsev-ochistil",
+      "source": "NewGrodno",
+      "title": "Студент из Индии за 6 месяцев самостоятельно очистил загрязненную реку",
+      "archived": "KEEP",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "Result Integrity: зарубежный сюжет без воздействия на жителей Беларуси",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/tabachnaya-fabrika-neman-istoriya-sozdaniya-i-razvitiya",
+      "source": "NewGrodno",
+      "title": "Табачная фабрика «Неман»: история создания и развития",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/torzhestvennoe-otkrytie-dnya-goroda-proshlo-v-grodno",
+      "source": "NewGrodno",
+      "title": "Торжественное открытие Дня города прошло в Гродно",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/travmatolog-obyasnil-pochemu-sustavy-bolyat",
+      "source": "NewGrodno",
+      "title": "Травматолог объяснил, почему суставы болят перед дождём — и дело не в погоде",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "иностранная тема: британ",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://newgrodno.by/society/grodno-masshtabno-prazdnuet-svoj-898-j-den-rozhdeniya",
+      "source": "NewGrodno",
+      "title": "Тысячи улыбок и дыхание истории: Гродно масштабно празднует свой 898-й день рождения",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://hpravy.org/2026/09/05/%d0%b0%d0%b4%d0%b2%d0%b0%d0%ba%d0%b0%d1%82%d0%ba%d0%b0-%d1%8e%d0%bb%d1%96%d1%8f-%d1%8e%d1%80%d0%b3%d1%96%d0%bb%d0%b5%d0%b2%d1%96%d1%87-%d1%83%d0%b6%d0%be-5-%d1%8b-%d0%b4%d0%b7%d0%b5%d0%bd%d1%8c-%d0%bd",
+      "source": "Гродненская правозащита",
+      "title": "Адвакатка Юлія Юргілевіч ужо 5-ы дзень нараджэння сустрэла ў зняволенні",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: палітвяз",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://hpravy.org/2026/09/05/%d0%b7%d0%b5%d0%b7%d0%b4-%d1%81%d0%b0%d1%8e%d0%b7%d0%b0-%d0%bf%d0%b0%d0%bb%d1%8f%d0%ba%d0%b0%d1%9e-%d1%83-%d0%b1%d0%b5%d0%bb%d0%b0%d1%80%d1%83%d1%81%d1%96-%d0%b0%d0%b4%d0%ba%d0%bb%d0%b0%d0%bb%d1%96",
+      "source": "Гродненская правозащита",
+      "title": "З’езд Саюза палякаў у Беларусі адклалі, але Пачобут паедзе",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: палітвяз",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/blizkoby/25018",
+      "source": "Blizko.by",
+      "title": "Двое детей пострадали в ДТП в Могилевской области",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/blizkoby/25019",
+      "source": "Blizko.by",
+      "title": "Оранжевый уровень опасности из-за сильного порывистого ветра сохранится в Беларуси 6 сентября",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://citydog.io/post/studenty-armija-normativy",
+      "source": "CityDog",
+      "title": "В Беларуси нормативы по физкультуре для студентов приравняли к армейским",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://citydog.io/post/skamejka-konkurs",
+      "source": "CityDog",
+      "title": "В Минске выбирают лучшую скамейку. Среди вариантов – леопардовая, из шин и кресло на цепях",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://citydog.io/post/zabaronenyja-pradmety-shkoly",
+      "source": "CityDog",
+      "title": "В беларуских школах за три дня нашли 18 запрещенных предметов. Была даже заточка, но не все в это поверили",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.kraj.by/20260905/79-letnij-pensioner-zabludilsya-v-lesu-pod-dokshiczami-nashli-ego-mestnye-zhiteli",
+      "source": "Kraj.by",
+      "title": "79-летний пенсионер заблудился в лесу под Докшицами – нашли его местные жители, 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.kraj.by/20260905/v-3",
+      "source": "Kraj.by",
+      "title": "В Молодечно женщина заказала перевозку в Telegram и перевела мошеннику 400 рублей, 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.kraj.by/20260905/golevoj-dubl-shmarova-gol-ivana-chernyh-i-neskolko-spasenij-danily-tretyaka-4-sentyabrya-na-gorodskom-stadione-v-molodechno-prinesli-pobedu-futbolistam",
+      "source": "Kraj.by",
+      "title": "Голевой дубль Шмарова, гол Черных и несколько спасений Третяка принесли победу футболистам в Молодечно, 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.kraj.by/20260905/kak-stanovyat",
+      "source": "Kraj.by",
+      "title": "Как становятся следователями и кто помогает молодёжи освоить непростую профессию, узнали в Вилейском районном отделе Следственного комитета, 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.kraj.by/20260905/magiya-perevoploshheniya-segodnya-startuet-yubilejnyj-sezon-lyudmily-roshhinoj",
+      "source": "Kraj.by",
+      "title": "Минский областной драматический театр открывает сезон бенефисом Людмилы Рощиной, 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.kraj.by/20260905/po-smorgoni-proehala-kolonna-moshhnoj-selhoztehniki-gde-posmotret",
+      "source": "Kraj.by",
+      "title": "По Сморгони проехала колонна мощной сельхозтехники - где посмотреть, 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.kraj.by/20260905/supruzheskaya-para-zabludilas-v-lesu-ih-nashli-glubokskie-spasateli",
+      "source": "Kraj.by",
+      "title": "Супружеская пара заблудилась в лесу - их нашли глубокские спасатели, 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://news.kraj.by/20260905/czeny-v-taborah-razgar-sezona",
+      "source": "Kraj.by",
+      "title": "Томаты для закаток от 1 рубля и картофель по 75 копеек - смотрите цены в Таборах в разгар сезона, 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/azaryonok-rasskazal-o-fenomene-belorusskoj-literatury-i-zavetah-klassikov",
+      "source": "Минская правда",
+      "title": "Азарёнок рассказал о феномене белорусской литературы и заветах классиков - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/bez-etogo-ne-postroit-dorogi-kak-rabotaet-neftebitumnyj-zavod-pod-chervenem",
+      "source": "Минская правда",
+      "title": "Без этого не построить дороги – как работает «Нефтебитумный завод» под Червенем - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/v-deshhenke-prigotovili-gigantskuyu-porcziyu-kartoshki-na-skovorode-diametrom-18-metra",
+      "source": "Минская правда",
+      "title": "В Дещенке на гигантской сковороде пожарили 150 кг картошки и 20 кг мяса - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/v-deshhenke-opredelili-samogo-bystrogo-lyubitelya-dranikov-sel-10-shtuk-za-2-minuty-i-10-sekund",
+      "source": "Минская правда",
+      "title": "В Дещенке определили самого быстрого любителя драников – съел десять штук за 2 минуты и 10 секунд - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/v-dzerzhinske-na-torgi-vystavili-dva-uchastka-pod-stroitelstvo-domov-izvestna-nachalnaya-czena",
+      "source": "Минская правда",
+      "title": "В Дзержинске на торги выставили два участка под строительство домов – известна начальная цена - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/v-taborah-razgar-sezona-tomaty-dlya-zakatok-i-vinograd-mozhno-najti-na-lyuboj-vkus-i-koshelek",
+      "source": "Минская правда",
+      "title": "В Таборах разгар сезона ­– томаты для закаток и виноград можно найти на любой вкус и кошелек - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/v-minskih-roddomah-predlozhili-vydelyat-otdelnye-palaty-dlya-zhenshhin-posle-poteri-beremennosti",
+      "source": "Минская правда",
+      "title": "В минских роддомах предложили выделять отдельные палаты для женщин после потери беременности - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/dvoye-detey-postradali-v-dtp-na-mogilevshchine-mashina-nayekhala-na-ograzhdeniye",
+      "source": "Минская правда",
+      "title": "Двое детей пострадали в ДТП на Могилевщине – машина наехала на ограждение - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/draniki-kartofelnyj-rostomer-i-retro-zhelezo-chem-udivlyaet-bulbyany-fest-v-deshhenke",
+      "source": "Минская правда",
+      "title": "Драники, картофельный ростомер и ретро-железо – чем удивляет «Бульбяны фэст» в Дещенке - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/kleczki-kolduny-i-draniki-kushnarenko-rasskazal-o-lyubimyh-blyudah-i-pochistil-kartoshku-na-skorost",
+      "source": "Минская правда",
+      "title": "Клецки, колдуны и драники – Кушнаренко рассказал о любимых блюдах и почистил картошку на скорость - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/kushnarenko-prizval-vyvodit-lokalnye-prazdniki-na-novyj-masshtab-i-prevrashhat-ih-v-brendy-regionov",
+      "source": "Минская правда",
+      "title": "Кушнаренко призвал выводить локальные праздники на новый масштаб и превращать их в бренды регионов - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/chem-ekspozicziya-minskoj-oblasti-privlekaet-gostej-dnya-belorusskoj-pismennosti",
+      "source": "Минская правда",
+      "title": "Литературное наследие Минщины представили на Дне белорусской письменности в Костюковичах - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/lukashenko-nazval-den-belorusskoj-pismennosti-istochnikom-mudrosti-predkov",
+      "source": "Минская правда",
+      "title": "Лукашенко назвал День белорусской письменности источником мудрости предков - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/marakujya-po-130-rublej-i-arbuzy-s-zheltoj-myakotyu-chto-novogo-prodayut-na-rynke-v-valeryanovo",
+      "source": "Минская правда",
+      "title": "Маракуйя по 130 рублей и арбузы с желтой мякотью – что нового продают на рынке в Валерьяново - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/nozhi-zatochka-i-vejpy-mvd-rasskazalo-chto-nashli-v-ryukzakah-shkolnikov-v-pervye-dni-uchebnogo-goda",
+      "source": "Минская правда",
+      "title": "Ножи, заточка и вейпы – МВД рассказало, что нашли в рюкзаках школьников в первые дни учебного года - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/propavshego-v-lesu-pod-logojskom-dachnika-nashli-spustya-sutki",
+      "source": "Минская правда",
+      "title": "Пропавшего в лесу под Логойском дачника нашли спустя сутки - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/rabota-nadoela-a-kontrakt-eshhe-na-tri-goda-mozhno-li-belorusu-uvolitsya-dosrochno",
+      "source": "Минская правда",
+      "title": "Работа надоела, а контракт еще на три года – можно ли белорусу уволиться досрочно - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/skolko-dolzhen-gulyat-pervoklassnik-pediatr-nazvala-optimalnoe-vremya",
+      "source": "Минская правда",
+      "title": "Сколько должен гулять первоклассник? Педиатр назвала оптимальное время - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://mlyn.by/05092026/tri-oshibki-vladelczev-zemelnyh-uchastkov-kotorye-mogut-privesti-k-problemam",
+      "source": "Минская правда",
+      "title": "Три ошибки владельцев земельных участков, которые могут привести к проблемам - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pristalica.by/05092026/v-zaslavle-molodye-kommunisty-modeliruyut-budushhee-belarusi",
+      "source": "Прысталічча",
+      "title": "В Заславле молодые коммунисты моделируют будущее Беларуси - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pristalica.by/05092026/v-minskij-rajon-privezli-chasticzy-moshhej-velikomucheniczy-varvary",
+      "source": "Прысталічча",
+      "title": "В Минский район привезли частицы мощей великомученицы Варвары - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pristalica.by/05092026/glavbuh-fiktivno-trudoustroila-muzha-kompaniya-pod-minskom-poteryal-24-tysyachi-rublej",
+      "source": "Прысталічча",
+      "title": "Главбух фиктивно трудоустроила мужа - компания под Минском потерял 24 тысячи рублей - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://pristalica.by/05092026/kgk-priostanovil-rabotu-kulinarnogo-czeha-v-minskom-rajone",
+      "source": "Прысталічча",
+      "title": "КГК приостановил работу кулинарного цеха в Минском районе - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "недостаточный балл: 3",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smolevichi-24.by/05092026/zdes-vyjdesh-na-porog-vokrug-priroda-i-vozduh-istoriya-dachniczy-iz-pyatiletki",
+      "source": "Смолевичи-24",
+      "title": "«Здесь выйдешь на порог — вокруг природа и воздух»: история дачницы из Пятилетки - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smolevichi-24.by/05092026/drsu-123-nachalo-remont-dorogi-ot-alesino-do-verhmeni",
+      "source": "Смолевичи-24",
+      "title": "ДРСУ-123 начало ремонт дороги от Алесино до Верхмени - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smolevichi-24.by/05092026/lukashenko-nazval-den-belorusskoj-pismennosti-istochnikom-mudrosti-predkov",
+      "source": "Смолевичи-24",
+      "title": "Лукашенко назвал День белорусской письменности источником мудрости предков - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smolevichi-24.by/05092026/na-ostanovke-v-zayamnom-snova-ostavili-dengi-dlya-moshennikov-summa-vpechatlyaet-pochti-50-tysyach-rublej",
+      "source": "Смолевичи-24",
+      "title": "На остановке в Заямном снова оставили деньги для мошенников. Сумма впечатляет - почти 50 тысяч рублей - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smolevichi-24.by/05092026/ohota-na-ryabchika-i-kuropatku-nachalas-v-belarusi-gde-i-kak-mozhno-dobyvat",
+      "source": "Смолевичи-24",
+      "title": "Охота на рябчика и куропатку началась в Беларуси – где и как можно добывать - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smolevichi-24.by/05092026/sekrety-pyshnogo-czveteniya-kak-zhitelnicza-dubrovki-uhazhivaet-za-gortenziej",
+      "source": "Смолевичи-24",
+      "title": "Секреты пышного цветения: как жительница Дубровки ухаживает за гортензией - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://smolevichi-24.by/05092026/spasyonnyj-iz-truby-istoriya-psa-iz-dubrovki",
+      "source": "Смолевичи-24",
+      "title": "Спасённый из трубы - история пса из Дубровки - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://zorkanews.by/05092026/200-km-radi-dranikov-pochemu-semya-iz-gluska-vybrala-bulbyany-fest-v-deshhenke",
+      "source": "Чырвоная зорка",
+      "title": "200 км ради драников: почему семья из Глуска выбрала «Бульбяны фэст» в Дещенке - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://zorkanews.by/05092026/gubernator-minshhiny-na-bulbyanom-feste-chistil-kartoshku-i-zharil-draniki-na-tayozhnoj-sveche",
+      "source": "Чырвоная зорка",
+      "title": "Губернатор Минщины на «Бульбяном фэсте» чистил картошку и жарил драники на таёжной свече - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://zorkanews.by/05092026/gubernator-minshhiny-posetil-bulbyany-fest-v-deshhenke",
+      "source": "Чырвоная зорка",
+      "title": "Губернатор Минщины посетил «Бульбяны фэст» в Дещенке - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://zorkanews.by/05092026/kartofel-gigant-vesom-bolee-kilo-pobedil-na-festivale-v-deshhenke",
+      "source": "Чырвоная зорка",
+      "title": "Картофель-гигант весом более кило победил на фестивале в Дещенке - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://zorkanews.by/05092026/na-prazdnike-v-deshhenke-gubernator-minshhiny-nazval-lyubimye-blyuda-iz-kartoshki",
+      "source": "Чырвоная зорка",
+      "title": "На празднике в Дещенке губернатор Минщины назвал любимые блюда из картошки - 05.09.2026",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/esoligorsk/29714",
+      "source": "Электронный Солигорск",
+      "title": "Нужна квартира в Солигорске на короткий срок?",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/esoligorsk/29713",
+      "source": "Электронный Солигорск",
+      "title": "Погода в Солигорске на завтра.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://m-media.storage.googleapis.com/index.html?p=141208.html",
+      "source": "M-Media архив",
+      "title": "Mogilev.media — незалежнае выданне пра Магілёў",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://m-media.storage.googleapis.com/index.html?p=141213.html",
+      "source": "M-Media архив",
+      "title": "Mogilev.media — незалежнае выданне пра Магілёў",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://m-media.storage.googleapis.com/index.html?p=141218.html",
+      "source": "M-Media архив",
+      "title": "Mogilev.media — незалежнае выданне пра Магілёў",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://m-media.storage.googleapis.com/index.html?p=141223.html",
+      "source": "M-Media архив",
+      "title": "Mogilev.media — незалежнае выданне пра Магілёў",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://masheka.by/novosti-mogileva/4079-znakomstvo-s-kandidatami-tatjana-sivachenko.html",
+      "source": "MASHEKA",
+      "title": "Знакомство с кандидатами: Татьяна Сиваченко » MASHEKA - информационный портал Могилёва. Новости Могилева, интервью с могилевчанами",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: выборы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://masheka.by/history_mogilev/4548-realnoe-uchilische-v-mogileve-istorija-doma-po-ulice-komsomolskoj.html",
+      "source": "MASHEKA",
+      "title": "Комсомольская, 18: реальное училище в Могилеве » MASHEKA - информационный портал Могилёва. Новости Могилева, интервью с могилевчанами",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://bobr.by/news/education/198684",
+      "source": "Вечерний Бобруйск",
+      "title": "В Каменской школе Бобруйского района прошёл урок белорусской письменности с участниками экспедиции «Дарога да Святыняў»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://bobr.by/news/ispolkom/198686",
+      "source": "Вечерний Бобруйск",
+      "title": "В период с 4 по 6 сентября ГАИ Бобруйского района усилен контроль на дорогах",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://bobr.by/news/relevant/198678",
+      "source": "Вечерний Бобруйск",
+      "title": "Кружки и секции для школьников можно будет выбрать в горпарке 5 сентября ОБНОВЛЕНО: СМЕНА ЛОКАЦИИ",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://bobr.by/news/newscompany/198685",
+      "source": "Вечерний Бобруйск",
+      "title": "На Бобруйской фабрике художественных изделий чествовали мастериц-вышивальщиц с полувековым стажем",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://bobr.by/news/announcement/198683",
+      "source": "Вечерний Бобруйск",
+      "title": "Отмена и перенос премьер в театре Дунина-Марцинкевича города Бобруйска",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://bobr.by/news/relevant/198688",
+      "source": "Вечерний Бобруйск",
+      "title": "Погода на 6 сентября в Бобруйске",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://bobr.by/news/city/198682",
+      "source": "Вечерний Бобруйск",
+      "title": "Реализация гражданских инициатив: в Бобруйске обновляют Молодёжный парк ко Дню народного единства",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://bobr.by/news/sport/198687",
+      "source": "Вечерний Бобруйск",
+      "title": "Фехтование, футбол и лёгкая атлетика: в «Детско-юношеской спортивной школе №1 г. Бобруйска» прошёл «День открытых дверей»",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://golk.by/lukashenko-den-belorusskoy-pismennosti-eto-prazdnik-samobytnoy-natsionalnoy-kultury.html",
+      "source": "Голас Касцюкоўшчыны",
+      "title": "Лукашенко: День белорусской письменности - это праздник самобытной национальной культуры",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://golk.by/prazdnik-knigi-istorii-i-kultury-hxxiii-den-belorusskoy-pismennosti.html",
+      "source": "Голас Касцюкоўшчыны",
+      "title": "Праздник книги, истории и культуры: ХXXIII День белорусской письменности",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://golk.by/puteshestvie-v-mir-belorusskogo-knigopechataniya-i-literatury-den-belorusskoy-pismennosti-prohodit-v-kostyukovichah.html",
+      "source": "Голас Касцюкоўшчыны",
+      "title": "Путешествие в мир белорусского книгопечатания и литературы. День белорусской письменности проходит в Костюковичах",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://golk.by/torzhestvennoe-bogosluzhenie-v-ramkah-prazdnovaniya-xxxiii-dnya-belorusskoy-pismennosti-sostoyalos-v-kostyukovichah.html",
+      "source": "Голас Касцюкоўшчыны",
+      "title": "Торжественное богослужение в рамках празднования XXXIII Дня белорусской письменности состоялось в Костюковичах",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://golk.by/torzhestvennoe-otkrytie-xxxiiii-dnya-belorusskoy-pismennosti-v-kostyukovichah.html",
+      "source": "Голас Касцюкоўшчыны",
+      "title": "Торжественное открытие XXXIIII Дня белорусской письменности в Костюковичах",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/mogilevonline/123837",
+      "source": "Могилёв Online",
+      "title": "А вот и ответ на загадку!",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/mogilevonline/123829",
+      "source": "Могилёв Online",
+      "title": "В Минске обсуждают создание отдельных палат для женщин с прерыванием беременности",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/mogilevonline/123836",
+      "source": "Могилёв Online",
+      "title": "В Уганде девушка отрезала мужу пенис в ходе ссоры.",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/mogilevonline/123831",
+      "source": "Могилёв Online",
+      "title": "Китаец запустил сеть салонов, где клиентам...",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/mogilevonline/123821",
+      "source": "Могилёв Online",
+      "title": "Наконец-то на проблему с пандусом на Дубровенке обратили внимание!",
+      "archived": "KEEP",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "KEEP",
+        "reason": "",
+        "category": "Земля, водоёмы и доступ к природе"
+      }
+    },
+    {
+      "url": "https://t.me/mogilevonline/123827",
+      "source": "Могилёв Online",
+      "title": "Оранжевый уровень опасности уже добрался до четырех областей — Могилевщина пока в стороне",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/mogilevonline/123832",
+      "source": "Могилёв Online",
+      "title": "Отвлеклась и врезалась в ограждение: в Белыничском районе в ДТП пострадали дети",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://t.me/mogilevonline/123830",
+      "source": "Могилёв Online",
+      "title": "Очередной раунд «Городских пряток» уже здесь!",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://magilev.by/news/2026/09/05/artista-nado-lubit",
+      "source": "МогилёвОнлайн",
+      "title": "Алла Грахова, бывшая актриса бобруйского театра: «Артистов надо любить и поддерживать»",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://magilev.by/news/2026/09/05/afriku-uvelichat-v-razmerah-generalnaya-assambleya-oon-progolosovala-za-novuyu-kartu-mira",
+      "source": "МогилёвОнлайн",
+      "title": "Африку увеличат в размерах: Генеральная Ассамблея ООН проголосовала за новую карту мира",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://magilev.by/news/2026/09/05/v-kostyukovichah-torzhestvenno-otkryli-xxxiii-den-belorusskoj-pismennosti",
+      "source": "МогилёвОнлайн",
+      "title": "В Костюковичах торжественно открыли XXXIII День белорусской письменности",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "политическая тема: лукашенко",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://magilev.by/news/2026/09/05/mogilevskie-semidesyatniki-i-queen-ne-zabyli-i-merkyuri-pomnyat",
+      "source": "МогилёвОнлайн",
+      "title": "Могилевские «семидесятники» и «Queen» не забыли, и Меркьюри помнят",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://magilev.by/news/2026/09/05/na-dvuh-bobrujskih-perekrestkah-izmenili-rezhim-raboty-svetofora",
+      "source": "МогилёвОнлайн",
+      "title": "На двух бобруйских перекрестках изменили режим работы светофора",
+      "archived": "REJECT",
+      "truncated": "false",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://magilev.by/news/2026/09/05/nachinaem-nash-gribnoj-konkurs-tihaya-ohota",
+      "source": "МогилёвОнлайн",
+      "title": "Начинаем наш грибной конкурс «Тихая охота»",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    },
+    {
+      "url": "https://magilev.by/news/2026/09/05/orshanskij-general-i-dribinskij-robot-puteshestvie-odnogo-dnya-s-trehletnim-rebenkom",
+      "source": "МогилёвОнлайн",
+      "title": "Оршанский «генерал» и дрибинский «робот». Путешествие одного дня с трехлетним ребенком",
+      "archived": "REJECT",
+      "truncated": "true",
+      "before": null,
+      "after": {
+        "decision": "REJECT",
+        "reason": "нет связки социальной темы и проблемы",
+        "category": ""
+      }
+    }
+  ]
+}

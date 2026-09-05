@@ -223,6 +223,6 @@ def test_telegram_title_keeps_brand_domain_and_stops_at_question() -> None:
 
 
 def test_update79_build_marker() -> None:
-    assert sm.MONITOR_BUILD == "2026-09-05.social.82-regex-integrity-semantic-history-1.0"
+    assert sm.MONITOR_BUILD == "2026-09-05.social.83-run47-integrity-shadow-score-1.0"
     assert sm.ARCHITECTURE_CORE_VERSION == "3.9"
     assert sm.SEMANTIC_DATA_CONTRACT_VERSION == "1.0"

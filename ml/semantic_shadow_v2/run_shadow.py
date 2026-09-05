@@ -15,7 +15,7 @@ from pathlib import Path
 
 
 MODEL_ID = "MoritzLaurer/multilingual-MiniLMv2-L6-mnli-xnli"
-SCHEMA_VERSION = "semantic-shadow-v2.0"
+SCHEMA_VERSION = "semantic-shadow-v2.1"
 
 # These are the two positive hypotheses used to form the diagnostic keep
 # score. The remaining hypotheses intentionally represent non-inclusion
@@ -53,6 +53,19 @@ def make_priority(regex_decision: str, keep_score: float) -> str:
     return "OBSERVE_ONLY"
 
 
+def normalized_keep_score(result: dict[str, object]) -> float:
+    """Return the A/B-compatible sum of the two positive softmax classes."""
+    labels = result.get("labels")
+    scores = result.get("scores")
+    if not isinstance(labels, list) or not isinstance(scores, list):
+        raise ValueError("Zero-shot result has no labels/scores lists")
+    score_by_label = dict(zip(labels, scores))
+    keep_score = sum(float(score_by_label.get(label, 0.0)) for label in HYPOTHESES[:2])
+    if not 0.0 <= keep_score <= 1.0 + 1e-9:
+        raise ValueError(f"Expected normalized keep score in [0, 1], got {keep_score}")
+    return min(keep_score, 1.0)
+
+
 def main() -> int:
     args = parse_args()
     if not args.input.is_file():
@@ -80,9 +93,11 @@ def main() -> int:
         writer.writeheader()
         for index, row in enumerate(rows, start=1):
             text = (row.get("semantic_model_text") or "")[: args.max_chars]
-            result = classifier(text, HYPOTHESES, multi_label=True)
-            score_by_label = dict(zip(result["labels"], result["scores"]))
-            keep_score = sum(float(score_by_label.get(label, 0.0)) for label in HYPOTHESES[:2])
+            # ``multi_label=False`` produces one softmax distribution across
+            # the six mutually exclusive editorial hypotheses. The earlier
+            # A/B thresholds are valid only on that [0, 1] scale.
+            result = classifier(text, HYPOTHESES, multi_label=False)
+            keep_score = normalized_keep_score(result)
             regex_decision = row.get("regex_relevance_decision", "")
             priority = make_priority(regex_decision, keep_score)
             counts[priority] = counts.get(priority, 0) + 1

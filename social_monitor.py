@@ -29,7 +29,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-09-05.social.82-regex-integrity-semantic-history-1.0"
+MONITOR_BUILD = "2026-09-05.social.83-run47-integrity-shadow-score-1.0"
 ARCHITECTURE_CORE_VERSION = "3.9"
 SEMANTIC_DATA_CONTRACT_VERSION = "1.0"
 SEMANTIC_ARCHIVE_MAX_CHARS = 8000
@@ -5842,6 +5842,14 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         # one-off proper-noun story, left untranslated as low-value.
         r"(?:гатоўнасц[а-яёіў]*|падрыхтоўк[а-яёіў]*).*дажын[а-яёіў]*",
     )),
+    # A public clean-up can mention yards, grass, parks and residents while
+    # still being a positive event rather than evidence of a service failure.
+    "positive_community_cleanup": tuple(re.compile(value) for value in (
+        r"(?:субботник|уборк[а-яёіў]*).{0,120}(?:косят|убира[а-яёіў]*|"
+        r"привод[а-яёіў]*\s+в\s+порядок|навод[а-яёіў]*\s+порядок)",
+        r"(?:проводят|прош[её]л|присоединил[а-яёіў]*).{0,80}"
+        r"(?:субботник|больш[а-яёіў]*\s+уборк[а-яёіў]*)",
+    )),
     # New group added on editorial decision after report-33 (2026-09-01):
     # residents fixing/organizing something themselves, framed as a
     # feel-good "look what we did without waiting for help" story, with no
@@ -6242,6 +6250,8 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"в\s+германи[а-яёіў]*.*работающ[а-яёіў]*\s+беларус",
         r"(?:после|за)\s+границ[а-яёіў]*\s+с\s+(?:рф|росси[а-яёіў]*)",
         r"дефицит\s+топлив[а-яёіў]*.*(?:в\s+рф|в\s+росси[а-яёіў]*)",
+        r"(?:студент|жител[а-яёіў]*).{0,50}из\s+инди[а-яёіў]*.*"
+        r"(?:очистил|очища[а-яёіў]*).{0,80}(?:рек|водо[её]м)",
     )),
     "promotional_or_corporate": tuple(re.compile(value) for value in (
         r"радиация\s+под\s+контролем",
@@ -6471,6 +6481,19 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"(?:зацікаўлен|заинтересован)[а-яёіў]*.*беларус[а-яёіў]*",
         r"(?:дал[её]к[а-яёіў]*\s+усход|рф|расі[а-яёіў]*).*"
         r"зацікаўлен[а-яёіў]*.*беларуск[а-яёіў]*.*(?:палів|тэхнік|тавар|прадукц)",
+    )),
+    "foreign_security_diplomacy": tuple(re.compile(value) for value in (
+        r"(?:украинск[а-яёіў]*\s+)?дипломат[а-яёіў]*.{0,140}"
+        r"(?:безопасност|демократизац|войн|ультиматум)",
+        r"(?:безопасност|демократизац|войн|ультиматум).{0,140}"
+        r"(?:украинск[а-яёіў]*\s+)?дипломат[а-яёіў]*",
+        r"(?:представител[а-яёіў]*\s+мид|мид).{0,140}"
+        r"(?:украин|войн|демократизац|безопасност)",
+    )),
+    "foreign_trade_sanctions_statement": tuple(re.compile(value) for value in (
+        r"(?:санкц|клайпед[а-яёіў]*|літоўск[а-яёіў]*).{0,140}"
+        r"(?:калий|калій|порт|доступ[а-яёіў]*\s+к\s+мор)",
+        r"(?:калий|калій).{0,140}(?:санкц|клайпед[а-яёіў]*|порт)",
     )),
     "generic_safety_campaign": tuple(re.compile(value) for value in (
         r"^внимани[а-яёіў]*\s+безопасност[а-яёіў]*\s+на\s+дорог",
@@ -7373,6 +7396,12 @@ def result_integrity_genre_rejection(
         resident_explicit or lead_findings or special_public_interest
     ):
         return "Result Integrity: внешнеторговое продвижение без проблемы жителей"
+    if matches("foreign_security_diplomacy", include_lead=True):
+        return "Editorial Intent: внешнеполитическая или военная дипломатия без социальной проблемы"
+    if matches("foreign_trade_sanctions_statement", include_lead=True) and not (
+        lead_findings or persistence or special_public_interest
+    ):
+        return "Editorial Intent: внешнеторговое санкционное заявление без проблемы жителей"
     if matches("generic_safety_campaign", include_lead=True) and not (
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
@@ -7401,6 +7430,10 @@ def result_integrity_genre_rejection(
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
         return "Editorial Intent: позитивное инфраструктурное обновление без проблемы"
+    if matches("positive_community_cleanup", include_lead=True) and not (
+        lead_findings or persistence or special_public_interest
+    ):
+        return "Editorial Intent: позитивная уборка или субботник без проблемы услуги"
     if matches("positive_self_organized_initiative", include_lead=True) and not (
         resident_explicit or lead_findings or persistence or special_public_interest
     ):

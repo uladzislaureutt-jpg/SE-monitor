@@ -5,6 +5,14 @@ Update82 adds a separate, manually started GitHub Action. It scores an already
 archived regex run and uploads a private diagnostic CSV. The daily monitor does
 not download a model, score articles, or alter the report.
 
+## v2.1 correction
+
+Do not use a `semantic-shadow` artifact created by v2.0. Its six hypothesis
+scores were independent and their sum was not on the calibrated 0–1 scale.
+v2.1 uses one softmax distribution (`multi_label=False`) and refuses an
+out-of-range score. Re-run the manual workflow against the same archived input;
+no new ordinary monitoring run is required.
+
 ## Candidate and boundaries
 
 The later full-text A/B diagnostic used the reviewed 74-publication reference

@@ -1,0 +1,18 @@
+{
+  "package": "SE-monitor-update-83-run47-integrity-shadow-score-1.0",
+  "target_build": "2026-09-05.social.83-run47-integrity-shadow-score-1.0",
+  "installation": "Unpack into the repository root, preserving paths. See INSTALL-UPDATE83.md.",
+  "changes": [
+    "Correct semantic shadow scoring: a normalized softmax score is now used for the existing A/B thresholds.",
+    "Keep the semantic layer advisory and separate from the regex decision path.",
+    "Reject positive cleanup/subbotnik reports unless they contain an independently supported service problem.",
+    "Reject foreign security/diplomacy and foreign trade-sanctions statements without a resident social problem.",
+    "Reject foreign environmental good-news stories without a Belarusian social problem."
+  ],
+  "validation": {
+    "pytest": "621 passed",
+    "run47_offline_replay": "341 REJECT->REJECT, 4 KEEP->KEEP, 4 KEEP->REJECT",
+    "run45_offline_replay": "691 REJECT->REJECT, 30 KEEP->KEEP, 5 KEEP->REJECT, 1 REJECT->KEEP"
+  },
+  "operation_after_install": "Do not launch a normal monitor run just for this correction. Manually run the Social semantic shadow workflow with empty input; it will rescore the latest archived semantic_inputs."
+}

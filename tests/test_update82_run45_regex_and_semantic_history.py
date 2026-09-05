@@ -102,4 +102,4 @@ def test_shadow_priority_never_overrides_regex_decision() -> None:
 
 
 def test_update82_build_marker() -> None:
-    assert sm.MONITOR_BUILD == "2026-09-05.social.82-regex-integrity-semantic-history-1.0"
+    assert sm.MONITOR_BUILD == "2026-09-05.social.83-run47-integrity-shadow-score-1.0"
