@@ -147,9 +147,6 @@ EVENT_PROBLEM_BASELINE: set[tuple[str, str]] = {
     ("safety", "травм"), ("safety", "траўм"),
     ("work_conditions", "жар[аыу]"), ("work_conditions", "температур"),
     ("work_conditions", "тэмператур"),
-    # The former bare "ўмов.*прац" baseline entry was removed in update75:
-    # the live pattern now has a negative lookbehind for "супрацоўніцтва"
-    # and therefore is intentionally outside this bare-pattern allowlist.
     ("service_quality", "няякасн"), ("service_quality", "плох.*связ"),
 }
 

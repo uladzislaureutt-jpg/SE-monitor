@@ -1,0 +1,21 @@
+{
+  "build": "2026-09-04.social.81-run44-balanced-integrity-1.0",
+  "base_build": "2026-09-04.social.80-run43-precision-recall-1.0",
+  "base_module_sha256": "93407dcf80b0392c656d352c60738fbb78cb9b9e1d0563c3b7df86c98ba09fe4",
+  "module_sha256": "5fc5363feee08b777c62aca92d7c1ef03316b08a0972b1afaab8cea9011596d2",
+  "tests": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "604",
+    "time": "70.862",
+    "timestamp": "2026-09-05T03:19:01.638530-05:00",
+    "hostname": "localhost"
+  },
+  "semantic_activation": false,
+  "gold_changed": false,
+  "config_changed": false,
+  "gold_reference_sha256": "82b7c5117e81075c608ff197f4881124f6889b65713edcac3bd710e153192733",
+  "installation": "Copy archive contents to repository root preserving subdirectories; review overlapping local changes first."
+}

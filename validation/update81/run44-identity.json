@@ -1,0 +1,42 @@
+{
+  "build": "2026-09-04.social.81-run44-balanced-integrity-1.0",
+  "module_sha256": "5fc5363feee08b777c62aca92d7c1ef03316b08a0972b1afaab8cea9011596d2",
+  "scope": "Check event identity on archived report cards, enriching from saved inputs.\n\nNot a full production replay: relevance, date and excerpt selection are unchanged.\n",
+  "input_cards": 26,
+  "output_cards": 23,
+  "merged": [
+    {
+      "title": "В популярной у белорусов сети магазинов цифровой и бытовой техники обнаружили опасные товары",
+      "url": "https://www.belnovosti.by/obshchestvo/v-populyarnoy-u-belorusov-seti-magazinov-cifrovoy-i-bytovoy-tehniki-obnaruzhili-opasnye",
+      "signature": "беларусь|consumer_electronics_compliance|sale_noncompliance",
+      "related": [
+        [
+          "Blizko.by",
+          "https://t.me/blizkoby/25017"
+        ]
+      ]
+    },
+    {
+      "title": "Авария в Любанском районе. Без воды остались сотни жилых домов",
+      "url": "https://www.belnovosti.by/proisshestviya/avariya-v-lyubanskom-rayone-bez-vody-ostalis-sotni-zhilyh-domov",
+      "signature": "любань|water_supply|outage",
+      "related": [
+        [
+          "Беларусь за МКАДом",
+          "https://t.me/zamkadomby/67522"
+        ]
+      ]
+    },
+    {
+      "title": "Напомним, ранее в министерстве выложили онлайн-опрос о ценах на ветеринарные услуги.",
+      "url": "https://t.me/gomeltoday/162680",
+      "signature": "беларусь|veterinary_service_prices|price_overcharge",
+      "related": [
+        [
+          "Могилёв Online",
+          "https://t.me/mogilevonline/123808"
+        ]
+      ]
+    }
+  ]
+}
