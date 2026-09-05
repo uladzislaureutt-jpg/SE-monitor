@@ -1,0 +1,63 @@
+name: S-monitor supervised semantic CV (manual, isolated)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: s-monitor-supervised-semantic-cv
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      HF_HOME: /tmp/huggingface
+      TOKENIZERS_PARALLELISM: "false"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_CACHE_DIR: "1"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r ml/semantic_supervised_cv/requirements.txt
+      - name: Run leakage-safety tests
+        run: python tests/test_semantic_supervised_cv.py
+      - name: Evaluate TF-IDF baseline
+        run: >-
+          python ml/semantic_supervised_cv/run_cv.py
+          --candidate tfidf --slug tfidf_word_char_cv
+          --gold data/ml/supervised_gold_2026_09_03/final_gold_240.csv
+          --output semantic-supervised-cv-results --seed 20260905
+      - name: Evaluate SetFit E5-small
+        run: >-
+          python ml/semantic_supervised_cv/run_cv.py
+          --candidate setfit --slug multilingual_e5_small_setfit_cv
+          --model-id intfloat/multilingual-e5-small
+          --model-revision 0e60b8d9d2166d80387f86e3b48ec9ced55f4d15
+          --gold data/ml/supervised_gold_2026_09_03/final_gold_240.csv
+          --output semantic-supervised-cv-results --seed 20260905
+          --batch-size 8 --num-iterations 3 --body-epochs 1 --max-length 256
+      - name: Compare completed candidates
+        if: always()
+        run: python ml/semantic_supervised_cv/compare.py --results semantic-supervised-cv-results
+      - name: Record environment
+        if: always()
+        run: |
+          python --version > semantic-supervised-cv-results/environment.txt
+          python -m pip freeze > semantic-supervised-cv-results/pip-freeze.txt
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: s-monitor-supervised-semantic-cv-results
+          path: semantic-supervised-cv-results/
+          if-no-files-found: error
+          retention-days: 14
