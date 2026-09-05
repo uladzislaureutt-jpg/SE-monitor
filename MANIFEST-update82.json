@@ -1,0 +1,15 @@
+{
+  "package": "SE-monitor-update-82-run45-integrity-semantic-shadow-1.0",
+  "base_required": "update81-run44-balanced-integrity-1.0",
+  "monitor_build": "2026-09-05.social.82-regex-integrity-semantic-history-1.0",
+  "installation": "Extract into the repository root, preserving paths.",
+  "runtime_effect": {
+    "daily_monitor": "Regex-only; unchanged output contract.",
+    "semantic_shadow": "Manual advisory workflow only; no report, notification, state or cache mutation."
+  },
+  "validation": {
+    "pytest": "613 passed, 0 failures, 0 errors",
+    "run45_regex_replay": "691 REJECT→REJECT, 30 KEEP→KEEP, 5 KEEP→REJECT, 1 REJECT→KEEP",
+    "run45_identity": "27 archived cards become 26 after DNS event normalization"
+  }
+}

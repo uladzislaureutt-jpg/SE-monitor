@@ -29,7 +29,7 @@ from dateutil import parser as date_parser
 
 LOG = logging.getLogger("social_monitor")
 UTC = dt.timezone.utc
-MONITOR_BUILD = "2026-09-04.social.81-run44-balanced-integrity-1.0"
+MONITOR_BUILD = "2026-09-05.social.82-regex-integrity-semantic-history-1.0"
 ARCHITECTURE_CORE_VERSION = "3.9"
 SEMANTIC_DATA_CONTRACT_VERSION = "1.0"
 SEMANTIC_ARCHIVE_MAX_CHARS = 8000
@@ -1604,7 +1604,7 @@ def infer_event_fingerprint(
     )
     if (
         object_key == "consumer_electronics_compliance"
-        and problem_key in {"safety", "counterfeit", "sale_noncompliance"}
+        and problem_key in {"safety", "counterfeit", "sale_noncompliance", "access_restriction"}
     ):
         problem_key = "sale_noncompliance"
         problem_label = "запрет продажи/несоответствие требованиям"
@@ -6481,9 +6481,21 @@ RESULT_INTEGRITY_GENRE_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         r"конкурс[а-яёіў]*\s+(?:на\s+)?(?:лучш[а-яёіў]*\s+)?названи[а-яёіў]*.*"
         r"(?:приз|iphone|победител)",
     )),
+    "generic_service_redress_instruction": tuple(re.compile(value) for value in (
+        r"заявк[а-яёіў]*\s+(?:в\s+)?115.*(?:закрыл|закрыт)[а-яёіў]*.*"
+        r"(?:что\s+делать|куда\s+жалова|как\s+действоват|объяснил)",
+        r"(?:минжкх|министерств[а-яёіў]*\s+жкх).*"
+        r"(?:заявк[а-яёіў]*\s+115|служб[а-яёіў]*\s+115).*"
+        r"(?:закрыл|повторн[а-яёіў]*\s+откр|доработк)",
+    )),
     "resolved_transport_accommodation": tuple(re.compile(value) for value in (
         r"разрешил[а-яёіў]*\s+бесплатн[а-яёіў]*\s+пересаживат[а-яёіў]*\s+в\s+автобус",
         r"бесплатн[а-яёіў]*\s+пересадк[а-яёіў]*.*(?:очеред|границ|автобус)",
+        r"бесплатно\s+пересест[а-яёіў]*.*(?:автобус|границ|шлагбаум)",
+    )),
+    "official_schedule_denial": tuple(re.compile(value) for value in (
+        r"назвал[а-яёіў]*\s+недостоверн[а-яёіў]*.*(?:сообщени|слух|информаци)[а-яёіў]*",
+        r"(?:опроверг|не\s+подтвердил)[а-яёіў]*.*(?:перенос|срок|строительств)",
     )),
     "single_private_food_price_reaction": tuple(re.compile(value) for value in (
         r"(?:фермер|частн[а-яёіў]*\s+продавец)[а-яёіў]*.*(?:сало|мяс|молок|сыр)[а-яёіў]*.*"
@@ -6587,6 +6599,9 @@ BOUND_PUBLIC_ISSUE_PATTERNS: dict[
             r"(?:штраф|удержан|приказ|увольнен)",
             r"(?:придумал|подделал|издал)[а-яёіў]*.*(?:приказ|штраф)[а-яёіў]*.*работник",
             r"(?:не\s+выплатил|задолжал|удержал)[а-яёіў]*.*(?:зарплат|заработн[а-яёіў]*\s+плат)",
+            r"(?:несвоевременн[а-яёіў]*\s+выплат|задерж[а-яёіў]*\s+выплат|"
+            r"не\s+платил[а-яёіў]*)[а-яёіў]*.*"
+            r"(?:зарплат|заработн[а-яёіў]*\s+плат)",
             r"(?:не\s+выплатил|не\s+выплачивал|не\s+получил)[а-яёіў]*.*"
             r"(?:окончательн[а-яёіў]*\s+расчет|расчет[а-яёіў]*.*увольнен)",
             r"(?:окончательн[а-яёіў]*\s+расчет|расчет[а-яёіў]*.*увольнен).*"
@@ -7362,14 +7377,14 @@ def result_integrity_genre_rejection(
         resident_explicit or lead_findings or persistence or special_public_interest
     ):
         return "Editorial Intent: общая профилактическая кампания"
-    if matches("promotional_naming_contest", include_lead=True) and not (
-        persistence or special_public_interest
-    ):
+    if matches("promotional_naming_contest", include_lead=True):
         return "Editorial Intent: маркетинговый конкурс без текущей общественной проблемы"
-    if matches("resolved_transport_accommodation", include_lead=True) and not (
-        persistence or special_public_interest
-    ):
+    if matches("resolved_transport_accommodation", include_lead=True):
         return "Problem State: транспортная проблема компенсирована бесплатной пересадкой"
+    if matches("generic_service_redress_instruction", include_lead=True):
+        return "Editorial Intent: общий порядок повторного обращения без самостоятельного случая"
+    if matches("official_schedule_denial", include_lead=True):
+        return "Editorial Intent: опровержение слухов о сроках без самостоятельной проблемы"
     if matches("single_private_food_price_reaction", include_lead=True) and not (
         lead_findings or special_public_interest
     ):
@@ -7560,9 +7575,7 @@ def result_integrity_genre_rejection(
         title_explicit or lead_findings or regulatory_public_interest
     ):
         return "Editorial Intent: частная история с документами без системного нарушения"
-    if matches("editorial_meta_or_denial") and not (
-        lead_findings or special_public_interest
-    ):
+    if matches("editorial_meta_or_denial") and not lead_findings:
         return "Editorial Intent: редакционная метаистория без самостоятельной проблемы"
     if matches("aesthetic_or_symbolic_opinion") and not (
         lead_findings or persistence or concrete_title_problem

@@ -287,7 +287,7 @@ def test_short_generated_discourse_fragment_is_recovered_from_full_text() -> Non
 
 
 def test_update81_build_marker() -> None:
-    assert sm.MONITOR_BUILD == "2026-09-04.social.81-run44-balanced-integrity-1.0"
+    assert sm.MONITOR_BUILD == "2026-09-05.social.82-regex-integrity-semantic-history-1.0"
     assert sm.ARCHITECTURE_CORE_VERSION == "3.9"
     assert sm.SEMANTIC_DATA_CONTRACT_VERSION == "1.0"
 
