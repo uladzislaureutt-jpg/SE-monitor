@@ -1,12 +1,12 @@
 {
-  "package": "SE-monitor-supervised-semantic-cv-1.0",
+  "package": "SE-monitor-supervised-semantic-cv-1.1",
   "scope": "manual isolated experiment only",
   "production_files_changed": [],
   "candidates": [
     "TF-IDF word+char / LogisticRegression",
     "SetFit / intfloat/multilingual-e5-small"
   ],
-  "dataset": "240 finalized editor-labelled GOLD cards; grouped by event_id",
+  "dataset": "240 finalized editor-labelled GOLD cards stored under the workflow code path; grouped by event_id",
   "evaluation": "five-fold out-of-fold predictions; each action threshold is selected without the evaluated fold labels",
   "decision_boundary": "No candidate may change production from this experiment. A fresh prospective GOLD/shadow phase is mandatory."
 }
