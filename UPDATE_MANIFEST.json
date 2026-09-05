@@ -1,45 +1,12 @@
 {
-  "package": "SE-monitor-update-80-run43-precision-recall-1.0",
-  "build": "2026-09-04.social.80-run43-precision-recall-1.0",
-  "architecture_core_version": "3.9",
-  "semantic_data_contract_version": "1.0",
-  "requires": "update79 run42 systemic precision 1.0",
-  "installation_root": "repository root",
-  "changes": [
-    "strict protected-profile use of editorial summaries for short social posts",
-    "persistent heavy-vehicle misrouting grievance profile",
-    "mass veterinary-product safety profile with Belarus-market and breadth evidence",
-    "systemic wage-disparity exception to name-only political rejection",
-    "exact protest token handling that excludes the unrelated verb протестировать",
-    "Lyuban event geography and water-outage fingerprint completion",
-    "same-locality water-outage consolidation with a shared numeric fact"
+  "package": "SE-monitor-supervised-semantic-cv-1.0",
+  "scope": "manual isolated experiment only",
+  "production_files_changed": [],
+  "candidates": [
+    "TF-IDF word+char / LogisticRegression",
+    "SetFit / intfloat/multilingual-e5-small"
   ],
-  "semantic_replay": {
-    "run42_rows": 179,
-    "run42_additional_changes_vs_update79": 0,
-    "run43_rows": 81,
-    "run43_reject_to_keep": 3,
-    "run43_other_decisions_unchanged": 78
-  },
-  "tests": "611 passed",
-  "files": [
-    "social_monitor.py",
-    "tests/test_update77_semantic_data_contract.py",
-    "tests/test_update78_guarded_grievance_dedup.py",
-    "tests/test_update79_run42_systemic_precision.py",
-    "tests/test_update80_run43_precision_recall.py",
-    "INSTALL-UPDATE80.md",
-    "RUN42-RUN43-REGRESSION.md",
-    "UPDATE_MANIFEST.json",
-    "SHA256SUMS.txt"
-  ],
-  "does_not_modify": [
-    "config/sources.csv",
-    "config/settings.yaml",
-    ".github/workflows",
-    "GOLD datasets",
-    "semantic archives",
-    "semantic archive contract",
-    "secrets and delivery settings"
-  ]
+  "dataset": "240 finalized editor-labelled GOLD cards; grouped by event_id",
+  "evaluation": "five-fold out-of-fold predictions; each action threshold is selected without the evaluated fold labels",
+  "decision_boundary": "No candidate may change production from this experiment. A fresh prospective GOLD/shadow phase is mandatory."
 }
