@@ -150,17 +150,15 @@ jobs:
             [ -e "$f" ] || continue
             cp "$f" "data/ml/raw_history/articles/run-${GITHUB_RUN_NUMBER}_$(basename "$f")"
           done
-          for f in debug/rejected_signals_*.csv debug/semantic_training_signals_*.csv; do
+          for f in debug/rejected_signals_*.csv; do
             [ -e "$f" ] || continue
-            case "$f" in
-              debug/rejected_signals_*.csv)
-                destination="data/ml/raw_history/rejected"
-                ;;
-              *)
-                destination="data/ml/raw_history/semantic_inputs"
-                ;;
-            esac
-            cp "$f" "$destination/run-${GITHUB_RUN_NUMBER}_$(basename "$f")"
+            cp "$f" "data/ml/raw_history/rejected/run-${GITHUB_RUN_NUMBER}_$(basename "$f")"
+          done
+          # Private bounded input for the semantic second layer. It is not
+          # copied into reports/ or delivered by the monitoring report.
+          for f in debug/semantic_training_signals_*.csv; do
+            [ -e "$f" ] || continue
+            cp "$f" "data/ml/raw_history/semantic_inputs/run-${GITHUB_RUN_NUMBER}_$(basename "$f")"
           done
 
       - name: Save monitoring state

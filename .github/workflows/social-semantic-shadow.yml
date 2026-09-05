@@ -1,0 +1,61 @@
+name: Social semantic shadow
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_file:
+        description: "Файл semantic_inputs относительно корня; пусто = последний"
+        required: false
+        default: ""
+        type: string
+      max_rows:
+        description: "0 = все строки"
+        required: true
+        default: "0"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install isolated CPU runtime
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch
+          python -m pip install -r ml/semantic_shadow_v2/requirements.txt
+      - name: Choose archived regex input
+        id: input
+        shell: bash
+        run: |
+          set -euo pipefail
+          requested='${{ inputs.input_file }}'
+          if [ -n "$requested" ]; then
+            test -f "$requested"
+            selected="$requested"
+          else
+            selected=$(find data/ml/raw_history/semantic_inputs -type f -name '*.csv' | sort | tail -n 1)
+            test -n "$selected"
+          fi
+          echo "path=$selected" >> "$GITHUB_OUTPUT"
+      - name: Run advisory shadow only
+        env:
+          HF_HOME: /tmp/huggingface
+          TOKENIZERS_PARALLELISM: "false"
+        run: |
+          mkdir -p semantic-shadow-output
+          python ml/semantic_shadow_v2/run_shadow.py \
+            --input "${{ steps.input.outputs.path }}" \
+            --output semantic-shadow-output/shadow_predictions.csv \
+            --limit "${{ inputs.max_rows }}"
+          cp "${{ steps.input.outputs.path }}" semantic-shadow-output/input_snapshot.csv
+      - name: Upload private diagnostic
+        uses: actions/upload-artifact@v6
+        with:
+          name: social-semantic-shadow-${{ github.run_number }}
+          path: semantic-shadow-output/
+          retention-days: 14
